@@ -7,7 +7,7 @@ extension Mesh {
         let mesh = Mesh()
         let kök: NodeBase = NodeBase(text: "kök")
         mesh.addNode(kök)
-        mesh.updateNodeText(kök, string: "Root Node")
+        mesh.updateNodeText(kök, string: "Root AVAudioNode")
         [
 //            (0, 200,  "shelter"),
             (240,400,  "food"),

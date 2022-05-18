@@ -93,7 +93,7 @@ public class NodeParameter {
     }
     
     /// Initial with definition
-    /// - Parameter def: Node parameter definition
+    /// - Parameter def: AVAudioNode parameter definition
     public init(_ def: NodeParameterDef) {
         self.def = def
     }
@@ -231,7 +231,7 @@ protocol ParameterBase {
 /// Use the $ operator to access the underlying NodeParameter. For example:
 /// `osc.$frequency.maxValue`
 ///
-/// When writing a Node, use:
+/// When writing a AVAudioNode, use:
 /// ```
 /// @Parameter(myParameterDef) var myParameterName: AUValue
 /// ```

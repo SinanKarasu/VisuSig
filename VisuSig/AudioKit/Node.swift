@@ -138,9 +138,6 @@ extension Node {
     }
 
     func makeAVConnections() {
-        if let node = self as? HasInternalConnections {
-            node.makeInternalConnections()
-        }
 
         // Are we attached?
         if let engine = self.engine {
@@ -172,13 +169,13 @@ extension Node {
     }
 }
 
-public protocol HasInternalConnections: AnyObject {
-    /// Override point for any connections internal to the node.
-    func makeInternalConnections()
-}
+//public protocol HasInternalConnections: AnyObject {
+//    /// Override point for any connections internal to the node.
+//    func makeInternalConnections()
+//}
 
 /// Protocol mostly to support DynamicOscillator in SoundpipeAudioKit, but could be used elsewhere
-public protocol DynamicWaveformNode: Node {
+public protocol DynamicWaveformNode: AVAudioNode {
     /// Sets the wavetable
     /// - Parameter waveform: The tablve
     func setWaveform(_ waveform: Table)

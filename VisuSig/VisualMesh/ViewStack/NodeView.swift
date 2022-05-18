@@ -19,7 +19,7 @@ struct NodeView: View {
             ZStack {
                 theNodeView(selected: selected)
                     .opacity(0.4)
-                    .contextMenu{  // Node ops
+                    .contextMenu{  // AVAudioNode ops
                         Button("⛑ - Add Port", action: {
                             DispatchQueue.main.async {
                                 self.selection.selectNode(node)

@@ -144,7 +144,7 @@ extension Mesh {
         }
     }
 
-//    func deleteNodes(_ nodesToDelete: [Node]) {
+//    func deleteNodes(_ nodesToDelete: [AVAudioNode]) {
 //        deleteNodes(nodesToDelete.map({ $0.id }))
 //    }
 
