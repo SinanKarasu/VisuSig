@@ -3,36 +3,37 @@
 import AVFoundation
 
 /// Node in an audio graph.
-public protocol Node: AnyObject {
+public protocol Node: AVAudioNode {
 
     /// Nodes providing audio input to this node.
     var connections: [Node] { get }
 
     /// Internal AVAudioEngine node.
-    var avAudioNode: AVAudioNode { get }
-
-    /// Start the node
-    func start()
-
-    /// Stop the node
-    func stop()
-
-    /// Bypass the node
-    func bypass()
-
-    /// Tells whether the node is processing (ie. started, playing, or active)
-    var isStarted: Bool { get }
+//    var avAudioNode: AVAudioNode { get }
+//
+//    /// Start the node
+//    func start()
+//
+//    /// Stop the node
+//    func stop()
+//
+//    /// Bypass the node
+//    func bypass()
+//
+//    /// Tells whether the node is processing (ie. started, playing, or active)
+//    var isStarted: Bool { get }
 
 }
 
 public extension Node {
     /// Reset the internal state of the unit
     /// Fixes issues such as https://github.com/AudioKit/AudioKit/issues/2046
-    func reset() {
-        if let avAudioUnit = avAudioNode as? AVAudioUnit {
-            AudioUnitReset(avAudioUnit.audioUnit, kAudioUnitScope_Global, 0)
-        }
-    }
+//    func reset() {
+//        AudioUnitReset(auAudioUnit, kAudioUnitScope_Global, 0)
+//        if let avAudioUnit = avAudioNode as? AVAudioUnit {
+//            AudioUnitReset(avAudioUnit.audioUnit, kAudioUnitScope_Global, 0)
+//        }
+//    }
 
     /// Schedule an event with an offset
     ///
@@ -41,7 +42,7 @@ public extension Node {
     ///   - offset: Time in samples
     ///
     func scheduleMIDIEvent(event: MIDIEvent, offset: UInt64 = 0) {
-        if let midiBlock = avAudioNode.auAudioUnit.scheduleMIDIEventBlock {
+        if let midiBlock = self.auAudioUnit.scheduleMIDIEventBlock {
             event.data.withUnsafeBufferPointer { ptr in
                 guard let ptr = ptr.baseAddress else { return }
                 midiBlock(AUEventSampleTimeImmediate + AUEventSampleTime(offset), 0, event.data.count, ptr)
@@ -86,19 +87,19 @@ public extension Node {
                                                               unit: def.unit,
                                                               flags: def.flags)
                 params.append(auParam)
-                param.projectedValue.associate(with: avAudioNode, parameter: auParam)
+                param.projectedValue.associate(with: self, parameter: auParam)
             }
         }
 
-        avAudioNode.auAudioUnit.parameterTree = AUParameterTree.createTree(withChildren: params)
+        self.auAudioUnit.parameterTree = AUParameterTree.createTree(withChildren: params)
     }
 }
 
 extension Node {
 
     func detach() {
-        if let engine = avAudioNode.engine {
-            engine.detach(avAudioNode)
+        if let engine = self.engine {
+            engine.detach(self)
         }
         for connection in connections {
             connection.detach()
@@ -106,8 +107,8 @@ extension Node {
     }
 
     func disconnectAV() {
-        if let engine = avAudioNode.engine {
-            engine.disconnectNodeInput(avAudioNode)
+        if let engine = self.engine {
+            engine.disconnectNodeInput(self)
             for (_, connection) in connections.enumerated() {
                 connection.disconnectAV()
             }
@@ -117,7 +118,7 @@ extension Node {
     /// Work-around for an AVAudioEngine bug.
     func initLastRenderTime() {
         // We don't have a valid lastRenderTime until we query it.
-        _ = avAudioNode.lastRenderTime
+        _ = self.lastRenderTime
 
         for connection in connections {
             connection.initLastRenderTime()
@@ -142,22 +143,22 @@ extension Node {
         }
 
         // Are we attached?
-        if let engine = avAudioNode.engine {
+        if let engine = self.engine {
             for (bus, connection) in connections.enumerated() {
-                if let sourceEngine = connection.avAudioNode.engine {
-                    if sourceEngine != avAudioNode.engine {
+                if let sourceEngine = connection.self.engine {
+                    if sourceEngine != self.engine {
                         Log("🛑 Error: Attempt to connect nodes from different engines.")
                         return
                     }
                 }
 
-                engine.attach(connection.avAudioNode)
+                engine.attach(connection.self)
 
                 // Mixers will decide which input bus to use.
-                if let mixer = avAudioNode as? AVAudioMixerNode {
-                    mixer.connectMixer(input: connection.avAudioNode)
+                if let mixer = self as? AVAudioMixerNode {
+                    mixer.connectMixer(input: connection.self)
                 } else {
-                    avAudioNode.connect(input: connection.avAudioNode, bus: bus)
+                    self.connect(input: connection.self, bus: bus)
                 }
 
                 connection.makeAVConnections()
@@ -166,8 +167,8 @@ extension Node {
     }
 
     var bypassed: Bool {
-        get { avAudioNode.auAudioUnit.shouldBypassEffect }
-        set { avAudioNode.auAudioUnit.shouldBypassEffect = newValue }
+        get { self.auAudioUnit.shouldBypassEffect }
+        set { self.auAudioUnit.shouldBypassEffect = newValue }
     }
 }
 

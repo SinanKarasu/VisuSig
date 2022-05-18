@@ -9,6 +9,10 @@
 /* Begin PBXBuildFile section */
 		F72D0DDB27B9A35C00516B4A /* LayeredWire.swift in Sources */ = {isa = PBXBuildFile; fileRef = F72D0DDA27B9A35C00516B4A /* LayeredWire.swift */; };
 		F7300E842825B9DF00E41206 /* AUComponent3View.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7300E832825B9DF00E41206 /* AUComponent3View.swift */; };
+		F73D56A92835952600B2DD24 /* FormatConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F73D56A82835952600B2DD24 /* FormatConverter.swift */; };
+		F73D56AB2835954400B2DD24 /* FormatConverter+PCM.swift in Sources */ = {isa = PBXBuildFile; fileRef = F73D56AA2835954400B2DD24 /* FormatConverter+PCM.swift */; };
+		F73D56AD2835955900B2DD24 /* FormatConverter+Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = F73D56AC2835955900B2DD24 /* FormatConverter+Utilities.swift */; };
+		F73D56AF2835959700B2DD24 /* FormatConverter+Compressed.swift in Sources */ = {isa = PBXBuildFile; fileRef = F73D56AE2835959700B2DD24 /* FormatConverter+Compressed.swift */; };
 		F73DDC062835754900DABC2F /* Node.swift in Sources */ = {isa = PBXBuildFile; fileRef = F73DDC052835754900DABC2F /* Node.swift */; };
 		F73DDC08283575D800DABC2F /* Table.swift in Sources */ = {isa = PBXBuildFile; fileRef = F73DDC07283575D800DABC2F /* Table.swift */; };
 		F73DDC0C2835770300DABC2F /* Utilities+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F73DDC0B2835770300DABC2F /* Utilities+Extensions.swift */; };
@@ -113,6 +117,10 @@
 /* Begin PBXFileReference section */
 		F72D0DDA27B9A35C00516B4A /* LayeredWire.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayeredWire.swift; sourceTree = "<group>"; };
 		F7300E832825B9DF00E41206 /* AUComponent3View.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AUComponent3View.swift; sourceTree = "<group>"; };
+		F73D56A82835952600B2DD24 /* FormatConverter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FormatConverter.swift; sourceTree = "<group>"; };
+		F73D56AA2835954400B2DD24 /* FormatConverter+PCM.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FormatConverter+PCM.swift"; sourceTree = "<group>"; };
+		F73D56AC2835955900B2DD24 /* FormatConverter+Utilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FormatConverter+Utilities.swift"; sourceTree = "<group>"; };
+		F73D56AE2835959700B2DD24 /* FormatConverter+Compressed.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FormatConverter+Compressed.swift"; sourceTree = "<group>"; };
 		F73DDC052835754900DABC2F /* Node.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Node.swift; sourceTree = "<group>"; };
 		F73DDC07283575D800DABC2F /* Table.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Table.swift; sourceTree = "<group>"; };
 		F73DDC0B2835770300DABC2F /* Utilities+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Utilities+Extensions.swift"; sourceTree = "<group>"; };
@@ -230,6 +238,8 @@
 		F73DDC042835753900DABC2F /* AudioKit */ = {
 			isa = PBXGroup;
 			children = (
+				F73DDC1D28358FD300DABC2F /* AKMIDI */,
+				F73DDC382835922700DABC2F /* AKFormatConverter */,
 				F73DDC1728358D5300DABC2F /* AVAudioPCMBuffer+Utilities.swift */,
 				F73DDC1928358D7B00DABC2F /* AVAudioPCMBuffer+Processing.swift */,
 				F73DDC1528358D1B00DABC2F /* AVAudioFile+Utilities.swift */,
@@ -283,6 +293,10 @@
 		F73DDC382835922700DABC2F /* AKFormatConverter */ = {
 			isa = PBXGroup;
 			children = (
+				F73D56AC2835955900B2DD24 /* FormatConverter+Utilities.swift */,
+				F73D56AA2835954400B2DD24 /* FormatConverter+PCM.swift */,
+				F73D56A82835952600B2DD24 /* FormatConverter.swift */,
+				F73D56AE2835959700B2DD24 /* FormatConverter+Compressed.swift */,
 			);
 			path = AKFormatConverter;
 			sourceTree = "<group>";
@@ -433,8 +447,6 @@
 		F7C809C4279B299200982843 /* VisuSig */ = {
 			isa = PBXGroup;
 			children = (
-				F73DDC382835922700DABC2F /* AKFormatConverter */,
-				F73DDC1D28358FD300DABC2F /* AKMIDI */,
 				F73DDC0A283576EC00DABC2F /* Additions */,
 				F73DDC042835753900DABC2F /* AudioKit */,
 				F781CF0A2821D79900ADBF6E /* Experiments */,
@@ -701,7 +713,9 @@
 				F7E5CC43281263A400C97B94 /* KeyboardButton.swift in Sources */,
 				F7FA953227B0635800140F5D /* PortView.swift in Sources */,
 				F75C5276282855D2008DBD23 /* MasterMenuView.swift in Sources */,
+				F73D56A92835952600B2DD24 /* FormatConverter.swift in Sources */,
 				F7C80A1F279BBFA800982843 /* CubicBezierData.swift in Sources */,
+				F73D56AB2835954400B2DD24 /* FormatConverter+PCM.swift in Sources */,
 				F73DDC232835901100DABC2F /* MIDISystemCommand.swift in Sources */,
 				F781CF0C2821D7B600ADBF6E /* AudioMixer.swift in Sources */,
 				F7C809E9279B4F2500982843 /* SelectionHandler.swift in Sources */,
@@ -730,6 +744,8 @@
 				F7C809F0279B4F6100982843 /* CGPoint+Help.swift in Sources */,
 				F7E5CC3E2812637600C97B94 /* KeyboardGrid.swift in Sources */,
 				F75CC4AF281D8ABA00692CE5 /* SimplePlayEngine.swift in Sources */,
+				F73D56AD2835955900B2DD24 /* FormatConverter+Utilities.swift in Sources */,
+				F73D56AF2835959700B2DD24 /* FormatConverter+Compressed.swift in Sources */,
 				F7C80A11279B66F700982843 /* CGOperators.swift in Sources */,
 				F73DDC222835901100DABC2F /* MIDIStatus.swift in Sources */,
 				F7C809FB279B50AC00982843 /* NodeView.swift in Sources */,
