@@ -100,7 +100,7 @@
 		F7CE746327BD64DF00BBF6A2 /* FlyoutMenuMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7CE746127BD64DF00BBF6A2 /* FlyoutMenuMainView.swift */; };
 		F7CE746527BD658800BBF6A2 /* View+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7CE746427BD658800BBF6A2 /* View+Extensions.swift */; };
 		F7CE746727BD693900BBF6A2 /* SelectionHandlerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7CE746627BD693900BBF6A2 /* SelectionHandlerView.swift */; };
-		F7DB712028284EE700FD4A9D /* InstrumMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7DB711F28284EE700FD4A9D /* InstrumMenuView.swift */; };
+		F7DB712028284EE700FD4A9D /* InstrumentsMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7DB711F28284EE700FD4A9D /* InstrumentsMenuView.swift */; };
 		F7E5CC3E2812637600C97B94 /* KeyboardGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7E5CC3D2812637600C97B94 /* KeyboardGrid.swift */; };
 		F7E5CC42281263A400C97B94 /* KeyboardButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7E5CC3F281263A400C97B94 /* KeyboardButtonView.swift */; };
 		F7E5CC43281263A400C97B94 /* KeyboardButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7E5CC40281263A400C97B94 /* KeyboardButton.swift */; };
@@ -208,7 +208,7 @@
 		F7CE746127BD64DF00BBF6A2 /* FlyoutMenuMainView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlyoutMenuMainView.swift; sourceTree = "<group>"; };
 		F7CE746427BD658800BBF6A2 /* View+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "View+Extensions.swift"; sourceTree = "<group>"; };
 		F7CE746627BD693900BBF6A2 /* SelectionHandlerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionHandlerView.swift; sourceTree = "<group>"; };
-		F7DB711F28284EE700FD4A9D /* InstrumMenuView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InstrumMenuView.swift; sourceTree = "<group>"; };
+		F7DB711F28284EE700FD4A9D /* InstrumentsMenuView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InstrumentsMenuView.swift; sourceTree = "<group>"; };
 		F7E5CC3D2812637600C97B94 /* KeyboardGrid.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyboardGrid.swift; sourceTree = "<group>"; };
 		F7E5CC3F281263A400C97B94 /* KeyboardButtonView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyboardButtonView.swift; sourceTree = "<group>"; };
 		F7E5CC40281263A400C97B94 /* KeyboardButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyboardButton.swift; sourceTree = "<group>"; };
@@ -319,14 +319,16 @@
 		F75CC4B7281EED4E00692CE5 /* Host */ = {
 			isa = PBXGroup;
 			children = (
-				F75CC4C2281EEE3900692CE5 /* Extensions */,
-				F74623C6282598A700027187 /* EffectsMenuView.swift */,
-				F7DB711F28284EE700FD4A9D /* InstrumMenuView.swift */,
-				F75CC4BA281EED8B00692CE5 /* AudioUnitComponents.swift */,
-				F75CC4BC281EEDD100692CE5 /* SiKPlayerView.swift */,
 				F7300E832825B9DF00E41206 /* AUComponent3View.swift */,
 				F75CC4C5281EEE7200692CE5 /* AUComponentControllerView.swift */,
+				F75CC4BA281EED8B00692CE5 /* AudioUnitComponents.swift */,
 				F75CC4C0281EEE0500692CE5 /* ComponentViewController.swift */,
+				F74623C6282598A700027187 /* EffectsMenuView.swift */,
+				F7DB711F28284EE700FD4A9D /* InstrumentsMenuView.swift */,
+				F75C5275282855D2008DBD23 /* MasterMenuView.swift */,
+				F75CC4BC281EEDD100692CE5 /* SiKPlayerView.swift */,
+				F79E3EDB281B4B1300CD0520 /* AudioEngine */,
+				F75CC4C2281EEE3900692CE5 /* Extensions */,
 			);
 			path = Host;
 			sourceTree = "<group>";
@@ -447,7 +449,6 @@
 				F75CC4B7281EED4E00692CE5 /* Host */,
 				F79E3EE1281BA18900CD0520 /* EditWindows */,
 				F79E3EDC281B579B00CD0520 /* Menus */,
-				F79E3EDB281B4B1300CD0520 /* AudioEngine */,
 				F748567728184D6D0038D7B7 /* ControlViews */,
 				F7E5CC3C2812636800C97B94 /* Keyboard */,
 				F79E3EDA281B4A0400CD0520 /* VisualMesh */,
@@ -458,7 +459,6 @@
 				F7A37BE027F23529007D4AEB /* people.json */,
 				F7C809CE279B299400982843 /* VisuSig.entitlements */,
 				F7C809CB279B299400982843 /* Preview Content */,
-				F75C5275282855D2008DBD23 /* MasterMenuView.swift */,
 			);
 			path = VisuSig;
 			sourceTree = "<group>";
@@ -731,7 +731,7 @@
 				F73DDC1A28358D7B00DABC2F /* AVAudioPCMBuffer+Processing.swift in Sources */,
 				F75CC4C1281EEE0500692CE5 /* ComponentViewController.swift in Sources */,
 				F73DDC1C28358E7100DABC2F /* Settings+macOS.swift in Sources */,
-				F7DB712028284EE700FD4A9D /* InstrumMenuView.swift in Sources */,
+				F7DB712028284EE700FD4A9D /* InstrumentsMenuView.swift in Sources */,
 				F75CC4CE281F542D00692CE5 /* AUManagedUnit.swift in Sources */,
 				F7C809F0279B4F6100982843 /* CGPoint+Help.swift in Sources */,
 				F7E5CC3E2812637600C97B94 /* KeyboardGrid.swift in Sources */,

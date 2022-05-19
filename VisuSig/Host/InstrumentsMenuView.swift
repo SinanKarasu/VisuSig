@@ -6,7 +6,7 @@
 
 import SwiftUI
 
-struct InstrumMenuView: View {
+struct InstrumentsMenuView: View {
     private  let audioUnitType = AudioUnitType.instrument
     @ObservedObject var audioUnitComponents: AudioUnitComponents
     
@@ -23,7 +23,9 @@ struct InstrumMenuView: View {
             VStack {
                 HStack {
                     Text("Instrument Menu View")
-                    Text("Count: \(audioUnitComponents.instrumentComponents.count)")
+                    Text("Components: \(audioUnitComponents.instrumentComponents.count)")
+                    Text("Count: \(audioUnitComponents.auManagedInstruments.count)")
+
                 }
                 NavigationView {
                     List {
@@ -87,6 +89,6 @@ struct InstrumMenuView: View {
 
 struct InstrumMenuView_Preview: PreviewProvider {
     static var previews: some View {
-        InstrumMenuView(audioUnitComponents: AudioUnitComponents())
+        InstrumentsMenuView(audioUnitComponents: AudioUnitComponents())
     }
 }
