@@ -60,29 +60,6 @@ public func fourCC(_ string: String) -> UInt32 {
 // MARK: - Normalization Helpers
 
 /// Extension to calculate scaling factors, useful for UI controls
-extension AUValue {
-    /// Return a value on [minimum, maximum] to a [0, 1] range, according to a taper
-    ///
-    /// - Parameters:
-    ///   - to: Source range (cannot include zero if taper is not positive)
-    ///   - taper:Must be a positive number, taper = 1 is linear
-    ///
-    public func normalized(from range: ClosedRange<AUValue>, taper: AUValue = 1) -> AUValue {
-        assert(taper > 0, "Cannot have non-positive taper.")
-        return powf((self - range.lowerBound) / (range.upperBound - range.lowerBound), 1.0 / taper)
-    }
-
-    /// Return a value on [0, 1] to a [minimum, maximum] range, according to a taper
-    ///
-    /// - Parameters:
-    ///   - to: Target range (cannot contain zero if taper is not positive)
-    ///   - taper: For taper > 0, there is an algebraic curve, taper = 1 is linear, and taper < 0 is exponential
-    ///
-    public func denormalized(to range: ClosedRange<AUValue>, taper: AUValue = 1) -> AUValue {
-        assert(taper > 0, "Cannot have non-positive taper.")
-        return range.lowerBound + (range.upperBound - range.lowerBound) * powf(self, taper)
-    }
-}
 
 /// Extension to Int to calculate frequency from a MIDI Note Number
 extension Int {
@@ -209,27 +186,6 @@ extension Array: Occupiable {}
 extension Dictionary: Occupiable {}
 extension Set: Occupiable {}
 
-extension Sequence where Self.Element: Equatable {
-    /// Easier to read alternative to !contains
-    @inline(__always)
-    public func doesNotContain(_ member: Element) -> Bool {
-        return !contains(member)
-    }
-}
-
-extension String {
-    /// Useful fo converting camel case enums to UI strings
-    public func titleCase() -> String {
-        return self
-            .replacingOccurrences(of: "([A-Z])",
-                                  with: " $1",
-                                  options: .regularExpression,
-                                  range: range(of: self))
-            .trimmingCharacters(in: .whitespacesAndNewlines)
-            .capitalized // If input is in llamaCase
-    }
-}
-
 extension Double {
     /// Map the value to a new range
     /// Return a value on [from.lowerBound,from.upperBound] to a [to.lowerBound, to.upperBound] range
@@ -252,47 +208,6 @@ extension CGFloat {
     public func mapped(from source: ClosedRange<CGFloat> = 0...1.0, to target: ClosedRange<CGFloat> = 0...1.0) -> CGFloat {
         return ((self - source.lowerBound) / (source.upperBound - source.lowerBound)) * (target.upperBound - target.lowerBound) + target.lowerBound
     }
-    
-    /// Map the value to a new inverted range
-    /// Return a value on [from.lowerBound,from.upperBound] to the inverse of a [to.lowerBound, to.upperBound] range
-    ///
-    /// - Parameters:
-    ///   - from source: Current range (Default: 0...1.0)
-    ///   - to target: Desired range (Default: 0...1.0)
-    public func mappedInverted(from source: ClosedRange<CGFloat> = 0...1.0, to target: ClosedRange<CGFloat> = 0...1.0) -> CGFloat {
-        return target.upperBound - self.mapped(from: source, to: target) + target.lowerBound
-    }
-
-    /// Map the value to a new range at a base-10 logarithmic scaling
-    /// Return a value on [from.lowerBound,from.upperBound] to a [to.lowerBound, to.upperBound] range
-    ///
-    /// - Parameters:
-    ///   - from source: Current range (Default: 0...1.0)
-    ///   - to target: Desired range (Default: 0...1.0)
-    public func mappedLog10(from source: ClosedRange<CGFloat> = 0...1.0, to target: ClosedRange<CGFloat> = 0...1.0) -> CGFloat {
-        let logN = log10(self)
-        let logStart1 = log10(source.lowerBound)
-        let logStop1 = log10(source.upperBound)
-        let result = ((logN - logStart1 ) / (logStop1 - logStart1)) * (target.upperBound - target.lowerBound) + target.lowerBound
-        if result.isNaN {
-            return 0.0
-        } else {
-            return ((logN - logStart1 ) / (logStop1 - logStart1)) * (target.upperBound - target.lowerBound) + target.lowerBound
-        }
-    }
-    
-    /// Map the value to a new range at a base e^log(n) scaling
-    /// Return a value on [from.lowerBound,from.upperBound] to a [to.lowerBound, to.upperBound] range
-    ///
-    /// - Parameters:
-    ///   - from source: Current range (Default: 0...1.0)
-    ///   - to target: Desired range (Default: 0...1.0)
-    public func mappedExp(from source: ClosedRange<CGFloat> = 0...1.0, to target: ClosedRange<CGFloat> = 0...1.0) -> CGFloat {
-        let logStart2 = log(target.lowerBound);
-        let logStop2 = log(target.upperBound);
-        let scale = (logStop2-logStart2) / (source.upperBound-source.lowerBound);
-        return exp(logStart2 + scale*(self-source.lowerBound))
-    }
 }
 
 extension Int {
@@ -307,32 +222,6 @@ extension Int {
     }
 }
 
-public extension Array where Element == Float {
-    /// Takes an array of floating point values and down samples it to have a lesser number of samples
-    /// Returns an array of downsampled floating point values
-    ///
-    /// Parameters:
-    ///   - sampleCount: the number of samples we will downsample the array to
-    func downSample(to sampleCount: Int = 128) -> [Element] {
-        let inputSampleCount = self.count
-        let inputLength = vDSP_Length(inputSampleCount)
-
-        let filterLength: vDSP_Length = 2
-        let filter = [Float](repeating: 1 / Float(filterLength), count: Int(filterLength))
-
-        let decimationFactor = inputSampleCount / sampleCount
-        let outputLength = vDSP_Length((inputLength - filterLength) / vDSP_Length(decimationFactor))
-
-        var outputFloats = [Float](repeating: 0, count: Int(outputLength))
-        vDSP_desamp(self,
-                    decimationFactor,
-                    filter,
-                    &outputFloats,
-                    outputLength,
-                    filterLength)
-        return outputFloats
-    }
-}
 
 /// Load the audio information from a url to an audio file
 /// Returns the floating point array of values, sample rate, and frame count

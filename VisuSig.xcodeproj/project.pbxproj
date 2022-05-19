@@ -15,7 +15,6 @@
 		F73D56AF2835959700B2DD24 /* FormatConverter+Compressed.swift in Sources */ = {isa = PBXBuildFile; fileRef = F73D56AE2835959700B2DD24 /* FormatConverter+Compressed.swift */; };
 		F73DDC08283575D800DABC2F /* Table.swift in Sources */ = {isa = PBXBuildFile; fileRef = F73DDC07283575D800DABC2F /* Table.swift */; };
 		F73DDC0C2835770300DABC2F /* Utilities+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F73DDC0B2835770300DABC2F /* Utilities+Extensions.swift */; };
-		F73DDC0E2835775000DABC2F /* NodeParameter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F73DDC0D2835775000DABC2F /* NodeParameter.swift */; };
 		F73DDC102835778F00DABC2F /* AudioKitHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = F73DDC0F2835778F00DABC2F /* AudioKitHelpers.swift */; };
 		F73DDC12283577BF00DABC2F /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = F73DDC11283577BF00DABC2F /* Log.swift */; };
 		F73DDC1428358CB100DABC2F /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = F73DDC1328358CB100DABC2F /* Settings.swift */; };
@@ -122,7 +121,6 @@
 		F73D56AE2835959700B2DD24 /* FormatConverter+Compressed.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FormatConverter+Compressed.swift"; sourceTree = "<group>"; };
 		F73DDC07283575D800DABC2F /* Table.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Table.swift; sourceTree = "<group>"; };
 		F73DDC0B2835770300DABC2F /* Utilities+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Utilities+Extensions.swift"; sourceTree = "<group>"; };
-		F73DDC0D2835775000DABC2F /* NodeParameter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NodeParameter.swift; sourceTree = "<group>"; };
 		F73DDC0F2835778F00DABC2F /* AudioKitHelpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioKitHelpers.swift; sourceTree = "<group>"; };
 		F73DDC11283577BF00DABC2F /* Log.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
 		F73DDC1328358CB100DABC2F /* Settings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
@@ -245,7 +243,6 @@
 				F73DDC1328358CB100DABC2F /* Settings.swift */,
 				F73DDC1B28358E7100DABC2F /* Settings+macOS.swift */,
 				F73DDC0F2835778F00DABC2F /* AudioKitHelpers.swift */,
-				F73DDC0D2835775000DABC2F /* NodeParameter.swift */,
 				F73DDC07283575D800DABC2F /* Table.swift */,
 			);
 			path = AudioKit;
@@ -667,7 +664,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				F7CE746327BD64DF00BBF6A2 /* FlyoutMenuMainView.swift in Sources */,
-				F73DDC0E2835775000DABC2F /* NodeParameter.swift in Sources */,
 				F73DDC262835903300DABC2F /* MIDIMessage.swift in Sources */,
 				F73DDC12283577BF00DABC2F /* Log.swift in Sources */,
 				F7C809F7279B4FCB00982843 /* SurfaceView.swift in Sources */,
