@@ -27,7 +27,7 @@ class AudioUnitComponents:ObservableObject {
     var instsInitialized = false
 
     
-    var emptyDict = [UUID: ComponentViewController]()
+    //var emptyDict = [UUID: ComponentViewController]()
     
     func loadAudioUnits(ofType type: AudioUnitType) {
         // Ensure audio playback is stopped before loading.

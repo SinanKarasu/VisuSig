@@ -59,30 +59,9 @@ struct InstrumentsMenuView: View {
     func startRunning() {
         DispatchQueue.main.async {
             if !audioUnitComponents.instsInitialized {
-
-                audioUnitComponents.loadAudioUnits(ofType: audioUnitType)
                 audioUnitComponents.instsInitialized = true
+                audioUnitComponents.loadAudioUnits(ofType: audioUnitType)
         }
-        }
-    }
-    
-    func loadAudioUnits(ofType type: AudioUnitType) {
-        // Ensure audio playback is stopped before loading.
-        //audioUnitManager.stopPlayback()
-        // Load audio units.
-        audioUnitManager.loadAudioUnits(ofType: type) {  audioUnits in
-            switch type {
-            case .effect:
-                audioUnitComponents.audioUnitComponents = audioUnits
-            case .instrument:
-                audioUnitComponents.instrumentComponents = audioUnits
-            }
-            //audioUnitComponents.audioUnitComponents = audioUnits
-            //DispatchQueue.main.async {
-            DispatchQueue.global(qos: .default).async {
-                audioUnitComponents.instantiateAllComponents(ofType: type)
-            }
-            loaded = true
         }
     }
 }

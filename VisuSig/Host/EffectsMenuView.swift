@@ -57,8 +57,8 @@ struct EffectsMenuView: View {
     
     func startRunning() {
         if !audioUnitComponents.effectsInitialized{
-            audioUnitComponents.loadAudioUnits(ofType: audioUnitType)
             audioUnitComponents.effectsInitialized = true
+            audioUnitComponents.loadAudioUnits(ofType: audioUnitType)
         }
     }
     

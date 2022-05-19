@@ -28,7 +28,7 @@ struct SiKPlayerView: View {
     var body: some View {
         //Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
         Button(action: {
-            //self.playing = self.audioUnitManager.togglePlayback()
+            self.playing = self.audioUnitManager.togglePlayback()
         }) {
             Image(systemName: self.playing == false ? "play" : "pause")
                 .imageScale(.large)

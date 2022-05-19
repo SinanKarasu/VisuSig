@@ -106,18 +106,18 @@ extension AudioUnitManager {
 }
 
 
-//extension AudioUnitManager {
-//    
-//    // MARK: Audio Transport
-//    
-//    @discardableResult
-//    func togglePlayback() -> Bool {
-//        return playEngine.togglePlay()
-//    }
-//    
-//    func stopPlayback() {
-//        playEngine.stopPlaying()
-//    }
-//    
-//    
-//}
+extension AudioUnitManager {
+    
+    // MARK: Audio Transport
+    
+    @discardableResult
+    func togglePlayback() -> Bool {
+        return playEngine.togglePlay()
+    }
+    
+    func stopPlayback() {
+        playEngine.stopPlaying()
+    }
+    
+    
+}
