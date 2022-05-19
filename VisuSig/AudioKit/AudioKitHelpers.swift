@@ -9,7 +9,7 @@ import Accelerate
 
 /// Normally set in AVFoundation or AudioToolbox,
 /// we create it here so users don't have to import those frameworks
-public typealias AUValue = Float
+//public typealias AUValue = Float
 
 /// MIDI Type Alias making it clear that you're working with MIDI
 public typealias MIDIByte = UInt8
