@@ -4,39 +4,6 @@ import AVFoundation
 import CryptoKit
 
 extension AVAudioPCMBuffer {
-    /// Hash useful for testing
-    public var md5: String {
-
-        var sampleData = Data()
-
-        if let floatChannelData = self.floatChannelData {
-            for frame in 0 ..< self.frameCapacity {
-                for channel in 0 ..< self.format.channelCount {
-                    let sample = floatChannelData[Int(channel)][Int(frame)]
-
-                    withUnsafePointer(to: sample) { ptr in
-                        sampleData.append(UnsafeBufferPointer(start: ptr, count: 1))
-                    }
-                }
-            }
-        }
-
-            let digest = Insecure.MD5.hash(data: sampleData)
-            return digest.map { String(format: "%02hhx", $0) }.joined()
-    }
-
-    public var isSilent: Bool {
-        if let floatChannelData = self.floatChannelData {
-            for channel in 0 ..< self.format.channelCount {
-                for frame in 0 ..< self.frameLength {
-                    if floatChannelData[Int(channel)][Int(frame)] != 0.0 {
-                        return false
-                    }
-                }
-            }
-        }
-        return true
-    }
 
     /// Add to an existing buffer
     ///
@@ -129,28 +96,6 @@ extension AVAudioPCMBuffer {
         return AVAudioFrameCount(totalFrames)
     }
 
-    /// Copy from a certain point tp the end of the buffer
-    /// - Parameter startSample: Point to start copy from
-    /// - Returns: an AVAudioPCMBuffer copied from a sample offset to the end of the buffer.
-    public func copyFrom(startSample: AVAudioFrameCount) -> AVAudioPCMBuffer? {
-        guard startSample < frameLength,
-              let buffer = AVAudioPCMBuffer(pcmFormat: format, frameCapacity: frameLength - startSample) else {
-            return nil
-        }
-        let framesCopied = buffer.copy(from: self, readOffset: startSample)
-        return framesCopied > 0 ? buffer : nil
-    }
-
-    /// Copy from the beginner of a buffer to a certain number of frames
-    /// - Parameter count: Length of frames to copy
-    /// - Returns: an AVAudioPCMBuffer copied from the start of the buffer to the specified endSample.
-    public func copyTo(count: AVAudioFrameCount) -> AVAudioPCMBuffer? {
-        guard let buffer = AVAudioPCMBuffer(pcmFormat: format, frameCapacity: count) else {
-            return nil
-        }
-        let framesCopied = buffer.copy(from: self, readOffset: 0, frames: min(count, frameLength))
-        return framesCopied > 0 ? buffer : nil
-    }
 
     /// Extract a portion of the buffer
     /// 

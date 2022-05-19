@@ -121,57 +121,7 @@ extension AVAudioPCMBuffer {
         return peak
     }
 
-    /// - Returns: A normalized buffer
-    public func normalize() -> AVAudioPCMBuffer? {
-        guard let floatData = floatChannelData else { return self }
-
-        let normalizedBuffer = AVAudioPCMBuffer(pcmFormat: format,
-                                                frameCapacity: frameCapacity)
-
-        let length: AVAudioFrameCount = frameLength
-        let channelCount = Int(format.channelCount)
-
-        guard let peak: AVAudioPCMBuffer.Peak = peak() else {
-            Log("Failed getting peak amplitude, returning original buffer")
-            return self
-        }
-
-        let gainFactor: Float = 1 / peak.amplitude
-
-        // i is the index in the buffer
-        for i in 0 ..< Int(length) {
-            // n is the channel
-            for n in 0 ..< channelCount {
-                let sample = floatData[n][i] * gainFactor
-                normalizedBuffer?.floatChannelData?[n][i] = sample
-            }
-        }
-        normalizedBuffer?.frameLength = length
-
-        return normalizedBuffer
-    }
-
     /// - Returns: A reversed buffer
-    public func reverse() -> AVAudioPCMBuffer? {
-        let reversedBuffer = AVAudioPCMBuffer(pcmFormat: format,
-                                              frameCapacity: frameCapacity)
-
-        var j: Int = 0
-        let length: AVAudioFrameCount = frameLength
-        let channelCount = Int(format.channelCount)
-
-        // i represents the normal buffer read in reverse
-        for i in (0 ..< Int(length)).reversed() {
-            // n is the channel
-            for n in 0 ..< channelCount {
-                // we write the reverseBuffer via the j index
-                reversedBuffer?.floatChannelData?[n][j] = floatChannelData?[n][i] ?? 0.0
-            }
-            j += 1
-        }
-        reversedBuffer?.frameLength = length
-        return reversedBuffer
-    }
 
     /// - Returns: A new buffer from this one that has fades applied to it. Pass 0 for either parameter
     /// if you only want one of them. The ramp is exponential by default.

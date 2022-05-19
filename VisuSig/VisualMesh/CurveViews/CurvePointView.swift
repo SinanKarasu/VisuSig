@@ -14,7 +14,7 @@ struct CurvePointView: View {
 
 
     @GestureState private var gestureState: CGPoint = .zero
-    @State private var draggingLocation = CGPoint.zero
+    //@State private var draggingLocation = CGPoint.zero
     //@State private var startLocation = CGPoint.zero
     @State private var dragging = false
     @State var point0: CGPoint = .zero

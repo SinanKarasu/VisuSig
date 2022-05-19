@@ -30,14 +30,7 @@ class AudioUnitManager: ObservableObject {
     var userPresetChangeType: UserPresetsChangeType = .undefined
     
     /// The user-selected audio unit.
-    var auManagedUnit : AUManagedUnit?
-    
-    
-    /// The serial dispatch queue used to control access to the AVAudioUnitComponent array.
-    private let componentsAccessQueue = DispatchQueue(label: "com.example.apple-samplecode.ComponentsAccessQueue")
-    
-    private var _components = [Component]()
-    
+    var auManagedUnit : AUManagedUnit?    
     
     /// The playback engine used to play audio.
     @Published var playEngine = SimplePlayEngine()

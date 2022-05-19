@@ -14,7 +14,7 @@ struct PortView: View {
     //    }
     @ObservedObject var selection: SelectionHandler
     
-    @GestureState private var gestureState: CGPoint = .zero
+    //@GestureState private var gestureState: CGPoint = .zero
     @State var overImg = false
     @State var inPortReader = false
     var portInfo: some View {

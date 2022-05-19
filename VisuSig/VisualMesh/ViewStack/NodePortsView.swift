@@ -6,7 +6,7 @@ struct NodePortsView: View {
     //static let width = CGFloat(100)
     @Binding var node: NodeBase
     @ObservedObject var selection: SelectionHandler
-    @GestureState private var gestureState: CGPoint = .zero
+    //@GestureState private var gestureState: CGPoint = .zero
     @State var forceUpdate = false
     
     
