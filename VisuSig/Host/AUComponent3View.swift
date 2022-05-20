@@ -17,7 +17,10 @@ struct AUComponent3View: View {
     }
     
     func loadAudioUnitViewController(completion: @escaping (NSViewController?) -> Void) {
-        //if let auManagedUnit = auManagedUnit {
+//        audioUnitComponents.connectComponent(auManagedUnit: auManagedUnit) { result in
+//            print("Got result\(result)")
+//        }
+
         if let audioUnit = auManagedUnit.audioUnit {
             audioUnit.requestViewController { viewController in
                 DispatchQueue.main.async {

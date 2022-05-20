@@ -99,7 +99,7 @@ class AudioUnitComponents:ObservableObject {
         
         // Get the wrapped AVAudioUnitComponent
         
-        guard let component = component.avAudioUnitComponent else {
+        guard let avAudioUnitComponent = component.avAudioUnitComponent else {
             // Reset the engine to remove any configured audio units.
             //playEngine.reset()
             // Return success, but indicate an audio unit was not selected.
@@ -109,7 +109,7 @@ class AudioUnitComponents:ObservableObject {
         }
         
         // Get the component description
-        let description = component.audioComponentDescription
+        let description = avAudioUnitComponent.audioComponentDescription
         
         // Instantiate the audio unit and connect it the the play engine.
         AVAudioUnit.instantiate(with: description, options: options) { avAudioUnit, error in
@@ -120,13 +120,13 @@ class AudioUnitComponents:ObservableObject {
                 return
             }
             DispatchQueue.main.async {
-                auManagedUnit = AUManagedUnit(audioUnit: avAudioUnit)
+                auManagedUnit = AUManagedUnit(audioUnit: avAudioUnit, audioUnitType: component.audioUnitType)
                 completion(.success(auManagedUnit))
             }
         }
     }
     
-    func connectComponent(auManagedUnit: AUManagedUnit, completion: @escaping (Result<AUManagedUnit?, Error>) -> Void)  {
+    func connectComponent(auManagedUnit: AUManagedUnit?, completion: @escaping (Result<AUManagedUnit?, Error>) -> Void)  {
         
         // nil out existing component
 //        var auManagedUnit: AUManagedUnit? = nil
@@ -158,7 +158,7 @@ class AudioUnitComponents:ObservableObject {
 //                completion(.success(auManagedUnit))
 //            }
 //        }
-        let avAudioUnit = auManagedUnit.avAudioUnit
+        let avAudioUnit = auManagedUnit?.avAudioUnit
         audioUnitManager.playEngine.connect(avAudioUnit: avAudioUnit) {
             DispatchQueue.main.async {
                 completion(.success(auManagedUnit))

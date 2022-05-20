@@ -22,7 +22,7 @@ class AUManagedUnit: ObservableObject, Identifiable {
     let componentViewController = ComponentViewController()
     
     var nsViewController: NSViewController? = nil
-    
+    let audiioUnitType: AudioUnitType
     func setController(controller: NSViewController?) {
         if nsViewController == nil {
             nsViewController = controller
@@ -98,8 +98,9 @@ class AUManagedUnit: ObservableObject, Identifiable {
         }
     }
     
-    init(audioUnit: AVAudioUnit?) {
+    init(audioUnit: AVAudioUnit?, audioUnitType: AudioUnitType) {
         self.avAudioUnit = audioUnit
+        self.audiioUnitType = audioUnitType
     }
     /// Determines if the selected AU provides more than one user interface.
     var providesAlterativeViews: Bool {
