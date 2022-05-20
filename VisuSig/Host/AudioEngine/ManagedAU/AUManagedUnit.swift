@@ -32,33 +32,39 @@ class AUManagedUnit: ObservableObject, Identifiable {
 
     }
     
+//    var audioUnit: AUAudioUnit? {
+//        didSet {
+//            // A new audio unit was selected. Reset our internal state.
+//            observer = nil
+//            userPresetChangeType = .undefined
+//
+//            // If the selected audio unit doesn't support user presets, return.
+//            guard audioUnit?.supportsUserPresets ?? false else { return }
+//
+//            // Start observing the selected audio unit's "userPresets" property.
+//            observer = audioUnit?.observe(\.userPresets) { _, _ in
+//                DispatchQueue.main.async {
+//                    var changeType = self.userPresetChangeType
+//                    // If the change wasn't triggered by a user save or delete, it changed
+//                    // due to an external add or remove from the presets folder.
+//                    if ![.save, .delete].contains(changeType) {
+//                        changeType = .external
+//                    }
+//
+//                    // Post a notification to any registered listeners.
+//                    let change = UserPresetsChange(type: changeType, userPresets: self.userPresets)
+//                    NotificationCenter.default.post(name: .userPresetsChanged, object: change)
+//
+//                    // Reset property to its default value
+//                    self.userPresetChangeType = .undefined
+//                }
+//            }
+//        }
+//    }
+    
     var audioUnit: AUAudioUnit? {
-        didSet {
-            // A new audio unit was selected. Reset our internal state.
-            observer = nil
-            userPresetChangeType = .undefined
-            
-            // If the selected audio unit doesn't support user presets, return.
-            guard audioUnit?.supportsUserPresets ?? false else { return }
-            
-            // Start observing the selected audio unit's "userPresets" property.
-            observer = audioUnit?.observe(\.userPresets) { _, _ in
-                DispatchQueue.main.async {
-                    var changeType = self.userPresetChangeType
-                    // If the change wasn't triggered by a user save or delete, it changed
-                    // due to an external add or remove from the presets folder.
-                    if ![.save, .delete].contains(changeType) {
-                        changeType = .external
-                    }
-                    
-                    // Post a notification to any registered listeners.
-                    let change = UserPresetsChange(type: changeType, userPresets: self.userPresets)
-                    NotificationCenter.default.post(name: .userPresetsChanged, object: change)
-                    
-                    // Reset property to its default value
-                    self.userPresetChangeType = .undefined
-                }
-            }
+        get {
+            avAudioUnit?.auAudioUnit
         }
     }
     
@@ -92,8 +98,8 @@ class AUManagedUnit: ObservableObject, Identifiable {
         }
     }
     
-    init(audioUnit: AUAudioUnit?) {
-        self.audioUnit = audioUnit
+    init(audioUnit: AVAudioUnit?) {
+        self.avAudioUnit = audioUnit
     }
     /// Determines if the selected AU provides more than one user interface.
     var providesAlterativeViews: Bool {

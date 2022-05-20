@@ -120,7 +120,7 @@ class AudioUnitComponents:ObservableObject {
                 return
             }
             DispatchQueue.main.async {
-                auManagedUnit = AUManagedUnit(audioUnit: avAudioUnit?.auAudioUnit)
+                auManagedUnit = AUManagedUnit(audioUnit: avAudioUnit)
                 completion(.success(auManagedUnit))
             }
         }
