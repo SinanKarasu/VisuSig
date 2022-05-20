@@ -16,7 +16,7 @@ import SwiftUI
 struct AUComponentControllerView: NSViewControllerRepresentable {
     //var selectedIndex: Int
     //var audioUnitManager: AudioUnitManager
-    var audioUnitType: AudioUnitType
+    //var audioUnitType: AudioUnitType
     var componentViewController: ComponentViewController
     var size: CGSize
 

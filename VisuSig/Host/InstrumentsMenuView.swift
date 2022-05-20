@@ -53,7 +53,7 @@ struct InstrumentsMenuView: View {
             auManagedUnit!.setController(controller: nsViewController)
         }
         
-        return AUComponent3View(auManagedUnit: auManagedUnit!, audioUnitType: audioUnitType)
+        return AUComponent3View(auManagedUnit: auManagedUnit!, audioUnitComponents: audioUnitComponents)
     }
     
     func startRunning() {

@@ -52,7 +52,7 @@ struct EffectsMenuView: View {
             
         }
         
-        return AUComponent3View(auManagedUnit: auManagedUnit!, audioUnitType: audioUnitType)
+        return AUComponent3View(auManagedUnit: auManagedUnit!, audioUnitComponents: audioUnitComponents)
     }
     
     func startRunning() {

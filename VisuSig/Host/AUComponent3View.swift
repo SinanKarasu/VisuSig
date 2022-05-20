@@ -9,11 +9,11 @@ import SwiftUI
 
 struct AUComponent3View: View {
     @ObservedObject var auManagedUnit: AUManagedUnit
-    var audioUnitType: AudioUnitType
+    var audioUnitComponents: AudioUnitComponents
     // change this to be the persistent one.
-    init(auManagedUnit: AUManagedUnit, audioUnitType: AudioUnitType ) {
+    init(auManagedUnit: AUManagedUnit, audioUnitComponents: AudioUnitComponents ) {
         self.auManagedUnit = auManagedUnit
-        self.audioUnitType = audioUnitType
+        self.audioUnitComponents = audioUnitComponents
     }
     
     func loadAudioUnitViewController(completion: @escaping (NSViewController?) -> Void) {
@@ -53,7 +53,6 @@ struct AUComponent3View: View {
     
     func makeView(size: CGSize) -> some View {
         AUComponentControllerView(
-                                           audioUnitType: audioUnitType,
                                            componentViewController: auManagedUnit.componentViewController,
                                            size: size
         )
