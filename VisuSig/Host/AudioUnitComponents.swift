@@ -159,6 +159,8 @@ class AudioUnitComponents:ObservableObject {
 //            }
 //        }
         let avAudioUnit = auManagedUnit?.avAudioUnit
+        let description = avAudioUnit?.audioComponentDescription
+        print("Description \(description)")
         audioUnitManager.playEngine.connect(avAudioUnit: avAudioUnit) {
             DispatchQueue.main.async {
                 completion(.success(auManagedUnit))

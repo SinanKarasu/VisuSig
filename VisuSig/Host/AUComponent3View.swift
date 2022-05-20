@@ -14,10 +14,6 @@ struct AUComponent3View: View {
     init(auManagedUnit: AUManagedUnit, audioUnitComponents: AudioUnitComponents ) {
         self.auManagedUnit = auManagedUnit
         self.audioUnitComponents = audioUnitComponents
-        audioUnitComponents.connectComponent(auManagedUnit: auManagedUnit) { result in
-            print("Got result\(result)")
-        }
-
     }
     
     func loadAudioUnitViewController(completion: @escaping (NSViewController?) -> Void) {
@@ -46,6 +42,11 @@ struct AUComponent3View: View {
                 Rectangle().fill(Color.green).opacity(0.2)
                     .overlay(
                         makeView(size: reader.size)
+                            .onAppear {
+                                audioUnitComponents.connectComponent(auManagedUnit: auManagedUnit) { result in
+                                    print("Got result:\(result)")
+                                }
+                            }
                     )
             }
         }
