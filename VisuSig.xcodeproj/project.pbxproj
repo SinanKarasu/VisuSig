@@ -231,6 +231,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		F703871F283809230055C939 /* Chassis */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Chassis;
+			sourceTree = "<group>";
+		};
 		F73DDC042835753900DABC2F /* AudioKit */ = {
 			isa = PBXGroup;
 			children = (
@@ -443,6 +450,7 @@
 		F7C809C4279B299200982843 /* VisuSig */ = {
 			isa = PBXGroup;
 			children = (
+				F703871F283809230055C939 /* Chassis */,
 				F73DDC0A283576EC00DABC2F /* Additions */,
 				F73DDC042835753900DABC2F /* AudioKit */,
 				F781CF0A2821D79900ADBF6E /* Experiments */,

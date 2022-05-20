@@ -14,13 +14,13 @@ struct AUComponent3View: View {
     init(auManagedUnit: AUManagedUnit, audioUnitComponents: AudioUnitComponents ) {
         self.auManagedUnit = auManagedUnit
         self.audioUnitComponents = audioUnitComponents
+        audioUnitComponents.connectComponent(auManagedUnit: auManagedUnit) { result in
+            print("Got result\(result)")
+        }
+
     }
     
     func loadAudioUnitViewController(completion: @escaping (NSViewController?) -> Void) {
-//        audioUnitComponents.connectComponent(auManagedUnit: auManagedUnit) { result in
-//            print("Got result\(result)")
-//        }
-
         if let audioUnit = auManagedUnit.audioUnit {
             audioUnit.requestViewController { viewController in
                 DispatchQueue.main.async {
