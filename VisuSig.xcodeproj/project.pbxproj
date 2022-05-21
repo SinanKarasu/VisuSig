@@ -58,6 +58,7 @@
 		F75FF89228394EBF00BC5AC1 /* ToolMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F75FF89128394EBF00BC5AC1 /* ToolMenuView.swift */; };
 		F75FF89528394EE500BC5AC1 /* Items.swift in Sources */ = {isa = PBXBuildFile; fileRef = F75FF89328394EE500BC5AC1 /* Items.swift */; };
 		F75FF89628394EE500BC5AC1 /* SystemIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = F75FF89428394EE500BC5AC1 /* SystemIcon.swift */; };
+		F75FF89828395F4B00BC5AC1 /* ToolMenu2View.swift in Sources */ = {isa = PBXBuildFile; fileRef = F75FF89728395F4B00BC5AC1 /* ToolMenu2View.swift */; };
 		F781CF0C2821D7B600ADBF6E /* AudioMixer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F781CF0B2821D7B600ADBF6E /* AudioMixer.swift */; };
 		F79E3EDE281B586600CD0520 /* PreferencesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F79E3EDD281B586600CD0520 /* PreferencesView.swift */; };
 		F79E3EE0281B594B00CD0520 /* MyHelpCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = F79E3EDF281B594B00CD0520 /* MyHelpCommands.swift */; };
@@ -167,6 +168,7 @@
 		F75FF89128394EBF00BC5AC1 /* ToolMenuView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToolMenuView.swift; sourceTree = "<group>"; };
 		F75FF89328394EE500BC5AC1 /* Items.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Items.swift; sourceTree = "<group>"; };
 		F75FF89428394EE500BC5AC1 /* SystemIcon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SystemIcon.swift; sourceTree = "<group>"; };
+		F75FF89728395F4B00BC5AC1 /* ToolMenu2View.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToolMenu2View.swift; sourceTree = "<group>"; };
 		F781CF0B2821D7B600ADBF6E /* AudioMixer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioMixer.swift; sourceTree = "<group>"; };
 		F79E3EDD281B586600CD0520 /* PreferencesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesView.swift; sourceTree = "<group>"; };
 		F79E3EDF281B594B00CD0520 /* MyHelpCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyHelpCommands.swift; sourceTree = "<group>"; };
@@ -375,6 +377,7 @@
 			isa = PBXGroup;
 			children = (
 				F75FF89128394EBF00BC5AC1 /* ToolMenuView.swift */,
+				F75FF89728395F4B00BC5AC1 /* ToolMenu2View.swift */,
 				F75FF89328394EE500BC5AC1 /* Items.swift */,
 				F75FF89428394EE500BC5AC1 /* SystemIcon.swift */,
 			);
@@ -714,6 +717,7 @@
 				F7C80A08279B51C800982843 /* Storage.swift in Sources */,
 				F79E3EE9281BA1A400CD0520 /* MyViewType.swift in Sources */,
 				F7C809DA279B2A8800982843 /* HoverAwareDemo2View.swift in Sources */,
+				F75FF89828395F4B00BC5AC1 /* ToolMenu2View.swift in Sources */,
 				F7C80A15279B71E700982843 /* MouseLocationView.swift in Sources */,
 				F748567D28184D6D0038D7B7 /* PeopleView.swift in Sources */,
 				F75CC4B1281D8AEB00692CE5 /* InstrumentPlayer.swift in Sources */,

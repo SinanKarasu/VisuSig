@@ -30,7 +30,8 @@ struct ContentView: View {
     }
 
     var body: some View {
-        //HStack {
+        VStack {
+            ToolMenuView()
             MasterMenuView()
 
             //MasterContentView()
@@ -40,7 +41,7 @@ struct ContentView: View {
         //        HStack {
         //            HoverAwareDemo1View()
         //            HoverAwareDemo2View()
-        //        }
+        }
     }
 }
 
