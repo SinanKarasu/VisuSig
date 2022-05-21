@@ -160,7 +160,9 @@ class AudioUnitComponents:ObservableObject {
 //        }
         let avAudioUnit = auManagedUnit?.avAudioUnit
         let description = avAudioUnit?.audioComponentDescription
-        print("Description \(description)")
+        if let desc = description {
+        print("desc: \(descAU(desc: desc))")
+        }
         audioUnitManager.playEngine.connect(avAudioUnit: avAudioUnit) {
             DispatchQueue.main.async {
                 completion(.success(auManagedUnit))
@@ -169,4 +171,23 @@ class AudioUnitComponents:ObservableObject {
 
     }
     
+    
+    func descAU(desc: AudioComponentDescription) -> String {
+        let x = stringFrom4B(desc.componentType) ?? "????"
+        let y = stringFrom4B(desc.componentSubType) ?? "????"
+        let z = stringFrom4B(desc.componentManufacturer) ?? "????"
+        let code = "comp:" + x
+        + " sub:" + y
+        + " mfg:" + z
+        return code
+    }
+    
+    
+    func stringFrom4B(_ xx: UInt32) -> String? {
+        return String(data: Data(byteArray(from: xx)), encoding: .utf8)
+    }
+    
+    func byteArray<T>(from value: T) -> [UInt8] where T: FixedWidthInteger {
+        withUnsafeBytes(of: value.bigEndian, Array.init)
+    }
 }
