@@ -25,7 +25,7 @@ class AudioUnitComponents:ObservableObject {
     
     var effectsInitialized = false
     var instsInitialized = false
-
+    
     
     //var emptyDict = [UUID: ComponentViewController]()
     
@@ -86,7 +86,7 @@ class AudioUnitComponents:ObservableObject {
                     case .failure(let error):
                         logger.log("Unable to select audio unit: \(String(describing: error))")
                     }
-                                    }
+                }
             }
         }
     }
@@ -129,46 +129,46 @@ class AudioUnitComponents:ObservableObject {
     func connectComponent(auManagedUnit: AUManagedUnit?, completion: @escaping (Result<AUManagedUnit?, Error>) -> Void)  {
         
         // nil out existing component
-//        var auManagedUnit: AUManagedUnit? = nil
-//
-//        // Get the wrapped AVAudioUnitComponent
-//
-//        guard let component = component.avAudioUnitComponent else {
-//            // Reset the engine to remove any configured audio units.
-//            //playEngine.reset()
-//            // Return success, but indicate an audio unit was not selected.
-//            // This occurrs when the user selects the (No Effect) row.
-//            completion(.success(nil))
-//            return
-//        }
-//
-//        // Get the component description
-//        let description = component.audioComponentDescription
-//
-//        // Instantiate the audio unit and connect it the the play engine.
-//        AVAudioUnit.instantiate(with: description, options: options) { avAudioUnit, error in
-//            guard error == nil else {
-//                DispatchQueue.main.async {
-//                    completion(.failure(error!))
-//                }
-//                return
-//            }
-//            DispatchQueue.main.async {
-//                auManagedUnit = AUManagedUnit(audioUnit: avAudioUnit?.auAudioUnit)
-//                completion(.success(auManagedUnit))
-//            }
-//        }
+        //        var auManagedUnit: AUManagedUnit? = nil
+        //
+        //        // Get the wrapped AVAudioUnitComponent
+        //
+        //        guard let component = component.avAudioUnitComponent else {
+        //            // Reset the engine to remove any configured audio units.
+        //            //playEngine.reset()
+        //            // Return success, but indicate an audio unit was not selected.
+        //            // This occurrs when the user selects the (No Effect) row.
+        //            completion(.success(nil))
+        //            return
+        //        }
+        //
+        //        // Get the component description
+        //        let description = component.audioComponentDescription
+        //
+        //        // Instantiate the audio unit and connect it the the play engine.
+        //        AVAudioUnit.instantiate(with: description, options: options) { avAudioUnit, error in
+        //            guard error == nil else {
+        //                DispatchQueue.main.async {
+        //                    completion(.failure(error!))
+        //                }
+        //                return
+        //            }
+        //            DispatchQueue.main.async {
+        //                auManagedUnit = AUManagedUnit(audioUnit: avAudioUnit?.auAudioUnit)
+        //                completion(.success(auManagedUnit))
+        //            }
+        //        }
         let avAudioUnit = auManagedUnit?.avAudioUnit
         let description = avAudioUnit?.audioComponentDescription
         if let desc = description {
-        print("desc: \(descAU(desc: desc))")
+            print("desc: \(descAU(desc: desc))")
         }
         audioUnitManager.playEngine.connect(avAudioUnit: avAudioUnit) {
             DispatchQueue.main.async {
                 completion(.success(auManagedUnit))
             }
         }
-
+        
     }
     
     

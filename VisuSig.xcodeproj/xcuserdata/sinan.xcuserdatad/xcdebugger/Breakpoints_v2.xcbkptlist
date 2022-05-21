@@ -3,4 +3,54 @@
    uuid = "53AD29A2-6E4F-4807-A525-5114770D18AA"
    type = "1"
    version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "94FA5BDB-2DBE-41EE-B080-68873D0838AC"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "VisuSig/Host/AudioEngine/Players/SimplePlayEngine.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "168"
+            endingLineNumber = "168"
+            landmarkName = "connect(avAudioUnit:completion:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "94FA5BDB-2DBE-41EE-B080-68873D0838AC - 7fd42ecff99fc5fc"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "VisuSig.SimplePlayEngine.connect(avAudioUnit: Swift.Optional&lt;__C.AVAudioUnit&gt;, completion: () -&gt; ()) -&gt; ()"
+                  moduleName = "VisuSig"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/sinan/Developer/____FinalMIDIProducts/VisuSig/VisuSig/Host/AudioEngine/Players/SimplePlayEngine.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "168"
+                  endingLineNumber = "168"
+                  offsetFromSymbolStart = "104">
+               </Location>
+               <Location
+                  uuid = "94FA5BDB-2DBE-41EE-B080-68873D0838AC - 7fd42ecff99fc5fc"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "VisuSig.SimplePlayEngine.connect(avAudioUnit: Swift.Optional&lt;__C.AVAudioUnit&gt;, completion: () -&gt; ()) -&gt; ()"
+                  moduleName = "VisuSig"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/sinan/Developer/____FinalMIDIProducts/VisuSig/VisuSig/Host/AudioEngine/Players/SimplePlayEngine.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "168"
+                  endingLineNumber = "168"
+                  offsetFromSymbolStart = "176">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
 </Bucket>
