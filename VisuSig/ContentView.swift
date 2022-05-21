@@ -31,7 +31,7 @@ struct ContentView: View {
 
     var body: some View {
         VStack {
-            ToolMenuView()
+            ToolMenu2View()
             MasterMenuView()
 
             //MasterContentView()
