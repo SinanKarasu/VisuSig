@@ -3,7 +3,7 @@ import SwiftUI
 
 let meshCoordinateSpace = "meshCoordinateSpace"
 
-struct SurfaceView: View {
+struct SurfaceView: View, ContextMenuProtocol  {
     
     @StateObject var mesh: Mesh
     @StateObject var selection = SelectionHandler()
@@ -22,7 +22,7 @@ struct SurfaceView: View {
     
     @GestureState private var gestureState: CGPoint = .zero
     
-    @State var whereAt: CGPoint = .zero
+//    @State var whereAt: CGPoint = .zero
     @State var frame: CGRect = .zero
     
     var body: some View {
@@ -88,6 +88,16 @@ struct SurfaceView: View {
                 .onTapGesture {
                     self.selection.unSelectNodes()
                 }
+                .contextMenu{
+                    Button("♥️ - Hearts", action: {
+                        print("selectHearts\(proxy.size)")
+                        selectHearts(mesh: mesh, whereAt: selection.whereAt, containerSize: proxy.size, portalPosition: portalPosition, zoomScale: zoomScale)
+                    })
+                    Button("♣️ - Clubs", action: selectClubs)
+                    Button("♠️ - Spades", action: selectSpades)
+                    Button("♦️ - Diamonds", action: selectDiamonds)
+                }
+
             }
         }
     }

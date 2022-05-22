@@ -32,9 +32,9 @@ struct ContentView: View {
     var body: some View {
         VStack {
             ToolMenu2View()
-            MasterMenuView()
+            //MasterMenuView()
 
-            //MasterContentView()
+            MasterContentView()
             //KeyboardView(output: DummyOutput())
         //}
         
