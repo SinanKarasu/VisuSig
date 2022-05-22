@@ -54,7 +54,7 @@ struct ToolMenu2View: View {
                             guard let url = URL(string: item) else { return }
                             NSWorkspace.shared.open(url)
                         } label: {
-                            SystemIcon(forURL: item)?.resizable().aspectRatio(contentMode: .fit)
+                            systemIcon(forURL: item)?.resizable().aspectRatio(contentMode: .fit)
                         }.buttonStyle(PlainButtonStyle())
 
                     }
@@ -63,7 +63,7 @@ struct ToolMenu2View: View {
                 // Reflections
                 HStack {
                     ForEach(items, id: \.self) { item in
-                        SystemIcon(forURL: item)?.resizable().aspectRatio(contentMode: .fit)
+                        systemIcon(forURL: item)?.resizable().aspectRatio(contentMode: .fit)
                     }
                 }.frame(height: 75)
                 .rotation3DEffect(
@@ -101,6 +101,18 @@ struct ToolMenu2View: View {
             })
         }
     }
+    
+    func systemIcon(forURL url: String) -> Image? {
+        guard let icon =
+                NSWorkspace.shared.icon(forFile: url.replacingOccurrences(of: "file://", with: ""))
+                .representations
+                .first(where: { $0.size.width > 150 })?
+                .cgImage(forProposedRect: nil, context: nil, hints: nil)
+            else { return nil }
+        let nsImage = NSImage(cgImage: icon, size: CGSize(width: icon.width, height: icon.height))
+        return Image(nsImage: nsImage)
+    }
+
 }
 
 

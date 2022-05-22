@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ToolMenu3View: View {
+struct LeftMenuView: View {
 
     // Used to refresh the view periodically
     @State var refresh = false
@@ -54,7 +54,7 @@ struct ToolMenu3View: View {
                             guard let url = URL(string: item) else { return }
                             NSWorkspace.shared.open(url)
                         } label: {
-                            SystemIcon(forURL: item)?.resizable().aspectRatio(contentMode: .fit)
+                            componentIcon(forURL: item)?.resizable().aspectRatio(contentMode: .fit)
                         }.buttonStyle(PlainButtonStyle())
 
                     }
@@ -63,7 +63,7 @@ struct ToolMenu3View: View {
                 // Reflections
                 HStack {
                     ForEach(items, id: \.self) { item in
-                        SystemIcon(forURL: item)?.resizable().aspectRatio(contentMode: .fit)
+                        componentIcon(forURL: item)?.resizable().aspectRatio(contentMode: .fit)
                     }
                 }.frame(height: 75)
                 .rotation3DEffect(
@@ -101,12 +101,24 @@ struct ToolMenu3View: View {
             })
         }
     }
+    
+    func componentIcon(forURL url: String) -> Image? {
+        guard let icon =
+                NSWorkspace.shared.icon(forFile: url.replacingOccurrences(of: "file://", with: ""))
+                .representations
+                .first(where: { $0.size.width > 150 })?
+                .cgImage(forProposedRect: nil, context: nil, hints: nil)
+            else { return nil }
+        let nsImage = NSImage(cgImage: icon, size: CGSize(width: icon.width, height: icon.height))
+        return Image(nsImage: nsImage)
+    }
+
 }
 
 
 
-struct ToolMenu3View_Previews: PreviewProvider {
+struct LeftMenuView_Previews: PreviewProvider {
     static var previews: some View {
-        ToolMenu3View()
+        LeftMenuView()
     }
 }
