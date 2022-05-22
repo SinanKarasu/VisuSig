@@ -60,6 +60,7 @@
 		F75FF89628394EE500BC5AC1 /* SystemIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = F75FF89428394EE500BC5AC1 /* SystemIcon.swift */; };
 		F75FF89828395F4B00BC5AC1 /* ToolMenu2View.swift in Sources */ = {isa = PBXBuildFile; fileRef = F75FF89728395F4B00BC5AC1 /* ToolMenu2View.swift */; };
 		F75FF8D32839A28B00BC5AC1 /* ContextMenuProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = F75FF8D22839A28B00BC5AC1 /* ContextMenuProtocol.swift */; };
+		F75FF8D52839EF1A00BC5AC1 /* ToolMenu3View.swift in Sources */ = {isa = PBXBuildFile; fileRef = F75FF8D42839EF1A00BC5AC1 /* ToolMenu3View.swift */; };
 		F781CF0C2821D7B600ADBF6E /* AudioMixer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F781CF0B2821D7B600ADBF6E /* AudioMixer.swift */; };
 		F79E3EDE281B586600CD0520 /* PreferencesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F79E3EDD281B586600CD0520 /* PreferencesView.swift */; };
 		F79E3EE0281B594B00CD0520 /* MyHelpCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = F79E3EDF281B594B00CD0520 /* MyHelpCommands.swift */; };
@@ -171,6 +172,7 @@
 		F75FF89428394EE500BC5AC1 /* SystemIcon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SystemIcon.swift; sourceTree = "<group>"; };
 		F75FF89728395F4B00BC5AC1 /* ToolMenu2View.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToolMenu2View.swift; sourceTree = "<group>"; };
 		F75FF8D22839A28B00BC5AC1 /* ContextMenuProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContextMenuProtocol.swift; sourceTree = "<group>"; };
+		F75FF8D42839EF1A00BC5AC1 /* ToolMenu3View.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToolMenu3View.swift; sourceTree = "<group>"; };
 		F781CF0B2821D7B600ADBF6E /* AudioMixer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioMixer.swift; sourceTree = "<group>"; };
 		F79E3EDD281B586600CD0520 /* PreferencesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesView.swift; sourceTree = "<group>"; };
 		F79E3EDF281B594B00CD0520 /* MyHelpCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyHelpCommands.swift; sourceTree = "<group>"; };
@@ -380,6 +382,7 @@
 			children = (
 				F75FF89128394EBF00BC5AC1 /* ToolMenuView.swift */,
 				F75FF89728395F4B00BC5AC1 /* ToolMenu2View.swift */,
+				F75FF8D42839EF1A00BC5AC1 /* ToolMenu3View.swift */,
 				F75FF89328394EE500BC5AC1 /* Items.swift */,
 				F75FF89428394EE500BC5AC1 /* SystemIcon.swift */,
 			);
@@ -701,6 +704,7 @@
 				F73DDC312835917C00DABC2F /* MIDI.swift in Sources */,
 				F73DDC362835920C00DABC2F /* MIDIListener.swift in Sources */,
 				F7C809E7279B4F2500982843 /* Mesh.swift in Sources */,
+				F75FF8D52839EF1A00BC5AC1 /* ToolMenu3View.swift in Sources */,
 				F7C809EB279B4F2500982843 /* NodeBase.swift in Sources */,
 				F73DDC1628358D1B00DABC2F /* AVAudioFile+Utilities.swift in Sources */,
 				F73DDC1428358CB100DABC2F /* Settings.swift in Sources */,

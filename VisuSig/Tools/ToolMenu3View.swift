@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ToolMenu2View: View {
+struct ToolMenu3View: View {
 
     // Used to refresh the view periodically
     @State var refresh = false
@@ -105,8 +105,8 @@ struct ToolMenu2View: View {
 
 
 
-struct ToolMenu2View_Previews: PreviewProvider {
+struct ToolMenu3View_Previews: PreviewProvider {
     static var previews: some View {
-        ToolMenu2View()
+        ToolMenu3View()
     }
 }
