@@ -120,7 +120,8 @@ class AudioUnitComponents:ObservableObject {
                 return
             }
             DispatchQueue.main.async {
-                auManagedUnit = AUManagedUnit(audioUnit: avAudioUnit, audioUnitType: component.audioUnitType)
+                let nsImage = AudioComponentCopyIcon(avAudioUnitComponent.audioComponent)
+                auManagedUnit = AUManagedUnit(audioUnit: avAudioUnit, audioUnitType: component.audioUnitType, icon: nsImage)
                 completion(.success(auManagedUnit))
             }
         }

@@ -16,25 +16,21 @@ struct ContentView: View {
         
 
         func append(_ character: Character) { }
-
         func delete() {
-            
             print("delete")
         }
-
         func clear() {
             print("clear")
-
-            
         }
     }
 
     var body: some View {
         VStack {
-            ToolMenu2View()
-            //MasterMenuView()
+            //TopCompMenuView(audioUnitComponents: audioUnitComponents)
+            //ToolMenu2View()
+            MasterMenuView()
 
-            MasterContentView()
+            //MasterContentView()
             //KeyboardView(output: DummyOutput())
         //}
         

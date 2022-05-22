@@ -7,10 +7,20 @@
 
 import SwiftUI
 
-struct LeftMenuView: View {
+struct TopCompMenuView: View {
 
     // Used to refresh the view periodically
     @State var refresh = false
+    
+    private  let audioUnitType = AudioUnitType.effect
+    @ObservedObject var audioUnitComponents: AudioUnitComponents
+    
+    @State var loaded: Bool = false
+    
+    var audioUnitManager: AudioUnitManager {
+        audioUnitComponents.audioUnitManager
+    }
+
 
     var body: some View {
         VStack {
@@ -19,33 +29,6 @@ struct LeftMenuView: View {
 
             // Front
             ZStack(alignment: .bottom) {
-//                RoundedRectangle(cornerRadius: 5)
-//                    .fill(
-//                        Color(red: 216/255, green: 216/255, blue: 216/255).opacity(0.9))
-//                    .mask(
-//                        VStack {
-//                            //sik Spacer()
-//                            Rectangle()
-//                                .fill(Color.blue)
-//                                .frame(height: 6).padding(.horizontal, 1.5)
-//                        }
-//                    )
-
-                // Shelf
-//                RoundedRectangle(cornerRadius: 5)
-//                    .fill(
-//                        LinearGradient(
-//                            gradient: Gradient(
-//                                colors: [Color(red: 155/255, green: 155/255, blue: 155/255).opacity(0.5), Color.white.opacity(0.85)]),
-//                            startPoint: .top, endPoint: .bottom)
-//                    )
-//                    .frame(height: 85)
-//                    .rotation3DEffect(
-//                        Angle(degrees: 50),
-//                        axis: (x: 1, y: 0, z: 0), anchor: .bottom
-//                    )
-//                    .offset(x: 0, y: -4)
-//                    .shadow(color: .white, radius: 0, x: 0, y: 1)
 
                 // Icons
                 HStack {
@@ -113,12 +96,19 @@ struct LeftMenuView: View {
         return Image(nsImage: nsImage)
     }
 
+    func componentIcon2(auManagedUnit: AUManagedUnit) -> Image? {
+        guard let icon = auManagedUnit.icon
+            else { return nil }
+        //let nsImage = NSImage(cgImage: icon, size: CGSize(width: icon.width, height: icon.height))
+        return Image(nsImage: icon)
+    }
+
 }
 
 
 
 struct LeftMenuView_Previews: PreviewProvider {
     static var previews: some View {
-        LeftMenuView()
+        TopCompMenuView(audioUnitComponents: AudioUnitComponents())
     }
 }
