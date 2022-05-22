@@ -160,3 +160,11 @@ extension Mesh {
         return nil
     }
 }
+
+
+extension Mesh {
+    func meshCoordinates(whereAt: CGPoint, containerSize: CGSize, portalPosition: CGPoint, zoomScale: CGFloat) -> CGPoint {
+        return (whereAt - containerSize/2.0 - portalPosition) / zoomScale
+    }
+
+}

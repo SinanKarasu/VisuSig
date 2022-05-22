@@ -13,14 +13,12 @@ protocol ContextMenuProtocol {
 
 extension ContextMenuProtocol {
 
-    func selectHearts(mesh: Mesh, whereAt: CGPoint, containerSize: CGSize, portalPosition: CGPoint, zoomScale: CGFloat) {
-
-        //let newpoint = whereAt
-
-        let p = (whereAt - containerSize/2.0 - portalPosition) / zoomScale
+    func addNewNode(mesh: Mesh, whereAt: CGPoint, containerSize: CGSize, portalPosition: CGPoint, zoomScale: CGFloat) {
+        let p = mesh.meshCoordinates(whereAt: whereAt, containerSize: containerSize, portalPosition: portalPosition, zoomScale: zoomScale)
         let node = NodeBase(position: p, text: "child x:\(p.x) y:\(p.y)")
         mesh.addNode(node)
     }
+    
     func selectClubs() { print("Clubs") }
     func selectSpades() { print("Spades") }
     

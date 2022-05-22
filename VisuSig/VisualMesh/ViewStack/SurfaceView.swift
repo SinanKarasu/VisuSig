@@ -91,7 +91,7 @@ struct SurfaceView: View, ContextMenuProtocol  {
                 .contextMenu{
                     Button("♥️ - Hearts", action: {
                         print("selectHearts\(proxy.size)")
-                        selectHearts(mesh: mesh, whereAt: selection.whereAt, containerSize: proxy.size, portalPosition: portalPosition, zoomScale: zoomScale)
+                        addNewNode(mesh: mesh, whereAt: selection.whereAt, containerSize: proxy.size, portalPosition: portalPosition, zoomScale: zoomScale)
                     })
                     Button("♣️ - Clubs", action: selectClubs)
                     Button("♠️ - Spades", action: selectSpades)
