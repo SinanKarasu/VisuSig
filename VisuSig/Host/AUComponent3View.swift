@@ -16,16 +16,6 @@ struct AUComponent3View: View {
         self.audioUnitComponents = audioUnitComponents
     }
     
-    func loadAudioUnitViewController(completion: @escaping (NSViewController?) -> Void) {
-        if let audioUnit = auManagedUnit.audioUnit {
-            audioUnit.requestViewController { viewController in
-                DispatchQueue.main.async {
-                    completion(viewController)
-                }
-            }
-        }
-    }
-
     var body: some View {
         return GeometryReader { reader in
             VStack {

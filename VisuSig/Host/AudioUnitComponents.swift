@@ -47,21 +47,6 @@ class AudioUnitComponents:ObservableObject {
         }
     }
     
-    
-    func loadAudioUnitViewController(auManagedUnit: AUManagedUnit?, completion: @escaping (NSViewController?) -> Void) {
-        if let auManagedUnit = auManagedUnit {
-            if let audioUnit = auManagedUnit.audioUnit {
-                audioUnit.requestViewController { viewController in
-                    DispatchQueue.main.async {
-                        completion(viewController)
-                    }
-                }
-            }
-        } else {
-            completion(nil)
-        }
-    }
-    
     func instantiateAllComponents(ofType type: AudioUnitType) {
         var auManaged = [AUManagedUnit?]()
         var components = [Component]()

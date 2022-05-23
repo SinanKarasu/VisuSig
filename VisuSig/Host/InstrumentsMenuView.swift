@@ -49,7 +49,7 @@ struct InstrumentsMenuView: View {
     
     func makeView5(index: Int) -> some View {
         let auManagedUnit = audioUnitComponents.auManagedInstruments[index]
-        audioUnitComponents.loadAudioUnitViewController(auManagedUnit: auManagedUnit) { nsViewController in
+        auManagedUnit!.loadAudioUnitViewController() { nsViewController in
             auManagedUnit!.setController(controller: nsViewController)
         }
         
