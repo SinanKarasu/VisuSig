@@ -10,7 +10,11 @@ import CoreAudioKit
 import AVFoundation
 
 
-class AUManagedUnit: ObservableObject, Identifiable {
+class AUManagedUnit: ObservableObject, Identifiable, Hashable {
+    static func == (lhs: AUManagedUnit, rhs: AUManagedUnit) -> Bool {
+        lhs.id == rhs.id
+    }
+    
     
     let id = UUID()
     var observer: NSKeyValueObservation?
@@ -33,6 +37,10 @@ class AUManagedUnit: ObservableObject, Identifiable {
 
     }
     
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+
 //    var audioUnit: AUAudioUnit? {
 //        didSet {
 //            // A new audio unit was selected. Reset our internal state.
