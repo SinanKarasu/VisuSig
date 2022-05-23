@@ -17,6 +17,7 @@ class AUManagedUnit: ObservableObject, Identifiable, Hashable {
     
     
     let id = UUID()
+    var protoType: AVAudioUnitComponent?
     var observer: NSKeyValueObservation?
     //let name = "Sinan"
     var userPresetChangeType: UserPresetsChangeType = .undefined
@@ -28,6 +29,19 @@ class AUManagedUnit: ObservableObject, Identifiable, Hashable {
     
     var nsViewController: NSViewController? = nil
     let audiioUnitType: AudioUnitType
+    
+    public var name: String {
+        guard let component = protoType else {
+            //return audioUnitType == .effect ? "(No Effect)" : "(No Instrument)"
+            return "No Name"
+        }
+        return "\(component.name) (\(component.manufacturerName))"
+    }
+
+    public var hasCustomView: Bool {
+        return protoType?.hasCustomView ?? false
+    }
+
     func setController(controller: NSViewController?) {
         if nsViewController == nil {
             nsViewController = controller
@@ -91,7 +105,8 @@ class AUManagedUnit: ObservableObject, Identifiable, Hashable {
         }
     }
     
-    init(audioUnit: AVAudioUnit?, audioUnitType: AudioUnitType, icon: NSImage?) {
+    init(protoType: AVAudioUnitComponent?, audioUnit: AVAudioUnit?, audioUnitType: AudioUnitType, icon: NSImage?) {
+        self.protoType = protoType
         self.avAudioUnit = audioUnit
         self.audiioUnitType = audioUnitType
         self.icon = icon

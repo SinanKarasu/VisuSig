@@ -75,10 +75,6 @@ public struct Component {
     }
 
     public var hasCustomView: Bool {
-        #if os(macOS)
         return avAudioUnitComponent?.hasCustomView ?? false
-        #else
-        return false
-        #endif
     }
 }

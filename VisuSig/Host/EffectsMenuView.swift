@@ -33,7 +33,7 @@ struct EffectsMenuView: View {
                                     makeView5(index: index)
                             )
                             {
-                                Label(audioUnitComponents.audioUnitComponents[index].name, systemImage: "waveform.circle")
+                                Label(audioUnitComponents.auManagedEffectUnits[index]!.name, systemImage: "waveform.circle")
                             }
                         }
                     }

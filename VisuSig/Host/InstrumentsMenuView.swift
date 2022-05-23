@@ -35,7 +35,7 @@ struct InstrumentsMenuView: View {
                                 makeView5(index: index)
                             )
                             {
-                                Label(audioUnitComponents.instrumentComponents[index].name, systemImage: "pianokeys.inverse")
+                                Label(audioUnitComponents.auManagedInstruments[index]!.name, systemImage: "pianokeys.inverse")
                             }
                         }
                     }
