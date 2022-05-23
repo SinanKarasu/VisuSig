@@ -58,27 +58,23 @@ public struct Preset {
 }
 
 public struct Component {
-
+    
     let audioUnitType: AudioUnitType
     let avAudioUnitComponent: AVAudioUnitComponent?
-
+    
     init(_ component: AVAudioUnitComponent?, type: AudioUnitType) {
         audioUnitType = type
         avAudioUnitComponent = component
     }
-
+    
     public var name: String {
         guard let component = avAudioUnitComponent else {
             return audioUnitType == .effect ? "(No Effect)" : "(No Instrument)"
         }
         return "\(component.name) (\(component.manufacturerName))"
     }
-
+    
     public var hasCustomView: Bool {
-        #if os(macOS)
         return avAudioUnitComponent?.hasCustomView ?? false
-        #else
-        return false
-        #endif
     }
 }
