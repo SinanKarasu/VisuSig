@@ -23,19 +23,48 @@ struct TopCompMenuView: View {
     
     
     var body: some View {
-        HStack(alignment: .bottom, spacing: 70) {
-            ForEach(audioUnitComponents.auManagedEffectUnits, id: \.self) { item in
-                componentIcon2(auManagedUnit: item!)
-            }.opacity(refresh ? 1 : 1)
+        ScrollView([.horizontal]) {
+            HStack(alignment: .bottom, spacing: 70) {
+                ForEach(audioUnitComponents.auManagedEffectUnits, id: \.self) { item in
+                    componentIcon5(auManagedUnit: item!)
+                }.opacity(refresh ? 1 : 1)
+            }
         }
+        .frame(maxHeight: 50)
     }
     
     func componentIcon2(auManagedUnit: AUManagedUnit) -> Image? {
+        guard let icon = auManagedUnit.iconOld
+        else { return nil }
+        //let nsImage = NSImage(cgImage: icon, size: CGSize(width: icon.width, height: icon.height))
+        return Image(nsImage: icon)
+    }
+    
+    func componentIcon3(auManagedUnit: AUManagedUnit) -> Image? {
         guard let icon = auManagedUnit.icon
         else { return nil }
         //let nsImage = NSImage(cgImage: icon, size: CGSize(width: icon.width, height: icon.height))
         return Image(nsImage: icon)
     }
+    
+    func componentIcon4(auManagedUnit: AUManagedUnit) -> Image? {
+        guard let icon = auManagedUnit.protoType?.iconURL
+        else { return nil }
+        //let nsImage = NSImage(cgImage: icon, size: CGSize(width: icon.width, height: icon.height))
+        return Image(nsImage: NSImage(byReferencing:icon))
+    }
+    
+    func componentIcon5(auManagedUnit: AUManagedUnit) -> some View {
+        return ZStack {
+            Image(systemName: "waveform.and.mic")
+                .resizable()
+                .scaledToFit()
+                .foregroundColor(.blue)
+            Text(auManagedUnit.name)
+        }
+    }
+    
+    
     
 }
 

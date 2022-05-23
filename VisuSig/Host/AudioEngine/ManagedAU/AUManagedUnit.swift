@@ -25,7 +25,13 @@ class AUManagedUnit: ObservableObject, Identifiable, Hashable {
     private var currentViewConfigurationIndex = 1
     
     let componentViewController = ComponentViewController()
-    var icon: NSImage? = nil
+    var iconOld: NSImage? = nil
+    
+    var icon: NSImage? {
+        get {
+            protoType?.icon
+        }
+    }
     
     var nsViewController: NSViewController? = nil
     let audiioUnitType: AudioUnitType
@@ -109,7 +115,7 @@ class AUManagedUnit: ObservableObject, Identifiable, Hashable {
         self.protoType = protoType
         self.avAudioUnit = audioUnit
         self.audiioUnitType = audioUnitType
-        self.icon = icon
+        self.iconOld = icon
     }
     /// Determines if the selected AU provides more than one user interface.
     var providesAlterativeViews: Bool {
