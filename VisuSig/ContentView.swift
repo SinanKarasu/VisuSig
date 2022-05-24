@@ -29,8 +29,8 @@ struct ContentView: View {
             //TopCompMenuView(audioUnitComponents: audioUnitComponents)
             //ToolMenu2View()
             MasterMenuView()
-            PeopleView()
-            //MasterContentView()
+            //PeopleView()
+            MasterContentView()
             //KeyboardView(output: DummyOutput())
         //}
         

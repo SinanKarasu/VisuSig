@@ -57,7 +57,7 @@ public struct Preset {
     public var name: String { return audioUnitPreset.name }
 }
 
-public struct Component {
+public struct Component: Hashable {
 
     let audioUnitType: AudioUnitType
     let avAudioUnitComponent: AVAudioUnitComponent?

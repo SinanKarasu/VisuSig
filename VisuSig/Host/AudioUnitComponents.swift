@@ -29,7 +29,23 @@ class AudioUnitComponents:ObservableObject {
     
     //var emptyDict = [UUID: ComponentViewController]()
     
-    func loadAudioUnits(ofType type: AudioUnitType) {
+    
+    func initializeEffects(instantiate: Bool = true) {
+        if !effectsInitialized{
+            effectsInitialized = true
+            loadAudioUnits(ofType: .effect, instantiate: instantiate)
+        }
+    }
+    
+    func initializeInstruments(instantiate: Bool = true) {
+        if !effectsInitialized{
+            effectsInitialized = true
+            loadAudioUnits(ofType: .instrument, instantiate: instantiate)
+        }
+    }
+
+
+    func loadAudioUnits(ofType type: AudioUnitType, instantiate: Bool = true) {
         // Ensure audio playback is stopped before loading.
         //audioUnitManager.stopPlayback()
         // Load audio units.

@@ -56,10 +56,11 @@ struct EffectsMenuView: View {
     }
     
     func startRunning() {
-        if !audioUnitComponents.effectsInitialized{
-            audioUnitComponents.effectsInitialized = true
-            audioUnitComponents.loadAudioUnits(ofType: audioUnitType)
-        }
+        audioUnitComponents.initializeEffects()
+//        if !audioUnitComponents.effectsInitialized{
+//            audioUnitComponents.effectsInitialized = true
+//            audioUnitComponents.loadAudioUnits(ofType: audioUnitType)
+//        }
     }
     
 }

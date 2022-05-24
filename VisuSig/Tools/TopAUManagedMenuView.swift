@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct TopCompMenuView: View {
+struct TopAUManagedMenuView: View {
     
     // Used to refresh the view periodically
     @State var refresh = false
@@ -25,12 +25,24 @@ struct TopCompMenuView: View {
     var body: some View {
         ScrollView([.horizontal]) {
             HStack(alignment: .bottom, spacing: 70) {
+                
+
                 ForEach(audioUnitComponents.auManagedEffectUnits, id: \.self) { item in
-                    componentIcon5(auManagedUnit: item!)
+                    
+                    Button {
+                        //guard let url = URL(string: item) else { return }
+                        //NSWorkspace.shared.open(url)
+                    } label: {
+                        componentIcon5(auManagedUnit: item!)
+                    }.buttonStyle(PlainButtonStyle())
+                        .frame(maxWidth: 100, maxHeight: 100)
+
+                    //componentIcon5(auManagedUnit: item!)
                 }.opacity(refresh ? 1 : 1)
+                    
             }
         }
-        .frame(maxHeight: 50)
+        
     }
     
     func componentIcon2(auManagedUnit: AUManagedUnit) -> Image? {
@@ -72,6 +84,6 @@ struct TopCompMenuView: View {
 
 struct LeftMenuView_Previews: PreviewProvider {
     static var previews: some View {
-        TopCompMenuView(audioUnitComponents: AudioUnitComponents())
+        TopAUManagedMenuView(audioUnitComponents: AudioUnitComponents())
     }
 }
