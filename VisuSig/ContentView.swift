@@ -30,6 +30,7 @@ struct ContentView: View {
             //ToolMenu2View()
             //ExampleView()
             MasterMenuView()
+            //EffectsToolsView()
             //PeopleView()
             //MasterContentView()
             //DropDownMenu()

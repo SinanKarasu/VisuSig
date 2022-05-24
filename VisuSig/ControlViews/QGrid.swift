@@ -90,13 +90,7 @@ where Data : RandomAccessCollection, Content : View, Data.Element : Identifiable
     }
 
     private var cols: Int {
-#if os(tvOS)
         return columnsInLandscape
-#elseif os(macOS)
-        return columnsInLandscape
-#else
-        return UIDevice.current.orientation.isLandscape ? columnsInLandscape : columns
-#endif
     }
 
     /// Declares the content and behavior of this view.

@@ -146,7 +146,10 @@ fileprivate struct GridCell: View {
             //.padding([.horizontal, .top], 7)
                 .foregroundColor(.green)
                 .opacity(0.4)
-            
+            Button("OK") {
+               print("OK") //self.isVisible = false
+            }
+
             VStack {
                 Text(person.firstName).lineLimit(1)
                 Text(person.lastName).lineLimit(1)
