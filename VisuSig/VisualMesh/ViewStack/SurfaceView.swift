@@ -23,6 +23,9 @@ struct SurfaceView: View, ContextMenuProtocol  {
     @GestureState private var gestureState: CGPoint = .zero
     
     @State private var shapeIndex = 0
+    
+    @ObservedObject var audioUnitComponents: AudioUnitComponents
+
 
     
 //    @State var whereAt: CGPoint = .zero
@@ -118,7 +121,7 @@ struct SurfaceView: View, ContextMenuProtocol  {
                 
                 .sheet(isPresented: self.$selection.showShapes)
                 {
-                    ShapeGridView(selectedIndex: shapeIndex, audioUnitComponents: AudioUnitComponents())
+                    ShapeGridView(selectedIndex: shapeIndex, audioUnitComponents: audioUnitComponents)
                     //.frame(width: min(geometry.size.width - 100, 300))
                         .frame(minWidth:600, minHeight: 200)
                 }

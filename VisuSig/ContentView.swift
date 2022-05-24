@@ -31,7 +31,7 @@ struct ContentView: View {
             //ExampleView()
             MasterMenuView()
             //PeopleView()
-            MasterContentView()
+            //MasterContentView()
             //DropDownMenu()
             //KeyboardView(output: DummyOutput())
         //}

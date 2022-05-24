@@ -91,13 +91,11 @@
 		F7C809EB279B4F2500982843 /* NodeBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7C809E4279B4F2500982843 /* NodeBase.swift */; };
 		F7C809EC279B4F2500982843 /* Mesh+Demo.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7C809E5279B4F2500982843 /* Mesh+Demo.swift */; };
 		F7C809F0279B4F6100982843 /* CGPoint+Help.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7C809EF279B4F6100982843 /* CGPoint+Help.swift */; };
-		F7C809F3279B4FA000982843 /* UserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7C809F2279B4FA000982843 /* UserView.swift */; };
 		F7C809F7279B4FCB00982843 /* SurfaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7C809F6279B4FCB00982843 /* SurfaceView.swift */; };
 		F7C809F9279B500200982843 /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7C809F8279B500200982843 /* MapView.swift */; };
 		F7C809FB279B50AC00982843 /* NodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7C809FA279B50AC00982843 /* NodeView.swift */; };
 		F7C809FD279B50CB00982843 /* EdgeMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7C809FC279B50CB00982843 /* EdgeMapView.swift */; };
 		F7C80A01279B50F500982843 /* NodeMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7C809FF279B50F500982843 /* NodeMapView.swift */; };
-		F7C80A06279B517600982843 /* MasterContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7C80A05279B517600982843 /* MasterContentView.swift */; };
 		F7C80A08279B51C800982843 /* Storage.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7C80A07279B51C800982843 /* Storage.swift */; };
 		F7C80A0B279B521000982843 /* StorageHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7C80A0A279B521000982843 /* StorageHandler.swift */; };
 		F7C80A0D279B52BC00982843 /* SimpleLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7C80A0C279B52BC00982843 /* SimpleLogger.swift */; };
@@ -212,13 +210,11 @@
 		F7C809E4279B4F2500982843 /* NodeBase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NodeBase.swift; sourceTree = "<group>"; };
 		F7C809E5279B4F2500982843 /* Mesh+Demo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Mesh+Demo.swift"; sourceTree = "<group>"; };
 		F7C809EF279B4F6100982843 /* CGPoint+Help.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGPoint+Help.swift"; sourceTree = "<group>"; };
-		F7C809F2279B4FA000982843 /* UserView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserView.swift; sourceTree = "<group>"; };
 		F7C809F6279B4FCB00982843 /* SurfaceView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SurfaceView.swift; sourceTree = "<group>"; };
 		F7C809F8279B500200982843 /* MapView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
 		F7C809FA279B50AC00982843 /* NodeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NodeView.swift; sourceTree = "<group>"; };
 		F7C809FC279B50CB00982843 /* EdgeMapView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EdgeMapView.swift; sourceTree = "<group>"; };
 		F7C809FF279B50F500982843 /* NodeMapView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NodeMapView.swift; sourceTree = "<group>"; };
-		F7C80A05279B517600982843 /* MasterContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterContentView.swift; sourceTree = "<group>"; };
 		F7C80A07279B51C800982843 /* Storage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Storage.swift; sourceTree = "<group>"; };
 		F7C80A0A279B521000982843 /* StorageHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StorageHandler.swift; sourceTree = "<group>"; };
 		F7C80A0C279B52BC00982843 /* SimpleLogger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimpleLogger.swift; sourceTree = "<group>"; };
@@ -561,13 +557,11 @@
 			children = (
 				F7C809FC279B50CB00982843 /* EdgeMapView.swift */,
 				F7C809F8279B500200982843 /* MapView.swift */,
-				F7C80A05279B517600982843 /* MasterContentView.swift */,
 				F7C809FF279B50F500982843 /* NodeMapView.swift */,
 				F74856742817030B0038D7B7 /* NodePortsView.swift */,
 				F7C809FA279B50AC00982843 /* NodeView.swift */,
 				F7FA953127B0635800140F5D /* PortView.swift */,
 				F7C809F6279B4FCB00982843 /* SurfaceView.swift */,
-				F7C809F2279B4FA000982843 /* UserView.swift */,
 			);
 			path = ViewStack;
 			sourceTree = "<group>";
@@ -746,7 +740,6 @@
 				F7C809EB279B4F2500982843 /* NodeBase.swift in Sources */,
 				F73DDC1628358D1B00DABC2F /* AVAudioFile+Utilities.swift in Sources */,
 				F73DDC1428358CB100DABC2F /* Settings.swift in Sources */,
-				F7C80A06279B517600982843 /* MasterContentView.swift in Sources */,
 				F73DDC1828358D5300DABC2F /* AVAudioPCMBuffer+Utilities.swift in Sources */,
 				F73DDC2B2835906000DABC2F /* MIDICustomMetaEvent.swift in Sources */,
 				F7C80A17279BBF3700982843 /* PortBase.swift in Sources */,
@@ -842,7 +835,6 @@
 				F79E3EEA281BA1A400CD0520 /* MyPreferenceData.swift in Sources */,
 				F748567F28184D6D0038D7B7 /* PortsAreaView.swift in Sources */,
 				F75CC4BD281EEDD100692CE5 /* SiKPlayerView.swift in Sources */,
-				F7C809F3279B4FA000982843 /* UserView.swift in Sources */,
 				F798E8C5283B232900444FE3 /* EffectsToolsView.swift in Sources */,
 				F74856752817030B0038D7B7 /* NodePortsView.swift in Sources */,
 			);

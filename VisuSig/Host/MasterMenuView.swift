@@ -13,6 +13,8 @@ struct MasterMenuView: View {
     @State private  var audioUnitType = AudioUnitType.effect
     @State var loaded: Bool = false
     
+    @StateObject var mesh: Mesh = Mesh.sampleMesh()
+
     
     
     var body: some View {
@@ -31,6 +33,7 @@ struct MasterMenuView: View {
             //HStack {
             //TopAUManagedMenuView(audioUnitComponents: audioUnitComponents)
             TopComponentMenuView(audioUnitComponents: audioUnitComponents)
+            SurfaceView(mesh: mesh, audioUnitComponents: audioUnitComponents)
 
 //            switch audioUnitType {
 //            case .effect:
