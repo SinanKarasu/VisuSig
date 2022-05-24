@@ -591,11 +591,7 @@
 			isa = PBXGroup;
 			children = (
 				F75FF8D22839A28B00BC5AC1 /* ContextMenuProtocol.swift */,
-				F798E97C283C73B600444FE3 /* ShapeGridView.swift */,
-				F798E97D283C73B600444FE3 /* ShapesGridView.swift */,
-				F7CE746027BD64DF00BBF6A2 /* MenuOptions.swift */,
-				F7CE746127BD64DF00BBF6A2 /* FlyoutMenuMainView.swift */,
-				F7CE746427BD658800BBF6A2 /* View+Extensions.swift */,
+				F7EE444B283D7D6400ACE932 /* Flyout */,
 			);
 			path = Menus;
 			sourceTree = "<group>";
@@ -637,6 +633,18 @@
 				F7EE4449283D36FC00ACE932 /* ExampleView.swift */,
 			);
 			path = Companion;
+			sourceTree = "<group>";
+		};
+		F7EE444B283D7D6400ACE932 /* Flyout */ = {
+			isa = PBXGroup;
+			children = (
+				F798E97C283C73B600444FE3 /* ShapeGridView.swift */,
+				F798E97D283C73B600444FE3 /* ShapesGridView.swift */,
+				F7CE746027BD64DF00BBF6A2 /* MenuOptions.swift */,
+				F7CE746127BD64DF00BBF6A2 /* FlyoutMenuMainView.swift */,
+				F7CE746427BD658800BBF6A2 /* View+Extensions.swift */,
+			);
+			path = Flyout;
 			sourceTree = "<group>";
 		};
 		F7F4597427B2FCEF00B64772 /* PathDetectionMethods */ = {
