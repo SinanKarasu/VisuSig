@@ -74,7 +74,7 @@ fileprivate struct QConstants {
 }
 
 fileprivate class MyLayout: ObservableObject {
-    @Published var columns: CGFloat = 1.0
+    @Published var columns: CGFloat = 4.0
     @Published var vSpacing: CGFloat = 10.0
     @Published var hSpacing: CGFloat = 10.0
     @Published var vPadding: CGFloat = 0.0
