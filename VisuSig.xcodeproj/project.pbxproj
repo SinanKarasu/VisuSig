@@ -37,11 +37,7 @@
 		F73DDC372835920C00DABC2F /* MIDITransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F73DDC352835920C00DABC2F /* MIDITransformer.swift */; };
 		F74623C7282598A700027187 /* EffectsMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F74623C6282598A700027187 /* EffectsMenuView.swift */; };
 		F74856752817030B0038D7B7 /* NodePortsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F74856742817030B0038D7B7 /* NodePortsView.swift */; };
-		F748567D28184D6D0038D7B7 /* PeopleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F748567828184D6D0038D7B7 /* PeopleView.swift */; };
-		F748567E28184D6D0038D7B7 /* PeopleStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = F748567928184D6D0038D7B7 /* PeopleStorage.swift */; };
-		F748567F28184D6D0038D7B7 /* PortsAreaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F748567A28184D6D0038D7B7 /* PortsAreaView.swift */; };
 		F748568028184D6D0038D7B7 /* QGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = F748567B28184D6D0038D7B7 /* QGrid.swift */; };
-		F748568128184D6D0038D7B7 /* PortsStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = F748567C28184D6D0038D7B7 /* PortsStorage.swift */; };
 		F75C5276282855D2008DBD23 /* MasterMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F75C5275282855D2008DBD23 /* MasterMenuView.swift */; };
 		F75CC4AD281D8A8400692CE5 /* AudioUnitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F75CC4AC281D8A8400692CE5 /* AudioUnitManager.swift */; };
 		F75CC4AF281D8ABA00692CE5 /* SimplePlayEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = F75CC4AE281D8ABA00692CE5 /* SimplePlayEngine.swift */; };
@@ -154,11 +150,7 @@
 		F73DDC352835920C00DABC2F /* MIDITransformer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MIDITransformer.swift; sourceTree = "<group>"; };
 		F74623C6282598A700027187 /* EffectsMenuView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EffectsMenuView.swift; sourceTree = "<group>"; };
 		F74856742817030B0038D7B7 /* NodePortsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NodePortsView.swift; sourceTree = "<group>"; };
-		F748567828184D6D0038D7B7 /* PeopleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PeopleView.swift; sourceTree = "<group>"; };
-		F748567928184D6D0038D7B7 /* PeopleStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PeopleStorage.swift; sourceTree = "<group>"; };
-		F748567A28184D6D0038D7B7 /* PortsAreaView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PortsAreaView.swift; sourceTree = "<group>"; };
 		F748567B28184D6D0038D7B7 /* QGrid.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QGrid.swift; sourceTree = "<group>"; };
-		F748567C28184D6D0038D7B7 /* PortsStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PortsStorage.swift; sourceTree = "<group>"; };
 		F75C5275282855D2008DBD23 /* MasterMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterMenuView.swift; sourceTree = "<group>"; };
 		F75CC4AC281D8A8400692CE5 /* AudioUnitManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioUnitManager.swift; sourceTree = "<group>"; };
 		F75CC4AE281D8ABA00692CE5 /* SimplePlayEngine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimplePlayEngine.swift; sourceTree = "<group>"; };
@@ -327,13 +319,9 @@
 		F748567728184D6D0038D7B7 /* ControlViews */ = {
 			isa = PBXGroup;
 			children = (
-				F748567828184D6D0038D7B7 /* PeopleView.swift */,
 				F798E8C4283B232900444FE3 /* EffectsToolsView.swift */,
-				F748567928184D6D0038D7B7 /* PeopleStorage.swift */,
 				F798E8C6283B237A00444FE3 /* EffectStorage.swift */,
-				F748567A28184D6D0038D7B7 /* PortsAreaView.swift */,
 				F748567B28184D6D0038D7B7 /* QGrid.swift */,
-				F748567C28184D6D0038D7B7 /* PortsStorage.swift */,
 			);
 			path = ControlViews;
 			sourceTree = "<group>";
@@ -752,7 +740,6 @@
 				F73DDC2B2835906000DABC2F /* MIDICustomMetaEvent.swift in Sources */,
 				F7C80A17279BBF3700982843 /* PortBase.swift in Sources */,
 				F73DDC33283591E900DABC2F /* MIDIPacketList+SequenceType.swift in Sources */,
-				F748567E28184D6D0038D7B7 /* PeopleStorage.swift in Sources */,
 				F7C809C8279B299200982843 /* ContentView.swift in Sources */,
 				F73DDC2F2835916400DABC2F /* MIDIPacket+Extensions.swift in Sources */,
 				F7E5CC44281263A400C97B94 /* KeyboardView.swift in Sources */,
@@ -766,7 +753,6 @@
 				F75FF89828395F4B00BC5AC1 /* ToolMenu2View.swift in Sources */,
 				F7C80A15279B71E700982843 /* MouseLocationView.swift in Sources */,
 				F798E981283D2B1600444FE3 /* DropdownSelector.swift in Sources */,
-				F748567D28184D6D0038D7B7 /* PeopleView.swift in Sources */,
 				F75CC4B1281D8AEB00692CE5 /* InstrumentPlayer.swift in Sources */,
 				F7F9433F27AF924300DD9A50 /* GridCompleteView.swift in Sources */,
 				F79E3EE8281BA1A400CD0520 /* MyPreferenceKey.swift in Sources */,
@@ -837,11 +823,9 @@
 				F75CC4C6281EEE7200692CE5 /* AUComponentControllerView.swift in Sources */,
 				F79E3EDE281B586600CD0520 /* PreferencesView.swift in Sources */,
 				F75CC4AD281D8A8400692CE5 /* AudioUnitManager.swift in Sources */,
-				F748568128184D6D0038D7B7 /* PortsStorage.swift in Sources */,
 				F75CC4C4281EEE4D00692CE5 /* ViewExtensions.swift in Sources */,
 				F73DDC292835904800DABC2F /* MIDIVariableLengthQuantity.swift in Sources */,
 				F79E3EEA281BA1A400CD0520 /* MyPreferenceData.swift in Sources */,
-				F748567F28184D6D0038D7B7 /* PortsAreaView.swift in Sources */,
 				F75CC4BD281EEDD100692CE5 /* SiKPlayerView.swift in Sources */,
 				F798E8C5283B232900444FE3 /* EffectsToolsView.swift in Sources */,
 				F74856752817030B0038D7B7 /* NodePortsView.swift in Sources */,

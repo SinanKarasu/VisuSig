@@ -53,7 +53,7 @@ struct TopComponentMenuView: View {
                 .resizable()
                 .scaledToFit()
                 .foregroundColor(.blue)
-            Text(auManagedUnit.name)
+            Text(auManagedUnit.nameAndMFG)
         }
     }
     

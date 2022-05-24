@@ -17,7 +17,7 @@ struct Effect : Codable, Identifiable {
 }
 
 struct EffectStorage {
-    static var people: [Effect] = load("people.json")
+    static var components = [Component]() // = load("people.json")
 
     static func load<T: Decodable>(_ file: String) -> T {
         guard let url = Bundle.main.url(forResource: file, withExtension: nil),

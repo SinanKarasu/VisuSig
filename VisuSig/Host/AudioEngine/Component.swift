@@ -58,7 +58,10 @@ public struct Preset {
     public var name: String { return audioUnitPreset.name }
 }
 
-public struct Component: Hashable {
+public struct Component: Hashable, Identifiable {
+    
+    public var id = UUID()
+    
 
     let audioUnitType: AudioUnitType
     let avAudioUnitComponent: AVAudioUnitComponent?
@@ -68,11 +71,23 @@ public struct Component: Hashable {
         avAudioUnitComponent = component
     }
 
+    public var nameAndMFG: String {
+        return "\(name) (\(mfg))"
+    }
+    
     public var name: String {
         guard let component = avAudioUnitComponent else {
             return audioUnitType == .effect ? "(No Effect)" : "(No Instrument)"
         }
-        return "\(component.name) (\(component.manufacturerName))"
+        return "\(component.name)"
+    }
+
+
+    public var mfg: String {
+        guard let component = avAudioUnitComponent else {
+            return "(No mfg)"
+        }
+        return "\(component.manufacturerName)"
     }
 
     public var hasCustomView: Bool {
@@ -87,7 +102,7 @@ extension Component {
                 .resizable()
                 .scaledToFit()
                 .foregroundColor(.blue)
-            Text(name)
+            Text(nameAndMFG)
         }
     }
 

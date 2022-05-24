@@ -1,5 +1,5 @@
 //
-//  PeopleView.swift
+//  EffectsToolsView.swift
 //  QGrid
 //
 //  Created by Karol Kulesza on 7/06/19.
@@ -117,7 +117,7 @@ struct EffectsToolsView: View {
     }
     
     private func gridView(_ geometry: GeometryProxy) -> some View {
-        QGrid(EffectStorage.people,
+        QGrid(EffectStorage.components,
               columns: Int(self.myLayout.columns),
               columnsInLandscape: Int(self.myLayout.columns),
               vSpacing: min(self.myLayout.vSpacing, self.myLayout.vSpacingMax(geometry)),
@@ -132,7 +132,7 @@ struct EffectsToolsView: View {
 }
 
 fileprivate struct GridCell: View {
-    var person: Effect
+    var person: Component
     
     var body: some View {
         ZStack() {
@@ -151,18 +151,18 @@ fileprivate struct GridCell: View {
             }
 
             VStack {
-                Text(person.firstName).lineLimit(1)
-                Text(person.lastName).lineLimit(1)
+                Text(person.nameAndMFG).lineLimit(1)
+                Text(person.mfg).lineLimit(1)
             }
         }
         //.font(.headline).foregroundColor(.white)
     }
 }
 
-//#if DEBUG
-//struct ListView_Previews : PreviewProvider {
-//    static var previews: some View {
-//        PeopleView()
-//    }
-//}
-//#endif
+#if DEBUG
+struct EffectsToolsView_Previews : PreviewProvider {
+    static var previews: some View {
+        EffectsToolsView()
+    }
+}
+#endif

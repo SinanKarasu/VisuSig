@@ -93,7 +93,7 @@ extension PortBase {
     
     var portInfo: some View {
         VStack {
-            //Text(name)
+            //Text(nameAndMFG)
             Text(String(format:"%.2f",position.x)+":"+String(format:"%.2f",position.y))
             //Text("Port Count:\(ports.count)")
         }.padding([.top, .leading], 10)

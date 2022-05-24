@@ -34,6 +34,7 @@ struct MasterMenuView: View {
             //TopAUManagedMenuView(audioUnitComponents: audioUnitComponents)
             TopComponentMenuView(audioUnitComponents: audioUnitComponents)
             SurfaceView(mesh: mesh, audioUnitComponents: audioUnitComponents)
+            EffectsToolsView()
 
 //            switch audioUnitType {
 //            case .effect:
