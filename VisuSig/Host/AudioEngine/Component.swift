@@ -5,6 +5,7 @@
 //  Created by Sinan Karasu on 4/30/22.
 //
 
+import SwiftUI
 import AVFoundation
 
 // An enum used to prevent exposing the Core Audio component description's componentType to the UI layer.
@@ -77,4 +78,17 @@ public struct Component: Hashable {
     public var hasCustomView: Bool {
         return avAudioUnitComponent?.hasCustomView ?? false
     }
+}
+
+extension Component {
+    var componentIcon : some View {
+        return ZStack {
+            Image(systemName: "waveform.and.mic")
+                .resizable()
+                .scaledToFit()
+                .foregroundColor(.blue)
+            Text(name)
+        }
+    }
+
 }
