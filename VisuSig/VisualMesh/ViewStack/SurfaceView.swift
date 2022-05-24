@@ -22,11 +22,27 @@ struct SurfaceView: View, ContextMenuProtocol  {
     
     @GestureState private var gestureState: CGPoint = .zero
     
+    @State private var shapeIndex = 0
+
+    
 //    @State var whereAt: CGPoint = .zero
     @State var frame: CGRect = .zero
     
     var body: some View {
-        VStack {
+        let shapeIndex = Binding<Int> (
+            get: {
+                self.shapeIndex
+            },
+            set: {
+                self.shapeIndex = $0
+//                if let cell = self.cellData.selectedCell {
+//                    let index = self.cellData.indexOf(cell: cell)
+//                    let shapeType = ShapeType.allCases[self.shapeIndex]
+//                    self.cellData.cells[index].update(shapeType: shapeType)
+//                }
+            })
+
+        return VStack {
             PortalPositionView(
                 portalPosition: $portalPosition,
                 dragOffset: $dragOffset,
@@ -93,10 +109,20 @@ struct SurfaceView: View, ContextMenuProtocol  {
                         print("selectHearts\(proxy.size)")
                         addNewNode(mesh: mesh, whereAt: selection.whereAt, containerSize: proxy.size, portalPosition: portalPosition, zoomScale: zoomScale)
                     })
-                    Button("♣️ - Clubs", action: selectClubs)
+                    Button("♣️ - Clubs", action: {
+                        self.selection.showShapes.toggle()
+                    })
                     Button("♠️ - Spades", action: selectSpades)
                     Button("♦️ - Diamonds", action: selectDiamonds)
                 }
+                
+                .sheet(isPresented: self.$selection.showShapes)
+                {
+                    ShapeGridView(selectedIndex: shapeIndex, audioUnitComponents: AudioUnitComponents())
+                    //.frame(width: min(geometry.size.width - 100, 300))
+                        .frame(minWidth:600, minHeight: 200)
+                }
+
 
             }
         }

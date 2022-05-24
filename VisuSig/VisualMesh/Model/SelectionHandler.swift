@@ -18,6 +18,11 @@ class SelectionHandler: ObservableObject {
     var firstWirePort: PortBase? = nil
     var secondWirePort: PortBase? = nil
     @Published var editingText: String = ""
+    
+    
+    // Modal Views
+    @Published var showShapes: Bool = false
+
 
     func unSelectNodes() {
         selectedNodeIDs = []
