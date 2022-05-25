@@ -27,6 +27,7 @@ struct ComponentGridView: View {
     var finalArray: [[Component]] {
         var array: [[Component]] = []
         var rowArray: [Component] = []
+
         for i in 0..<audioComponents.count {
             if i % columns == 0 {
                 if i != 0 {
@@ -36,9 +37,9 @@ struct ComponentGridView: View {
             }
             rowArray.append(audioComponents[i])
         }
-        //        while rowArray.count < columns {
-        //            rowArray.append(Component.empty)
-        //        }
+        while rowArray.count < columns {
+            rowArray.append(Component(nil, type: .effect))
+        }
         array.append(rowArray)
         return array
     }
@@ -67,15 +68,15 @@ struct ComponentGridView: View {
 struct ComponentGridView_Previews: PreviewProvider {
     @State static var selectedIndex: Int = 1
     @StateObject static var audioUnitComponents = AudioUnitComponents()
-
+    
     static var previews: some View {
-
+        
         let cellSize = CGSize(width: 100, height: 100)
-        let viewSize = CGSize(width:600, height:200)
+        let viewSize = CGSize(width:400, height:800)
         ComponentGridView(selectedIndex: $selectedIndex,
-                    audioComponents: audioUnitComponents.audioUnitComponents,
-                    cellSize: cellSize,
-                    viewSize: viewSize
+                          audioComponents: audioUnitComponents.audioUnitComponents,
+                          cellSize: cellSize,
+                          viewSize: viewSize
         )
     }
 }
