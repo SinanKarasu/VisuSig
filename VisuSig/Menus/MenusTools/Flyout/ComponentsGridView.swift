@@ -1,14 +1,14 @@
 
 //
-//  ShapeGridView.swift
-//  ShapeGridView
+//  ComponentsGridView.swift
+//  ComponentsGridView
 //
 //  Created by Sinan Karasu on 8/29/21.
 //
 
 import SwiftUI
 
-struct ShapeGridView: View {
+struct ComponentsGridView: View {
     @Binding var selectedIndex: Int
     @ObservedObject var audioUnitComponents: AudioUnitComponents
 
@@ -18,8 +18,8 @@ struct ShapeGridView: View {
         GeometryReader { geometry in
             List {
                 Text("Select A Shape")
-                ShapesGridView(selectedIndex: $selectedIndex,
-                               allShapes: audioUnitComponents.audioUnitComponents,
+                ComponentGridView(selectedIndex: $selectedIndex,
+                               audioComponents: audioUnitComponents.audioUnitComponents,
                            cellSize: cellSize,
                            //viewSize: geometry.size
                            viewSize: viewSize
@@ -36,6 +36,6 @@ struct ShapeGridView_Previews: PreviewProvider {
     @State static var selectedIndex: Int = 0
     @StateObject static var audioUnitComponents = AudioUnitComponents()
     static var previews: some View {
-        ShapeGridView(selectedIndex: $selectedIndex, audioUnitComponents: audioUnitComponents)
+        ComponentsGridView(selectedIndex: $selectedIndex, audioUnitComponents: audioUnitComponents)
     }
 }

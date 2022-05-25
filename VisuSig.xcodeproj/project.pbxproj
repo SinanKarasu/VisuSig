@@ -60,8 +60,8 @@
 		F798E8C5283B232900444FE3 /* EffectsToolsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F798E8C4283B232900444FE3 /* EffectsToolsView.swift */; };
 		F798E8C7283B237A00444FE3 /* EffectStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = F798E8C6283B237A00444FE3 /* EffectStorage.swift */; };
 		F798E97B283C620A00444FE3 /* TopComponentMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F798E97A283C620A00444FE3 /* TopComponentMenuView.swift */; };
-		F798E97E283C73B600444FE3 /* ShapeGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F798E97C283C73B600444FE3 /* ShapeGridView.swift */; };
-		F798E97F283C73B600444FE3 /* ShapesGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F798E97D283C73B600444FE3 /* ShapesGridView.swift */; };
+		F798E97E283C73B600444FE3 /* ComponentsGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F798E97C283C73B600444FE3 /* ComponentsGridView.swift */; };
+		F798E97F283C73B600444FE3 /* ComponentGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F798E97D283C73B600444FE3 /* ComponentGridView.swift */; };
 		F798E981283D2B1600444FE3 /* DropdownSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = F798E980283D2B1600444FE3 /* DropdownSelector.swift */; };
 		F79E3EDE281B586600CD0520 /* PreferencesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F79E3EDD281B586600CD0520 /* PreferencesView.swift */; };
 		F79E3EE0281B594B00CD0520 /* MyHelpCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = F79E3EDF281B594B00CD0520 /* MyHelpCommands.swift */; };
@@ -173,8 +173,8 @@
 		F798E8C4283B232900444FE3 /* EffectsToolsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EffectsToolsView.swift; sourceTree = "<group>"; };
 		F798E8C6283B237A00444FE3 /* EffectStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EffectStorage.swift; sourceTree = "<group>"; };
 		F798E97A283C620A00444FE3 /* TopComponentMenuView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopComponentMenuView.swift; sourceTree = "<group>"; };
-		F798E97C283C73B600444FE3 /* ShapeGridView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShapeGridView.swift; sourceTree = "<group>"; };
-		F798E97D283C73B600444FE3 /* ShapesGridView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShapesGridView.swift; sourceTree = "<group>"; };
+		F798E97C283C73B600444FE3 /* ComponentsGridView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComponentsGridView.swift; sourceTree = "<group>"; };
+		F798E97D283C73B600444FE3 /* ComponentGridView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComponentGridView.swift; sourceTree = "<group>"; };
 		F798E980283D2B1600444FE3 /* DropdownSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropdownSelector.swift; sourceTree = "<group>"; };
 		F79E3EDD281B586600CD0520 /* PreferencesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesView.swift; sourceTree = "<group>"; };
 		F79E3EDF281B594B00CD0520 /* MyHelpCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyHelpCommands.swift; sourceTree = "<group>"; };
@@ -617,8 +617,8 @@
 		F7EE444B283D7D6400ACE932 /* Flyout */ = {
 			isa = PBXGroup;
 			children = (
-				F798E97C283C73B600444FE3 /* ShapeGridView.swift */,
-				F798E97D283C73B600444FE3 /* ShapesGridView.swift */,
+				F798E97C283C73B600444FE3 /* ComponentsGridView.swift */,
+				F798E97D283C73B600444FE3 /* ComponentGridView.swift */,
 				F7CE746027BD64DF00BBF6A2 /* MenuOptions.swift */,
 				F7CE746127BD64DF00BBF6A2 /* FlyoutMenuMainView.swift */,
 				F7CE746427BD658800BBF6A2 /* View+Extensions.swift */,
@@ -787,7 +787,7 @@
 				F73DDC102835778F00DABC2F /* AudioKitHelpers.swift in Sources */,
 				F748568028184D6D0038D7B7 /* QGrid.swift in Sources */,
 				F75CC4B6281DA74E00692CE5 /* Component.swift in Sources */,
-				F798E97F283C73B600444FE3 /* ShapesGridView.swift in Sources */,
+				F798E97F283C73B600444FE3 /* ComponentGridView.swift in Sources */,
 				F7C809D6279B29D200982843 /* HoverAwareView.swift in Sources */,
 				F7E5CC42281263A400C97B94 /* KeyboardButtonView.swift in Sources */,
 				F7C809EA279B4F2500982843 /* EdgeBase.swift in Sources */,
@@ -807,7 +807,7 @@
 				F73D56AF2835959700B2DD24 /* FormatConverter+Compressed.swift in Sources */,
 				F75FF89528394EE500BC5AC1 /* Items.swift in Sources */,
 				F7C80A11279B66F700982843 /* CGOperators.swift in Sources */,
-				F798E97E283C73B600444FE3 /* ShapeGridView.swift in Sources */,
+				F798E97E283C73B600444FE3 /* ComponentsGridView.swift in Sources */,
 				F798E8C7283B237A00444FE3 /* EffectStorage.swift in Sources */,
 				F73DDC222835901100DABC2F /* MIDIStatus.swift in Sources */,
 				F7C809FB279B50AC00982843 /* NodeView.swift in Sources */,
