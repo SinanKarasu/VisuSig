@@ -101,8 +101,8 @@ extension Component {
             Image(systemName: "waveform.and.mic")
                 .resizable()
                 .scaledToFit()
-                .foregroundColor(.blue)
-            Text(nameAndMFG)
+                .foregroundColor(.purple)
+            Text(nameAndMFG).foregroundColor(.white)
         }
     }
 

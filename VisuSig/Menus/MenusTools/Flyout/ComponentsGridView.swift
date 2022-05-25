@@ -24,7 +24,7 @@ struct ComponentsGridView: View {
                            //viewSize: geometry.size
                            viewSize: viewSize
                 )
-                .listRowBackground(Color.green)
+                .listRowBackground(Color.black)
             }
             .listRowInsets(EdgeInsets(top:0, leading:0, bottom: 0, trailing: 0))
         }

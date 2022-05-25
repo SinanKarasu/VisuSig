@@ -17,11 +17,11 @@ struct ComponentGridView: View {
     
     let padding: CGFloat = 10
     var columns: Int {
-        var columns =  viewSize.width / cellSize.width
-        while (columns * cellSize.width + 2*padding * columns) > viewSize.width {
-            columns -= 1
+        var cols =  viewSize.width / cellSize.width
+        while (cols * cellSize.width + 2*padding * cols) > viewSize.width {
+            cols -= 1
         }
-        return Int(max(1,columns))
+        return Int(max(1,cols))
     }
     
     var finalArray: [[Component]] {
@@ -72,7 +72,7 @@ struct ComponentGridView_Previews: PreviewProvider {
     static var previews: some View {
         
         let cellSize = CGSize(width: 100, height: 100)
-        let viewSize = CGSize(width:400, height:800)
+        let viewSize = CGSize(width:300, height:800)
         ComponentGridView(selectedIndex: $selectedIndex,
                           audioComponents: audioUnitComponents.audioUnitComponents,
                           cellSize: cellSize,
