@@ -2,7 +2,7 @@
 import SwiftUI
 import CoreGraphics
 
-class NodeBase: Identifiable, ObservableObject, Equatable, Hashable, Codable  {
+class NodeBase: Identifiable, ObservableObject,  Codable  {
     @Published var id = UUID()
     @Published var position: CGPoint = .zero
     @Published var text: String = "Sick Root"
@@ -41,19 +41,24 @@ class NodeBase: Identifiable, ObservableObject, Equatable, Hashable, Codable  {
         try container.encode(position, forKey: .position)
     }
 
-    static func == (lhs: NodeBase, rhs: NodeBase) -> Bool {
-        lhs.id == rhs.id
-    }
 
+    
+    let defaultSize = CGSize(width: 200,height: 200)
+
+}
+
+extension NodeBase: Hashable {
     func hash(into hasher: inout Hasher) {
         hasher.combine(id)
         hasher.combine(position.x)
         hasher.combine(position.y)
     }
+}
 
-    
-    let defaultSize = CGSize(width: 200,height: 200)
-
+extension NodeBase: Equatable {
+    static func == (lhs: NodeBase, rhs: NodeBase) -> Bool {
+        lhs.id == rhs.id
+    }
 }
 
 extension NodeBase {
