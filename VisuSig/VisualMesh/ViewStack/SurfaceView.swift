@@ -22,7 +22,7 @@ struct SurfaceView: View, ContextMenuProtocol  {
     
     @GestureState private var gestureState: CGPoint = .zero
     
-    @State private var shapeIndex = 0
+    @State private var shapeIndex = -1
     
     @ObservedObject var audioUnitComponents: AudioUnitComponents
 
@@ -124,6 +124,10 @@ struct SurfaceView: View, ContextMenuProtocol  {
                     ComponentsGridView(selectedIndex: shapeIndex, audioUnitComponents: audioUnitComponents)
                     //.frame(width: min(geometry.size.width - 100, 300))
                         .frame(minWidth:600, minHeight: 400)
+                        .onDisappear {
+                            //print("Gone:\($shapeIndex)")
+                            addNewNode(mesh: mesh, whereAt: selection.whereAt, containerSize: proxy.size, portalPosition: portalPosition, zoomScale: zoomScale)
+                        }
                 }
                 //HorizontalUnitView(audioUnitComponents: audioUnitComponents)
 
