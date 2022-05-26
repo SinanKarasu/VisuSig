@@ -22,15 +22,11 @@ class EdgeBase: Identifiable, ObservableObject {
         case data
     }
 
-
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         startPort = try container.decode(PortBase.self, forKey: .startPort)
         endPort = try container.decode(PortBase.self, forKey: .endPort)
-        //data = try container.decode(CubicBezierData.self, forKey: .data)
         data = CubicBezierData(edge: self)
-
-        //position = try container.decode(CGPoint.self, forKey: .position)
     }
 
 }
