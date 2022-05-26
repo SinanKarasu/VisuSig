@@ -8,7 +8,7 @@
 import SwiftUI
 
 
-struct ExampleView: View {
+struct CascadeUnitView: View {
       var body: some View {
           Menu("My Menu") {
               Button("Option A") { }

@@ -113,7 +113,9 @@
 		F7E5CC46281263C400C97B94 /* KeyboardOutput.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7E5CC45281263C400C97B94 /* KeyboardOutput.swift */; };
 		F7E5CC48281263F200C97B94 /* KeyboardStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7E5CC47281263F200C97B94 /* KeyboardStream.swift */; };
 		F7EE4446283D2D3B00ACE932 /* DropDownMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7EE4445283D2D3B00ACE932 /* DropDownMenu.swift */; };
-		F7EE444A283D36FC00ACE932 /* ExampleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7EE4449283D36FC00ACE932 /* ExampleView.swift */; };
+		F7EE444A283D36FC00ACE932 /* CascadeUnitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7EE4449283D36FC00ACE932 /* CascadeUnitView.swift */; };
+		F7EE444E283EFC6400ACE932 /* VerticalUnitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7EE444D283EFC6400ACE932 /* VerticalUnitView.swift */; };
+		F7EE4450283F010600ACE932 /* HorizontalUnitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7EE444F283F010600ACE932 /* HorizontalUnitView.swift */; };
 		F7F4597E27B34E6400B64772 /* WireEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7F4597D27B34E6400B64772 /* WireEditView.swift */; };
 		F7F9433F27AF924300DD9A50 /* GridCompleteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7F9433E27AF924300DD9A50 /* GridCompleteView.swift */; };
 		F7FA953227B0635800140F5D /* PortView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7FA953127B0635800140F5D /* PortView.swift */; };
@@ -228,7 +230,9 @@
 		F7E5CC45281263C400C97B94 /* KeyboardOutput.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyboardOutput.swift; sourceTree = "<group>"; };
 		F7E5CC47281263F200C97B94 /* KeyboardStream.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyboardStream.swift; sourceTree = "<group>"; };
 		F7EE4445283D2D3B00ACE932 /* DropDownMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropDownMenu.swift; sourceTree = "<group>"; };
-		F7EE4449283D36FC00ACE932 /* ExampleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleView.swift; sourceTree = "<group>"; };
+		F7EE4449283D36FC00ACE932 /* CascadeUnitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CascadeUnitView.swift; sourceTree = "<group>"; };
+		F7EE444D283EFC6400ACE932 /* VerticalUnitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerticalUnitView.swift; sourceTree = "<group>"; };
+		F7EE444F283F010600ACE932 /* HorizontalUnitView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HorizontalUnitView.swift; sourceTree = "<group>"; };
 		F7F4597D27B34E6400B64772 /* WireEditView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WireEditView.swift; sourceTree = "<group>"; };
 		F7F9433E27AF924300DD9A50 /* GridCompleteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridCompleteView.swift; sourceTree = "<group>"; };
 		F7FA953127B0635800140F5D /* PortView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PortView.swift; sourceTree = "<group>"; };
@@ -609,7 +613,9 @@
 		F7EE4448283D36E600ACE932 /* Companion */ = {
 			isa = PBXGroup;
 			children = (
-				F7EE4449283D36FC00ACE932 /* ExampleView.swift */,
+				F7EE4449283D36FC00ACE932 /* CascadeUnitView.swift */,
+				F7EE444D283EFC6400ACE932 /* VerticalUnitView.swift */,
+				F7EE444F283F010600ACE932 /* HorizontalUnitView.swift */,
 			);
 			path = Companion;
 			sourceTree = "<group>";
@@ -729,7 +735,7 @@
 				F73DDC12283577BF00DABC2F /* Log.swift in Sources */,
 				F7C809F7279B4FCB00982843 /* SurfaceView.swift in Sources */,
 				F73DDC312835917C00DABC2F /* MIDI.swift in Sources */,
-				F7EE444A283D36FC00ACE932 /* ExampleView.swift in Sources */,
+				F7EE444A283D36FC00ACE932 /* CascadeUnitView.swift in Sources */,
 				F73DDC362835920C00DABC2F /* MIDIListener.swift in Sources */,
 				F7C809E7279B4F2500982843 /* Mesh.swift in Sources */,
 				F75FF8D52839EF1A00BC5AC1 /* TopAUManagedMenuView.swift in Sources */,
@@ -770,6 +776,7 @@
 				F73D56A92835952600B2DD24 /* FormatConverter.swift in Sources */,
 				F7C80A1F279BBFA800982843 /* CubicBezierData.swift in Sources */,
 				F73D56AB2835954400B2DD24 /* FormatConverter+PCM.swift in Sources */,
+				F7EE444E283EFC6400ACE932 /* VerticalUnitView.swift in Sources */,
 				F73DDC232835901100DABC2F /* MIDISystemCommand.swift in Sources */,
 				F781CF0C2821D7B600ADBF6E /* AudioMixer.swift in Sources */,
 				F798E97B283C620A00444FE3 /* TopComponentMenuView.swift in Sources */,
@@ -786,6 +793,7 @@
 				F7CE746727BD693900BBF6A2 /* SelectionHandlerView.swift in Sources */,
 				F73DDC102835778F00DABC2F /* AudioKitHelpers.swift in Sources */,
 				F748568028184D6D0038D7B7 /* QGrid.swift in Sources */,
+				F7EE4450283F010600ACE932 /* HorizontalUnitView.swift in Sources */,
 				F75CC4B6281DA74E00692CE5 /* Component.swift in Sources */,
 				F798E97F283C73B600444FE3 /* ComponentGridView.swift in Sources */,
 				F7C809D6279B29D200982843 /* HoverAwareView.swift in Sources */,

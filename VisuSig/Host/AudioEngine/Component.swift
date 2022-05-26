@@ -102,8 +102,10 @@ extension Component {
                 .resizable()
                 .scaledToFit()
                 .foregroundColor(.purple)
-            Text(nameAndMFG).foregroundColor(.white)
+            Text(nameAndMFG)
+                .foregroundColor(.white)
+                .font(.system(size: 14))
         }
+        .frame(width:100, height:100)
     }
-
 }

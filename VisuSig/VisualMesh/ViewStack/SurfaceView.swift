@@ -125,6 +125,7 @@ struct SurfaceView: View, ContextMenuProtocol  {
                     //.frame(width: min(geometry.size.width - 100, 300))
                         .frame(minWidth:600, minHeight: 400)
                 }
+                //HorizontalUnitView(audioUnitComponents: audioUnitComponents)
 
 
             }
