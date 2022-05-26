@@ -58,10 +58,13 @@ public struct Preset {
     public var name: String { return audioUnitPreset.name }
 }
 
-public struct Component: Hashable, Identifiable {
+public struct Component: Identifiable {
     
+
     public var id = UUID()
     
+    let options = AudioComponentInstantiationOptions.loadOutOfProcess
+
 
     let audioUnitType: AudioUnitType
     let avAudioUnitComponent: AVAudioUnitComponent?
@@ -107,5 +110,47 @@ extension Component {
                 .font(.system(size: 14))
         }
         .frame(width:100, height:100)
+    }
+}
+
+extension Component: Hashable {
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+}
+extension Component {
+    func instantiateComponent(completion: @escaping (Result<AUManagedUnit?, Error>) -> Void)  {
+        
+        // nil out existing component
+        var auManagedUnit: AUManagedUnit? = nil
+        
+        // Get the wrapped AVAudioUnitComponent
+        
+        guard let avAudioUnitComponent = avAudioUnitComponent else {
+            // Reset the engine to remove any configured audio units.
+            //playEngine.reset()
+            // Return success, but indicate an audio unit was not selected.
+            // This occurrs when the user selects the (No Effect) row.
+            completion(.success(nil))
+            return
+        }
+        
+        // Get the component description
+        let description = avAudioUnitComponent.audioComponentDescription
+        
+        // Instantiate the audio unit and connect it the the play engine.
+        AVAudioUnit.instantiate(with: description, options: options) { avAudioUnit, error in
+            guard error == nil else {
+                DispatchQueue.main.async {
+                    completion(.failure(error!))
+                }
+                return
+            }
+            DispatchQueue.main.async {
+                let nsImage = AudioComponentCopyIcon(avAudioUnitComponent.audioComponent)
+                auManagedUnit = AUManagedUnit(protoType: self, audioUnit: avAudioUnit, audioUnitType: audioUnitType, icon: nsImage)
+                completion(.success(auManagedUnit))
+            }
+        }
     }
 }

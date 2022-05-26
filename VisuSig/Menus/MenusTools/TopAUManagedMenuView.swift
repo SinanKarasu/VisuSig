@@ -45,26 +45,26 @@ struct TopAUManagedMenuView: View {
         
     }
     
-    func componentIcon2(auManagedUnit: AUManagedUnit) -> Image? {
-        guard let icon = auManagedUnit.iconOld
-        else { return nil }
-        //let nsImage = NSImage(cgImage: icon, size: CGSize(width: icon.width, height: icon.height))
-        return Image(nsImage: icon)
-    }
-    
-    func componentIcon3(auManagedUnit: AUManagedUnit) -> Image? {
-        guard let icon = auManagedUnit.icon
-        else { return nil }
-        //let nsImage = NSImage(cgImage: icon, size: CGSize(width: icon.width, height: icon.height))
-        return Image(nsImage: icon)
-    }
-    
-    func componentIcon4(auManagedUnit: AUManagedUnit) -> Image? {
-        guard let icon = auManagedUnit.protoType?.iconURL
-        else { return nil }
-        //let nsImage = NSImage(cgImage: icon, size: CGSize(width: icon.width, height: icon.height))
-        return Image(nsImage: NSImage(byReferencing:icon))
-    }
+//    func componentIcon2(auManagedUnit: AUManagedUnit) -> Image? {
+//        guard let icon = auManagedUnit.iconOld
+//        else { return nil }
+//        //let nsImage = NSImage(cgImage: icon, size: CGSize(width: icon.width, height: icon.height))
+//        return Image(nsImage: icon)
+//    }
+// 
+//    func componentIcon3(auManagedUnit: AUManagedUnit) -> Image? {
+//        guard let icon = auManagedUnit.icon
+//        else { return nil }
+//        //let nsImage = NSImage(cgImage: icon, size: CGSize(width: icon.width, height: icon.height))
+//        return Image(nsImage: icon)
+//    }
+//
+//    func componentIcon4(auManagedUnit: AUManagedUnit) -> Image? {
+//        guard let icon = auManagedUnit.protoType?.avAudioUnitComponent?.iconURL
+//        else { return nil }
+//        //let nsImage = NSImage(cgImage: icon, size: CGSize(width: icon.width, height: icon.height))
+//        return Image(nsImage: NSImage(byReferencing:icon))
+//    }
     
     func componentIcon5(auManagedUnit: AUManagedUnit) -> some View {
         return ZStack {

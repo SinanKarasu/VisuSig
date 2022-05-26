@@ -13,6 +13,8 @@ class NodeBase: Identifiable, ObservableObject  {
             objectWillChange.send()
         }
     }
+    
+    var payload: Component? = nil
 
     init(position: CGPoint = .zero, text: String = "") {
         self.position = position

@@ -74,7 +74,7 @@ class AudioUnitComponents:ObservableObject {
         }
         for index in 0 ..< components.count {
             DispatchQueue.main.async {
-                self.instantiateComponent(component: components[index]) { result in
+                components[index].instantiateComponent() { result in
                     switch result {
                     case .success(let au):
                         auManaged.append(au)
@@ -92,41 +92,6 @@ class AudioUnitComponents:ObservableObject {
         }
     }
     
-    // MARK: Instantiate an Audio Unit
-    func instantiateComponent(component: Component, completion: @escaping (Result<AUManagedUnit?, Error>) -> Void)  {
-        
-        // nil out existing component
-        var auManagedUnit: AUManagedUnit? = nil
-        
-        // Get the wrapped AVAudioUnitComponent
-        
-        guard let avAudioUnitComponent = component.avAudioUnitComponent else {
-            // Reset the engine to remove any configured audio units.
-            //playEngine.reset()
-            // Return success, but indicate an audio unit was not selected.
-            // This occurrs when the user selects the (No Effect) row.
-            completion(.success(nil))
-            return
-        }
-        
-        // Get the component description
-        let description = avAudioUnitComponent.audioComponentDescription
-        
-        // Instantiate the audio unit and connect it the the play engine.
-        AVAudioUnit.instantiate(with: description, options: options) { avAudioUnit, error in
-            guard error == nil else {
-                DispatchQueue.main.async {
-                    completion(.failure(error!))
-                }
-                return
-            }
-            DispatchQueue.main.async {
-                let nsImage = AudioComponentCopyIcon(avAudioUnitComponent.audioComponent)
-                auManagedUnit = AUManagedUnit(protoType: avAudioUnitComponent, audioUnit: avAudioUnit, audioUnitType: component.audioUnitType, icon: nsImage)
-                completion(.success(auManagedUnit))
-            }
-        }
-    }
     
     func connectComponent(auManagedUnit: AUManagedUnit?, completion: @escaping (Result<AUManagedUnit?, Error>) -> Void)  {
         
