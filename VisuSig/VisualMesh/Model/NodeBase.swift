@@ -2,7 +2,7 @@
 import SwiftUI
 import CoreGraphics
 
-class NodeBase: Identifiable, ObservableObject,  Codable  {
+class NodeBase: Identifiable, ObservableObject  {
     @Published var id = UUID()
     @Published var position: CGPoint = .zero
     @Published var text: String = "Sick Root"
@@ -12,12 +12,6 @@ class NodeBase: Identifiable, ObservableObject,  Codable  {
         willSet{
             objectWillChange.send()
         }
-    }
-
-    enum CodingKeys: CodingKey {
-        case id
-        case position
-        case text
     }
 
     init(position: CGPoint = .zero, text: String = "") {
@@ -34,14 +28,6 @@ class NodeBase: Identifiable, ObservableObject,  Codable  {
         text = try container.decode(String.self, forKey: .text)
         position = try container.decode(CGPoint.self, forKey: .position)
     }
-
-    func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(text, forKey: .text)
-        try container.encode(position, forKey: .position)
-    }
-
-
     
     let defaultSize = CGSize(width: 200,height: 200)
 
@@ -59,6 +45,22 @@ extension NodeBase: Equatable {
     static func == (lhs: NodeBase, rhs: NodeBase) -> Bool {
         lhs.id == rhs.id
     }
+}
+
+extension NodeBase: Codable {
+    enum CodingKeys: CodingKey {
+        case id
+        case position
+        case text
+    }
+
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(text, forKey: .text)
+        try container.encode(position, forKey: .position)
+    }
+
+    
 }
 
 extension NodeBase {
