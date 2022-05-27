@@ -16,9 +16,10 @@ class NodeBase: Identifiable, ObservableObject  {
     
     var payload: AUManagedUnit? = nil
 
-    init( text: String = "", position: CGPoint = .zero) {
+    init(text: String = "", position: CGPoint = .zero, payload: AUManagedUnit?) {
         self.position = position
         self.text = text
+        self.payload = payload
     }
 
     var visualID: String {

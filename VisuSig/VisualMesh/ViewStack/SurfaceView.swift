@@ -25,26 +25,26 @@ struct SurfaceView: View, ContextMenuProtocol  {
     @State private var shapeIndex = -1
     
     @ObservedObject var audioUnitComponents: AudioUnitComponents
-
-
     
-//    @State var whereAt: CGPoint = .zero
+    
+    
+    //    @State var whereAt: CGPoint = .zero
     @State var frame: CGRect = .zero
     
     var body: some View {
-        let shapeIndex = Binding<Int> (
+        var shapeIndex = Binding<Int> (
             get: {
                 self.shapeIndex
             },
             set: {
                 self.shapeIndex = $0
-//                if let cell = self.cellData.selectedCell {
-//                    let index = self.cellData.indexOf(cell: cell)
-//                    let shapeType = ShapeType.allCases[self.shapeIndex]
-//                    self.cellData.cells[index].update(shapeType: shapeType)
-//                }
+                //                if let cell = self.cellData.selectedCell {
+                //                    let index = self.cellData.indexOf(cell: cell)
+                //                    let shapeType = ShapeType.allCases[self.shapeIndex]
+                //                    self.cellData.cells[index].update(shapeType: shapeType)
+                //                }
             })
-
+        
         return VStack {
             PortalPositionView(
                 portalPosition: $portalPosition,
@@ -126,15 +126,27 @@ struct SurfaceView: View, ContextMenuProtocol  {
                         .frame(minWidth:600, minHeight: 400)
                         .onDisappear {
                             //print("Gone:\($shapeIndex)")
-                            addNewNode(mesh: mesh, whereAt: selection.whereAt, containerSize: proxy.size, portalPosition: portalPosition, zoomScale: zoomScale)
+                            if self.shapeIndex >= 0 {
+                                let component = audioUnitComponents.audioUnitComponents[self.shapeIndex]
+                                addNewNode(mesh: mesh, whereAt: selection.whereAt, containerSize: proxy.size, portalPosition: portalPosition, zoomScale: zoomScale)
+                                self.shapeIndex = -1
+                                
+                            }
                         }
                 }
                 //HorizontalUnitView(audioUnitComponents: audioUnitComponents)
-
-
+                
+                
             }
         }
     }
+    
+    func addNewNode(mesh: Mesh, whereAt: CGPoint, containerSize: CGSize, portalPosition: CGPoint, zoomScale: CGFloat) {
+        let p = mesh.meshCoordinates(whereAt: whereAt, containerSize: containerSize, portalPosition: portalPosition, zoomScale: zoomScale)
+        let node = NodeBase(text: "child x:\(p.x) y:\(p.y)", position: p, payload: nil)
+        mesh.addNode(node)
+    }
+    
     func pointerCallback(_ point: NSPoint, bounds: CGRect) {
         self.frame = bounds
         self.selection.whereAt = CGPoint(x: point.x, y: bounds.height-point.y)
