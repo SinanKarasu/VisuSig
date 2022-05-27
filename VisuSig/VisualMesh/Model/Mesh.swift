@@ -126,7 +126,7 @@ extension Mesh {
 
     @discardableResult func addDemoChild(_ parent: NodeBase, at point: CGPoint? = nil, defaultPort: Bool = true) -> NodeBase {
         let target = point ?? parent.position
-        let child = NodeBase(position: target, text: "child")
+        let child = NodeBase(text: "child", position: target)
         addNode(child)
         connect(parent.ports[0], to: child.ports[0])
         //rebuildLinks()

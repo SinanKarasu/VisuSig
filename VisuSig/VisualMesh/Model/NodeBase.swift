@@ -4,8 +4,8 @@ import CoreGraphics
 
 class NodeBase: Identifiable, ObservableObject  {
     @Published var id = UUID()
-    @Published var position: CGPoint = .zero
     @Published var text: String = "Sick Root"
+    @Published var position: CGPoint = .zero
 
     @Published var ports = [PortBase]()
     {
@@ -14,9 +14,9 @@ class NodeBase: Identifiable, ObservableObject  {
         }
     }
     
-    var payload: Component? = nil
+    var payload: AUManagedUnit? = nil
 
-    init(position: CGPoint = .zero, text: String = "") {
+    init( text: String = "", position: CGPoint = .zero) {
         self.position = position
         self.text = text
     }
@@ -38,8 +38,8 @@ class NodeBase: Identifiable, ObservableObject  {
 extension NodeBase: Hashable {
     func hash(into hasher: inout Hasher) {
         hasher.combine(id)
-        hasher.combine(position.x)
-        hasher.combine(position.y)
+//        hasher.combine(position.x)
+//        hasher.combine(position.y)
     }
 }
 
