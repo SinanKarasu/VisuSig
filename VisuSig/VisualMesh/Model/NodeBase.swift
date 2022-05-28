@@ -69,8 +69,12 @@ extension NodeBase: Codable {
 extension NodeBase {
     var nodeInfo: some View {
         VStack {
+            if payload == nil {
             Text(text)
             Text(String(format:"%.2f",position.x)+":"+String(format:"%.2f",position.y))
+            } else {
+                Text(payload!.name)
+            }
             Text("Port Count:\(ports.count)")
         }.padding([.top, .leading], 10)
     }
