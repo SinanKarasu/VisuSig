@@ -32,7 +32,7 @@ struct SurfaceView: View, ContextMenuProtocol  {
     @State var frame: CGRect = .zero
     
     var body: some View {
-        var shapeIndex = Binding<Int> (
+        let shapeIndex = Binding<Int> (
             get: {
                 self.shapeIndex
             },
@@ -108,10 +108,10 @@ struct SurfaceView: View, ContextMenuProtocol  {
                     self.selection.unSelectNodes()
                 }
                 .contextMenu{
-                    Button("♥️ - Hearts", action: {
-                        print("selectHearts\(proxy.size)")
-                        addNewNode(mesh: mesh, whereAt: selection.whereAt, containerSize: proxy.size, portalPosition: portalPosition, zoomScale: zoomScale)
-                    })
+//                    Button("♥️ - Hearts", action: {
+//                        print("selectHearts\(proxy.size)")
+//                        addNewNode(mesh: mesh, whereAt: selection.whereAt, containerSize: proxy.size, portalPosition: portalPosition, zoomScale: zoomScale, payload: nil)
+//                    })
                     Button("♣️ - Clubs", action: {
                         self.selection.showShapes.toggle()
                     })
@@ -128,9 +128,15 @@ struct SurfaceView: View, ContextMenuProtocol  {
                             //print("Gone:\($shapeIndex)")
                             if self.shapeIndex >= 0 {
                                 let component = audioUnitComponents.audioUnitComponents[self.shapeIndex]
-                                addNewNode(mesh: mesh, whereAt: selection.whereAt, containerSize: proxy.size, portalPosition: portalPosition, zoomScale: zoomScale)
-                                self.shapeIndex = -1
-                                
+                                component.instantiateComponent() { result in
+                                    switch result {
+                                case .success(let au):
+                                        addNewNode(mesh: mesh, whereAt: selection.whereAt, containerSize: proxy.size, portalPosition: portalPosition, zoomScale: zoomScale, payload: au)
+                                case .failure(let error):
+                                    logger.log("Unable to select audio unit: \(String(describing: error))")
+                                }
+                                    self.shapeIndex = -1
+                                }
                             }
                         }
                 }
@@ -141,9 +147,9 @@ struct SurfaceView: View, ContextMenuProtocol  {
         }
     }
     
-    func addNewNode(mesh: Mesh, whereAt: CGPoint, containerSize: CGSize, portalPosition: CGPoint, zoomScale: CGFloat) {
+    func addNewNode(mesh: Mesh, whereAt: CGPoint, containerSize: CGSize, portalPosition: CGPoint, zoomScale: CGFloat, payload: AUManagedUnit?) {
         let p = mesh.meshCoordinates(whereAt: whereAt, containerSize: containerSize, portalPosition: portalPosition, zoomScale: zoomScale)
-        let node = NodeBase(text: "child x:\(p.x) y:\(p.y)", position: p, payload: nil)
+        let node = NodeBase(text: "child x:\(p.x) y:\(p.y)", position: p, payload: payload)
         mesh.addNode(node)
     }
     
