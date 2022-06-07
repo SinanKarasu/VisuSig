@@ -10,7 +10,7 @@ import Foundation
 import SwiftUI
 import AVFoundation
 
-class AudioMixer {
+class SiKAudioMixer {
     let engine = AVAudioEngine()
     let player = AVAudioPlayer()
     let drumPlayer = AVAudioPlayerNode()

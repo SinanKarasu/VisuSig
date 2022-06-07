@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-final class MouseLocationView: NSViewRepresentable {
+struct MouseLocationView: NSViewRepresentable {
     let onMove: (NSPoint, CGRect) -> Void
     init(onMove: @escaping (NSPoint, CGRect) -> Void) {
         self.onMove = onMove
