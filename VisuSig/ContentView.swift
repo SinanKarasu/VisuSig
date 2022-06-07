@@ -32,7 +32,7 @@ struct ContentView: View {
             MasterMenuView()
             //MasterContentView()
             //DropDownMenu()
-            //KeyboardView(output: DummyOutput())
+            KeyboardView(output: DummyOutput())
         //}
         
         //        HStack {

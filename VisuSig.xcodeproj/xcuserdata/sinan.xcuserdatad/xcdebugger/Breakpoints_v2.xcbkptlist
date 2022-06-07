@@ -3,4 +3,54 @@
    uuid = "53AD29A2-6E4F-4807-A525-5114770D18AA"
    type = "1"
    version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "ABFAB492-F9AA-443D-AC83-6B9D3C45940A"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "VisuSig/Keyboard/KeyboardGrid.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "25"
+            endingLineNumber = "25"
+            landmarkName = "KeyboardGrid"
+            landmarkType = "14">
+            <Locations>
+               <Location
+                  uuid = "ABFAB492-F9AA-443D-AC83-6B9D3C45940A - aa821aee36aa0d92"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "VisuSig.KeyboardGrid.init&lt;&#x3c4;_0_0, &#x3c4;_0_1, &#x3c4;_0_2, &#x3c4;_0_3 where &#x3c4;_0_0 == SwiftUI.VStack&lt;SwiftUI.ForEach&lt;&#x3c4;_1_0, &#x3c4;_1_1, SwiftUI.HStack&lt;SwiftUI.ForEach&lt;&#x3c4;_1_1, &#x3c4;_1_2, &#x3c4;_1_3&gt;&gt;&gt;&gt;, &#x3c4;_1_0: Swift.RandomAccessCollection, &#x3c4;_1_1: Swift.Hashable, &#x3c4;_1_1: Swift.RandomAccessCollection, &#x3c4;_1_1 == &#x3c4;_1_0.Element, &#x3c4;_1_2: Swift.Hashable, &#x3c4;_1_2 == &#x3c4;_1_1.Swift.Sequence.Element, &#x3c4;_1_3: SwiftUI.View&gt;(data: &#x3c4;_1_0, alignment: SwiftUI.HorizontalAlignment, cellContent: (&#x3c4;_1_2) -&gt; &#x3c4;_1_3) -&gt; VisuSig.KeyboardGrid&lt;SwiftUI.VStack&lt;SwiftUI.ForEach&lt;&#x3c4;_1_0, &#x3c4;_1_1, SwiftUI.HStack&lt;SwiftUI.ForEach&lt;&#x3c4;_1_1, &#x3c4;_1_2, &#x3c4;_1_3&gt;&gt;&gt;&gt;&gt;"
+                  moduleName = "VisuSig"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/sinan/Developer/____FinalMIDIProducts/VisuSig/VisuSig/Keyboard/KeyboardGrid.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "25"
+                  endingLineNumber = "25"
+                  offsetFromSymbolStart = "484">
+               </Location>
+               <Location
+                  uuid = "ABFAB492-F9AA-443D-AC83-6B9D3C45940A - d41c155787cc6ff9"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 () -&gt; SwiftUI.VStack&lt;SwiftUI.ForEach&lt;&#x3c4;_1_0, &#x3c4;_1_1, SwiftUI.HStack&lt;SwiftUI.ForEach&lt;&#x3c4;_1_1, &#x3c4;_1_2, &#x3c4;_1_3&gt;&gt;&gt;&gt; in VisuSig.KeyboardGrid.init&lt;&#x3c4;_0_0, &#x3c4;_0_1, &#x3c4;_0_2, &#x3c4;_0_3 where &#x3c4;_0_0 == SwiftUI.VStack&lt;SwiftUI.ForEach&lt;&#x3c4;_1_0, &#x3c4;_1_1, SwiftUI.HStack&lt;SwiftUI.ForEach&lt;&#x3c4;_1_1, &#x3c4;_1_2, &#x3c4;_1_3&gt;&gt;&gt;&gt;, &#x3c4;_1_0: Swift.RandomAccessCollection, &#x3c4;_1_1: Swift.Hashable, &#x3c4;_1_1: Swift.RandomAccessCollection, &#x3c4;_1_1 == &#x3c4;_1_0.Element, &#x3c4;_1_2: Swift.Hashable, &#x3c4;_1_2 == &#x3c4;_1_1.Swift.Sequence.Element, &#x3c4;_1_3: SwiftUI.View&gt;(data: &#x3c4;_1_0, alignment: SwiftUI.HorizontalAlignment, cellContent: (&#x3c4;_1_2) -&gt; &#x3c4;_1_3) -&gt; VisuSig.KeyboardGrid&lt;SwiftUI.VStack&lt;SwiftUI.ForEach&lt;&#x3c4;_1_0, &#x3c4;_1_1, SwiftUI.HStack&lt;SwiftUI.ForEach&lt;&#x3c4;_1_1, &#x3c4;_1_2, &#x3c4;_1_3&gt;&gt;&gt;&gt;&gt;"
+                  moduleName = "VisuSig"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/sinan/Developer/____FinalMIDIProducts/VisuSig/VisuSig/Keyboard/KeyboardGrid.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "26"
+                  endingLineNumber = "26"
+                  offsetFromSymbolStart = "216">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
 </Bucket>

@@ -43,7 +43,7 @@ public struct HoverAwareView: View {
 }
 
 private extension HoverAwareView {
-    final class Representable: NSViewRepresentable {
+    struct Representable: NSViewRepresentable {
         let onHover: (Bool) -> Void
 
         init(onHover: @escaping (Bool) -> Void) {

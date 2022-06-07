@@ -16,8 +16,8 @@ struct KeyboardGrid<Content: View>: View {
         @ViewBuilder cellContent: @escaping (_ element: Data.Element.Element) -> CellContent
     )
     where Content == VStack<ForEach<Data, RowID, HStack<ForEach<Data.Element, ColID, CellContent>>>>,
-    Data : RandomAccessCollection,
-    Data.Element : RandomAccessCollection,
+//    Data : RandomAccessCollection,
+//    Data.Element : RandomAccessCollection,
     RowID == Data.Element,
     ColID == Data.Element.Element,
     CellContent : View
