@@ -106,12 +106,6 @@
 		F7CE746527BD658800BBF6A2 /* View+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7CE746427BD658800BBF6A2 /* View+Extensions.swift */; };
 		F7CE746727BD693900BBF6A2 /* SelectionHandlerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7CE746627BD693900BBF6A2 /* SelectionHandlerView.swift */; };
 		F7DB712028284EE700FD4A9D /* InstrumentsMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7DB711F28284EE700FD4A9D /* InstrumentsMenuView.swift */; };
-		F7E5CC3E2812637600C97B94 /* KeyboardGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7E5CC3D2812637600C97B94 /* KeyboardGrid.swift */; };
-		F7E5CC42281263A400C97B94 /* KeyboardButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7E5CC3F281263A400C97B94 /* KeyboardButtonView.swift */; };
-		F7E5CC43281263A400C97B94 /* KeyboardButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7E5CC40281263A400C97B94 /* KeyboardButton.swift */; };
-		F7E5CC44281263A400C97B94 /* KeyboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7E5CC41281263A400C97B94 /* KeyboardView.swift */; };
-		F7E5CC46281263C400C97B94 /* KeyboardOutput.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7E5CC45281263C400C97B94 /* KeyboardOutput.swift */; };
-		F7E5CC48281263F200C97B94 /* KeyboardStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7E5CC47281263F200C97B94 /* KeyboardStream.swift */; };
 		F7EE4446283D2D3B00ACE932 /* DropDownMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7EE4445283D2D3B00ACE932 /* DropDownMenu.swift */; };
 		F7EE444A283D36FC00ACE932 /* CascadeUnitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7EE4449283D36FC00ACE932 /* CascadeUnitView.swift */; };
 		F7EE444E283EFC6400ACE932 /* VerticalUnitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7EE444D283EFC6400ACE932 /* VerticalUnitView.swift */; };
@@ -223,12 +217,6 @@
 		F7CE746427BD658800BBF6A2 /* View+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "View+Extensions.swift"; sourceTree = "<group>"; };
 		F7CE746627BD693900BBF6A2 /* SelectionHandlerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionHandlerView.swift; sourceTree = "<group>"; };
 		F7DB711F28284EE700FD4A9D /* InstrumentsMenuView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InstrumentsMenuView.swift; sourceTree = "<group>"; };
-		F7E5CC3D2812637600C97B94 /* KeyboardGrid.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyboardGrid.swift; sourceTree = "<group>"; };
-		F7E5CC3F281263A400C97B94 /* KeyboardButtonView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyboardButtonView.swift; sourceTree = "<group>"; };
-		F7E5CC40281263A400C97B94 /* KeyboardButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyboardButton.swift; sourceTree = "<group>"; };
-		F7E5CC41281263A400C97B94 /* KeyboardView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyboardView.swift; sourceTree = "<group>"; };
-		F7E5CC45281263C400C97B94 /* KeyboardOutput.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyboardOutput.swift; sourceTree = "<group>"; };
-		F7E5CC47281263F200C97B94 /* KeyboardStream.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyboardStream.swift; sourceTree = "<group>"; };
 		F7EE4445283D2D3B00ACE932 /* DropDownMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropDownMenu.swift; sourceTree = "<group>"; };
 		F7EE4449283D36FC00ACE932 /* CascadeUnitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CascadeUnitView.swift; sourceTree = "<group>"; };
 		F7EE444D283EFC6400ACE932 /* VerticalUnitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerticalUnitView.swift; sourceTree = "<group>"; };
@@ -473,7 +461,6 @@
 				F79E3EE1281BA18900CD0520 /* EditWindows */,
 				F781CF0A2821D79900ADBF6E /* Experiments */,
 				F75CC4B7281EED4E00692CE5 /* Host */,
-				F7E5CC3C2812636800C97B94 /* Keyboard */,
 				F75CC4C7281EEED700692CE5 /* Media */,
 				F7EE444C283D8F4E00ACE932 /* Menus */,
 				F7A37BE027F23529007D4AEB /* people.json */,
@@ -586,19 +573,6 @@
 				F7CE746627BD693900BBF6A2 /* SelectionHandlerView.swift */,
 			);
 			path = InfraViews;
-			sourceTree = "<group>";
-		};
-		F7E5CC3C2812636800C97B94 /* Keyboard */ = {
-			isa = PBXGroup;
-			children = (
-				F7E5CC45281263C400C97B94 /* KeyboardOutput.swift */,
-				F7E5CC3D2812637600C97B94 /* KeyboardGrid.swift */,
-				F7E5CC40281263A400C97B94 /* KeyboardButton.swift */,
-				F7E5CC3F281263A400C97B94 /* KeyboardButtonView.swift */,
-				F7E5CC41281263A400C97B94 /* KeyboardView.swift */,
-				F7E5CC47281263F200C97B94 /* KeyboardStream.swift */,
-			);
-			path = Keyboard;
 			sourceTree = "<group>";
 		};
 		F7EE4447283D2FB000ACE932 /* DropDown1 */ = {
@@ -748,7 +722,6 @@
 				F73DDC33283591E900DABC2F /* MIDIPacketList+SequenceType.swift in Sources */,
 				F7C809C8279B299200982843 /* ContentView.swift in Sources */,
 				F73DDC2F2835916400DABC2F /* MIDIPacket+Extensions.swift in Sources */,
-				F7E5CC44281263A400C97B94 /* KeyboardView.swift in Sources */,
 				F79E3EEB281BA1A400CD0520 /* MyContentView.swift in Sources */,
 				F73DDC2D2835913400DABC2F /* MIDI+Extensions.swift in Sources */,
 				F75CC4BB281EED8B00692CE5 /* AudioUnitComponents.swift in Sources */,
@@ -762,7 +735,6 @@
 				F75CC4B1281D8AEB00692CE5 /* InstrumentPlayer.swift in Sources */,
 				F7F9433F27AF924300DD9A50 /* GridCompleteView.swift in Sources */,
 				F79E3EE8281BA1A400CD0520 /* MyPreferenceKey.swift in Sources */,
-				F7E5CC48281263F200C97B94 /* KeyboardStream.swift in Sources */,
 				F73DDC1F28358FE300DABC2F /* MIDIEvent.swift in Sources */,
 				F7C809D8279B2A6E00982843 /* HoverAwareDemo1View.swift in Sources */,
 				F79E3EEC281BA1A400CD0520 /* MiniMap.swift in Sources */,
@@ -770,7 +742,6 @@
 				F73DDC372835920C00DABC2F /* MIDITransformer.swift in Sources */,
 				F73DDC0C2835770300DABC2F /* Utilities+Extensions.swift in Sources */,
 				F7C809C6279B299200982843 /* VisuSigApp.swift in Sources */,
-				F7E5CC43281263A400C97B94 /* KeyboardButton.swift in Sources */,
 				F7FA953227B0635800140F5D /* PortView.swift in Sources */,
 				F75C5276282855D2008DBD23 /* MasterMenuView.swift in Sources */,
 				F73D56A92835952600B2DD24 /* FormatConverter.swift in Sources */,
@@ -786,7 +757,6 @@
 				F74623C7282598A700027187 /* EffectsMenuView.swift in Sources */,
 				F7CE746227BD64DF00BBF6A2 /* MenuOptions.swift in Sources */,
 				F7C809F9279B500200982843 /* MapView.swift in Sources */,
-				F7E5CC46281263C400C97B94 /* KeyboardOutput.swift in Sources */,
 				F7C80A0B279B521000982843 /* StorageHandler.swift in Sources */,
 				F7C809E8279B4F2500982843 /* Mesh+Storage.swift in Sources */,
 				F72D0DDB27B9A35C00516B4A /* LayeredWire.swift in Sources */,
@@ -797,7 +767,6 @@
 				F75CC4B6281DA74E00692CE5 /* Component.swift in Sources */,
 				F798E97F283C73B600444FE3 /* ComponentGridView.swift in Sources */,
 				F7C809D6279B29D200982843 /* HoverAwareView.swift in Sources */,
-				F7E5CC42281263A400C97B94 /* KeyboardButtonView.swift in Sources */,
 				F7C809EA279B4F2500982843 /* EdgeBase.swift in Sources */,
 				F73DDC08283575D800DABC2F /* Table.swift in Sources */,
 				F7C80A01279B50F500982843 /* NodeMapView.swift in Sources */,
@@ -809,7 +778,6 @@
 				F75CC4CE281F542D00692CE5 /* AUManagedUnit.swift in Sources */,
 				F7EE4446283D2D3B00ACE932 /* DropDownMenu.swift in Sources */,
 				F7C809F0279B4F6100982843 /* CGPoint+Help.swift in Sources */,
-				F7E5CC3E2812637600C97B94 /* KeyboardGrid.swift in Sources */,
 				F75CC4AF281D8ABA00692CE5 /* SimplePlayEngine.swift in Sources */,
 				F73D56AD2835955900B2DD24 /* FormatConverter+Utilities.swift in Sources */,
 				F73D56AF2835959700B2DD24 /* FormatConverter+Compressed.swift in Sources */,
