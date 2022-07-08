@@ -25,19 +25,21 @@ struct EffectsMenuView: View {
                     Text("EffectsMenuView")
                     Text("Count: \(audioUnitComponents.audioUnitComponents.count)")
                 }
-                NavigationView {
-                    List {
-                        ForEach(0..<audioUnitComponents.auManagedEffectUnits.count, id: \.self) { index in
-                            NavigationLink(
-                                destination:
-                                    makeView5(index: index)
-                            )
-                            {
-                                Label(audioUnitComponents.auManagedEffectUnits[index]!.name, systemImage: "waveform.circle")
+                ZStack { // note this is a bug fix workaround for XCode 14 beta. Remove it when fixed
+                    NavigationView {
+                        List {
+                            ForEach(0..<audioUnitComponents.auManagedEffectUnits.count, id: \.self) { index in
+                                NavigationLink(
+                                    destination:
+                                        makeView5(index: index)
+                                )
+                                {
+                                    Label(audioUnitComponents.auManagedEffectUnits[index]!.name, systemImage: "waveform.circle")
+                                }
                             }
                         }
+                        .navigationTitle("Menu")
                     }
-                    .navigationTitle("Menu")
                 }
             }
             //.onAppear(perform: startRunning)
