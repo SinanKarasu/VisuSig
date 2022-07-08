@@ -36,12 +36,12 @@ struct MasterMenuView: View {
             SurfaceView(mesh: mesh, audioUnitComponents: audioUnitComponents)
             //EffectsToolsView()
 
-//            switch audioUnitType {
-//            case .effect:
-//                EffectsMenuView(audioUnitComponents: audioUnitComponents)
-//            case .instrument:
-//                InstrumentsMenuView(audioUnitComponents: audioUnitComponents)
-//            }
+            switch audioUnitType {
+            case .effect:
+                EffectsMenuView(audioUnitComponents: audioUnitComponents)
+            case .instrument:
+                InstrumentsMenuView(audioUnitComponents: audioUnitComponents)
+            }
             //}
             //Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
         }
