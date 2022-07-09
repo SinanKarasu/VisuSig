@@ -25,7 +25,7 @@ struct InstrumentsMenuView: View {
                     Text("Instrument Menu View")
                     Text("Components: \(audioUnitComponents.instrumentComponents.count)")
                     Text("Count: \(audioUnitComponents.auManagedInstruments.count)")
-
+                    
                 }
                 ZStack { // note this is a bug fix workaround for XCode 14 beta. Remove it when fixed
                     NavigationView {
@@ -47,7 +47,7 @@ struct InstrumentsMenuView: View {
             //.onAppear(perform: startRunning)
         }
     }
-        
+    
     
     func makeView5(index: Int) -> some View {
         let auManagedUnit = audioUnitComponents.auManagedInstruments[index]
@@ -63,7 +63,7 @@ struct InstrumentsMenuView: View {
             if !audioUnitComponents.instsInitialized {
                 audioUnitComponents.instsInitialized = true
                 audioUnitComponents.loadAudioUnits(ofType: audioUnitType)
-        }
+            }
         }
     }
 }
