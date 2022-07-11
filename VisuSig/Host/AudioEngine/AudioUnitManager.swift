@@ -26,7 +26,7 @@ class AudioUnitManager: ObservableObject {
         return allowed
     }
     
-    var observer: NSKeyValueObservation?
+    //var observer: NSKeyValueObservation?
     var userPresetChangeType: UserPresetsChangeType = .undefined
     
     /// The user-selected audio unit.

@@ -56,6 +56,7 @@
 		F75FF89828395F4B00BC5AC1 /* ToolMenu2View.swift in Sources */ = {isa = PBXBuildFile; fileRef = F75FF89728395F4B00BC5AC1 /* ToolMenu2View.swift */; };
 		F75FF8D32839A28B00BC5AC1 /* ContextMenuProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = F75FF8D22839A28B00BC5AC1 /* ContextMenuProtocol.swift */; };
 		F75FF8D52839EF1A00BC5AC1 /* TopAUManagedMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F75FF8D42839EF1A00BC5AC1 /* TopAUManagedMenuView.swift */; };
+		F779564A287C91A3007E569B /* EdgeProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7795649287C91A3007E569B /* EdgeProxy.swift */; };
 		F781CF0C2821D7B600ADBF6E /* SiKAudioMixer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F781CF0B2821D7B600ADBF6E /* SiKAudioMixer.swift */; };
 		F798E8C5283B232900444FE3 /* EffectsToolsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F798E8C4283B232900444FE3 /* EffectsToolsView.swift */; };
 		F798E8C7283B237A00444FE3 /* EffectStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = F798E8C6283B237A00444FE3 /* EffectStorage.swift */; };
@@ -165,6 +166,7 @@
 		F75FF89728395F4B00BC5AC1 /* ToolMenu2View.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToolMenu2View.swift; sourceTree = "<group>"; };
 		F75FF8D22839A28B00BC5AC1 /* ContextMenuProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContextMenuProtocol.swift; sourceTree = "<group>"; };
 		F75FF8D42839EF1A00BC5AC1 /* TopAUManagedMenuView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopAUManagedMenuView.swift; sourceTree = "<group>"; };
+		F7795649287C91A3007E569B /* EdgeProxy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EdgeProxy.swift; sourceTree = "<group>"; };
 		F781CF0B2821D7B600ADBF6E /* SiKAudioMixer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiKAudioMixer.swift; sourceTree = "<group>"; };
 		F798E8C4283B232900444FE3 /* EffectsToolsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EffectsToolsView.swift; sourceTree = "<group>"; };
 		F798E8C6283B237A00444FE3 /* EffectStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EffectStorage.swift; sourceTree = "<group>"; };
@@ -501,6 +503,7 @@
 				F7C80A16279BBF3700982843 /* PortBase.swift */,
 				F7C809E2279B4F2500982843 /* SelectionHandler.swift */,
 				F7C80A07279B51C800982843 /* Storage.swift */,
+				F7795649287C91A3007E569B /* EdgeProxy.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -799,6 +802,7 @@
 				F75CC4C6281EEE7200692CE5 /* AUComponentControllerView.swift in Sources */,
 				F79E3EDE281B586600CD0520 /* PreferencesView.swift in Sources */,
 				F75CC4AD281D8A8400692CE5 /* AudioUnitManager.swift in Sources */,
+				F779564A287C91A3007E569B /* EdgeProxy.swift in Sources */,
 				F75CC4C4281EEE4D00692CE5 /* ViewExtensions.swift in Sources */,
 				F73DDC292835904800DABC2F /* MIDIVariableLengthQuantity.swift in Sources */,
 				F79E3EEA281BA1A400CD0520 /* MyPreferenceData.swift in Sources */,

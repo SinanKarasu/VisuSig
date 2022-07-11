@@ -31,17 +31,6 @@ class EdgeBase: Identifiable, ObservableObject {
 
 }
 
-struct EdgeProxy: Identifiable, Hashable {
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(id)
-    }
-    var id = UUID()
-    var edge: EdgeBase
-    init(edge: EdgeBase) {
-        self.edge = edge
-        //self.end = edge.end
-    }
-}
 
 extension EdgeBase : Hashable {
     func hash(into hasher: inout Hasher) {
