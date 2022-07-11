@@ -34,7 +34,7 @@ class AUManagedUnit: ObservableObject, Identifiable, Hashable {
     }
     
     var nsViewController: NSViewController? = nil
-    let audiioUnitType: AudioUnitType
+    let audioUnitType: AudioUnitType
     
     public var name: String {
         guard let component = protoType else {
@@ -114,7 +114,7 @@ class AUManagedUnit: ObservableObject, Identifiable, Hashable {
     init(protoType: Component?, audioUnit: AVAudioUnit?, audioUnitType: AudioUnitType, icon: NSImage?) {
         self.protoType = protoType
         self.avAudioUnit = audioUnit
-        self.audiioUnitType = audioUnitType
+        self.audioUnitType = audioUnitType
         self.iconOld = icon
     }
     /// Determines if the selected AU provides more than one user interface.
