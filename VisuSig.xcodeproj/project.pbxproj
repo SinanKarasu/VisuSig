@@ -57,6 +57,7 @@
 		F75FF8D32839A28B00BC5AC1 /* ContextMenuProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = F75FF8D22839A28B00BC5AC1 /* ContextMenuProtocol.swift */; };
 		F75FF8D52839EF1A00BC5AC1 /* TopAUManagedMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F75FF8D42839EF1A00BC5AC1 /* TopAUManagedMenuView.swift */; };
 		F779564A287C91A3007E569B /* EdgeProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7795649287C91A3007E569B /* EdgeProxy.swift */; };
+		F779564C287CBE58007E569B /* AudioGraph.swift in Sources */ = {isa = PBXBuildFile; fileRef = F779564B287CBE58007E569B /* AudioGraph.swift */; };
 		F781CF0C2821D7B600ADBF6E /* SiKAudioMixer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F781CF0B2821D7B600ADBF6E /* SiKAudioMixer.swift */; };
 		F798E8C5283B232900444FE3 /* EffectsToolsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F798E8C4283B232900444FE3 /* EffectsToolsView.swift */; };
 		F798E8C7283B237A00444FE3 /* EffectStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = F798E8C6283B237A00444FE3 /* EffectStorage.swift */; };
@@ -167,6 +168,7 @@
 		F75FF8D22839A28B00BC5AC1 /* ContextMenuProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContextMenuProtocol.swift; sourceTree = "<group>"; };
 		F75FF8D42839EF1A00BC5AC1 /* TopAUManagedMenuView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopAUManagedMenuView.swift; sourceTree = "<group>"; };
 		F7795649287C91A3007E569B /* EdgeProxy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EdgeProxy.swift; sourceTree = "<group>"; };
+		F779564B287CBE58007E569B /* AudioGraph.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioGraph.swift; sourceTree = "<group>"; };
 		F781CF0B2821D7B600ADBF6E /* SiKAudioMixer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiKAudioMixer.swift; sourceTree = "<group>"; };
 		F798E8C4283B232900444FE3 /* EffectsToolsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EffectsToolsView.swift; sourceTree = "<group>"; };
 		F798E8C6283B237A00444FE3 /* EffectStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EffectStorage.swift; sourceTree = "<group>"; };
@@ -410,6 +412,7 @@
 				F75CC4B2281DA28800692CE5 /* Players */,
 				F75CC4AC281D8A8400692CE5 /* AudioUnitManager.swift */,
 				F75CC4B5281DA74E00692CE5 /* Component.swift */,
+				F779564B287CBE58007E569B /* AudioGraph.swift */,
 			);
 			path = AudioEngine;
 			sourceTree = "<group>";
@@ -759,6 +762,7 @@
 				F7C809FD279B50CB00982843 /* EdgeMapView.swift in Sources */,
 				F74623C7282598A700027187 /* EffectsMenuView.swift in Sources */,
 				F7CE746227BD64DF00BBF6A2 /* MenuOptions.swift in Sources */,
+				F779564C287CBE58007E569B /* AudioGraph.swift in Sources */,
 				F7C809F9279B500200982843 /* MapView.swift in Sources */,
 				F7C80A0B279B521000982843 /* StorageHandler.swift in Sources */,
 				F7C809E8279B4F2500982843 /* Mesh+Storage.swift in Sources */,

@@ -1,6 +1,6 @@
 
 import SwiftUI
-import CoreGraphics
+import AVFoundation
 
 class NodeBase: Identifiable, ObservableObject  {
     @Published var id = UUID()
@@ -22,9 +22,6 @@ class NodeBase: Identifiable, ObservableObject  {
         self.payload = payload
     }
 
-    var visualID: String {
-        return id.uuidString + "\(text.hashValue)"
-    }
 
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -105,6 +102,18 @@ extension NodeBase {
         .scaledFrom(zoomScale)
         .alignCenterInParent(parent)
         .translatedBy(x: portalPosition.x, y: portalPosition.y)
+    }
+
+}
+
+extension NodeBase {
+   
+    var avAudioUnit: AVAudioUnit? {
+        payload?.avAudioUnit
+    }
+
+    var visualID: String {
+        return id.uuidString + "\(text.hashValue)"
     }
 
 }
