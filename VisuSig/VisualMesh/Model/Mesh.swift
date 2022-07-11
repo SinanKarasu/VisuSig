@@ -22,6 +22,10 @@ class Mesh: ObservableObject {
         editingText = ""
         Mesh.meshes.append(self)
     }
+    
+//    deinit() {
+//        Mesh.meshes.remove(self)
+//    }
 
     init(storage: MeshStorageProxy) {
         editingText = ""

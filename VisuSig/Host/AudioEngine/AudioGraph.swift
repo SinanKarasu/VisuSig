@@ -43,10 +43,10 @@ class AudioGraph: Mesh {
         let playerFormat = _playerLoopBuffer.format
         
         // establish a connection between nodes
-//        for edge in edges {
+        for edge in edges {
 //            // connect the player to the reverb
 //            // use the buffer format for the connection format as they must match
-//            engine.connect(edge.from.audioUnit, to: edge.to.audioUnit, format: playerFormat)
+            engine.connect(edge.startPort.avAudioUnit!, to: edge.endPort.avAudioUnit!, format: playerFormat)
 //
 //            // connect the reverb effect to mixer input bus 0
 //            // use the buffer format for the connection format as they must match
@@ -54,7 +54,7 @@ class AudioGraph: Mesh {
 //
 //            // connect the distortion effect to mixer input bus 2
 //            engine.connect(_distortion, to: mainMixer, fromBus: 0, toBus: 2, format: stereoFormat)
-//        }
+        }
 //        // fan out the sampler to mixer input 1 and distortion effect
 //        let destinationNodes = [
 //            AVAudioConnectionPoint(node: engine.mainMixerNode, bus: 1),

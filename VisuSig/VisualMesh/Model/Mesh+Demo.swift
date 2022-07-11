@@ -4,7 +4,7 @@ import CoreGraphics
 
 extension Mesh {
     static func sampleMesh() -> Mesh {
-        let mesh = Mesh()
+        let mesh = AudioGraph()
         let kök: NodeBase = NodeBase(text: "kök", payload: nil)
         mesh.addNode(kök)
         mesh.updateNodeText(kök, string: "Root AVAudioNode")
