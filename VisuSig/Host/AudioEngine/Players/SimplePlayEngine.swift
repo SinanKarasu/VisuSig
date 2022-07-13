@@ -248,7 +248,7 @@ public class SimplePlayEngine {
 
 extension AVAudioMixerNode {
     /// Make a connection without breaking other connections.
-    public func connectMixer(input: AVAudioNode, format: AVAudioFormat? = SSSSettings.audioFormat) {
+    public func connectMixer(input: AVAudioNode, format: AVAudioFormat?) {
         if let engine = engine {
             var points = engine.outputConnectionPoints(for: input, outputBus: 0)
             if points.contains(where: { $0.node === self }) { return }
@@ -262,32 +262,32 @@ extension AVAudioMixerNode {
 extension AVAudioNode {
     
     /// Disconnect without breaking other connections.
-    func disconnect(input: AVAudioNode) {
-        
-        if let engine = engine {
-            
-            var newConnections: [AVAudioNode: [AVAudioConnectionPoint]] = [:]
-            for bus in 0 ..< inputCount {
-                if let cp = engine.inputConnectionPoint(for: self, inputBus: bus) {
-                    if cp.node === input {
-                        let points = engine.outputConnectionPoints(for: input, outputBus: 0)
-                        newConnections[input] = points.filter { $0.node != self }
-                    }
-                }
-            }
-            
-            for (node, connections) in newConnections {
-                if connections.isEmpty {
-                    engine.disconnectNodeOutput(node)
-                } else {
-                    engine.connect(node, to: connections, fromBus: 0, format: SSSSettings.audioFormat)
-                }
-            }
-        }
-    }
+//    func disconnect(input: AVAudioNode, format: AVAudioFormat? ) {
+//        
+//        if let engine = engine {
+//            
+//            var newConnections: [AVAudioNode: [AVAudioConnectionPoint]] = [:]
+//            for bus in 0 ..< inputCount {
+//                if let cp = engine.inputConnectionPoint(for: self, inputBus: bus) {
+//                    if cp.node === input {
+//                        let points = engine.outputConnectionPoints(for: input, outputBus: 0)
+//                        newConnections[input] = points.filter { $0.node != self }
+//                    }
+//                }
+//            }
+//            
+//            for (node, connections) in newConnections {
+//                if connections.isEmpty {
+//                    engine.disconnectNodeOutput(node)
+//                } else {
+//                    engine.connect(node, to: connections, fromBus: 0, format: format)
+//                }
+//            }
+//        }
+//    }
     
     /// Make a connection without breaking other connections.
-    func connect(input: AVAudioNode, bus: Int, format: AVAudioFormat? = SSSSettings.audioFormat) {
+    func connect(input: AVAudioNode, bus: Int, format: AVAudioFormat?) {
         if let engine = engine {
             var points = engine.outputConnectionPoints(for: input, outputBus: 0)
             if points.contains(where: {
