@@ -91,6 +91,7 @@ extension AudioUnitManager {
             // Filter out components that don't make sense for this demo.
             // Map AVAudioUnitComponent to array of Component (view model) objects.
             let wrapped = components.filter(self.filterClosure).map { Component($0, type: type) }
+            //let wrapped1 = components.map { Component($0, type: type) }
             
             // Insert a "No Effect" element into array if effect
 //            if type == .effect {
@@ -99,6 +100,7 @@ extension AudioUnitManager {
             // Notify the caller of the loaded components.
             DispatchQueue.main.async {
                 completion(wrapped)
+                //completion(wrapped1)
             }
         }
     }
