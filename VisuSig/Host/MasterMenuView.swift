@@ -24,15 +24,14 @@ struct MasterMenuView: View {
                 Text("Effect").tag(AudioUnitType.effect)
                 Text("Instrument").tag(AudioUnitType.instrument)
             }
-            
             .pickerStyle(.segmented)
             .onChange(of: audioUnitType) { tag in
                 //            self.loaded = false
                 //            self.startRunning()
             }
             //HStack {
-            //TopAUManagedMenuView(audioUnitComponents: audioUnitComponents)
-            TopComponentMenuView(audioUnitComponents: audioUnitComponents)
+            //TopAUManagedMenuView(audioUnitComponents: audioUnitComponents) // probably delete this
+            //TopComponentMenuView(audioUnitComponents: audioUnitComponents)
             SurfaceView(mesh: mesh, audioUnitComponents: audioUnitComponents)
             //EffectsToolsView()
 

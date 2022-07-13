@@ -7,6 +7,7 @@
 
 import Foundation
 import AVFoundation
+import AudioToolbox
 
 
 class AudioGraph: Mesh {
@@ -42,6 +43,7 @@ class AudioGraph: Mesh {
         let stereoFormat = AVAudioFormat(standardFormatWithSampleRate: 44100, channels: 2)
         let playerFormat = _playerLoopBuffer.format
         
+        
         // establish a connection between nodes
         for edge in edges {
 //            // connect the player to the reverb
@@ -62,4 +64,23 @@ class AudioGraph: Mesh {
 //        ]
 //        _engine.connect(_sampler, to: destinationNodes, fromBus: 0, format: stereoFormat)
     }
+    
+//    func myBuffer() {
+//
+//        // make a silent stereo buffer
+//        var chLayout: AVAudioChannelLayout? = AVAudioChannelLayout(layoutTag:kAudioChannelLayoutTag_Stereo)
+//        var chFormat: AVAudioFormat! = AVAudioFormat(
+//            commonFormat: AVAudioCommonFormat.pcmFormatFloat32,
+//            sampleRate:44100.0,
+//            channels: AVAudioChannelCount(2),
+//            interleaved: false
+//        )
+//        var avAudioPCMBuffer: AVAudioPCMBuffer! = AVAudioPCMBuffer(pcmFormat: chFormat, frameCapacity: 1024)
+//
+//        avAudioPCMBuffer.frameLength = avAudioPCMBuffer.frameCapacity;
+//        for ch in 0..<chFormat.channelCount {
+//
+//        }
+//    }
+
 }

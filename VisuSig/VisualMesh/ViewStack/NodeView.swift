@@ -30,6 +30,11 @@ struct NodeView: View {
                         Button("♠️♠️ - Spades", action: {
                             print("------------------")
                         })
+                        Menu("Nested Root") {
+                            Button("Nested #1") {}
+                            Button("Nested #2") {}
+                            Button("Nested #3") {}
+                        }
                     }
                     .onTapGesture { // This one causes delay
                         self.selection.selectNode(node)

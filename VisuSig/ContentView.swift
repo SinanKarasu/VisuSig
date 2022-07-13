@@ -11,17 +11,15 @@ struct ContentView: View {
     
     var body: some View {
         VStack {
-            //TopCompMenuView(audioUnitComponents: audioUnitComponents)
-            //ToolMenu2View()
-            //ExampleView()
+            //ToolMenu2View()  // External Tools
+            //CascadeUnitView()
             MasterMenuView()
-            //MasterContentView()
             //DropDownMenu()
-        //}
-        
-        //        HStack {
-        //            HoverAwareDemo1View()
-        //            HoverAwareDemo2View()
+            //}
+            
+            //        HStack {
+            //            HoverAwareDemo1View()
+            //            HoverAwareDemo2View()
         }
     }
 }
