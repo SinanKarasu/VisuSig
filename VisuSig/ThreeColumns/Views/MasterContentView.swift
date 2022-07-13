@@ -9,7 +9,7 @@ The main content view the app uses to present the navigation experience
 import SwiftUI
 
 struct MasterContentView: View {
-    //@SceneStorage("experience") private var experience: Experience?
+    @SceneStorage("experience") private var experience: Experience?
     @SceneStorage("navigation") private var navigationData: Data?
     @StateObject private var navigationModel = NavigationModel()
     @State private var showExperiencePicker = false
@@ -20,17 +20,17 @@ struct MasterContentView: View {
                     showExperiencePicker: $showExperiencePicker)
         }
         .environmentObject(navigationModel)
-//        .sheet(isPresented: $showExperiencePicker) {
-//            ExperiencePicker(experience: $experience)
-//        }
-//        .task {
-//            if let jsonData = navigationData {
-//                navigationModel.jsonData = jsonData
-//            }
-//            for await _ in navigationModel.objectWillChangeSequence {
-//                navigationData = navigationModel.jsonData
-//            }
-//        }
+        .sheet(isPresented: $showExperiencePicker) {
+            ExperiencePicker(experience: $experience)
+        }
+        .task {
+            if let jsonData = navigationData {
+                navigationModel.jsonData = jsonData
+            }
+            for await _ in navigationModel.objectWillChangeSequence {
+                navigationData = navigationModel.jsonData
+            }
+        }
     }
 }
 

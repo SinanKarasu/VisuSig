@@ -95,6 +95,10 @@
 		F7E1D6C1287F3E29000C8CE2 /* RecipePhoto.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7E1D6B6287F3E29000C8CE2 /* RecipePhoto.swift */; };
 		F7E1D6C2287F3E29000C8CE2 /* ExperienceButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7E1D6B7287F3E29000C8CE2 /* ExperienceButton.swift */; };
 		F7E1D6C3287F3E29000C8CE2 /* RecipeTile.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7E1D6B8287F3E29000C8CE2 /* RecipeTile.swift */; };
+		F7E1D6C5287F797A000C8CE2 /* Experience.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7E1D6C4287F797A000C8CE2 /* Experience.swift */; };
+		F7E1D6C8287F79D6000C8CE2 /* ExperiencePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7E1D6C7287F79D6000C8CE2 /* ExperiencePicker.swift */; };
+		F7E1D6CA287F7A07000C8CE2 /* ExperiencePickerRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7E1D6C9287F7A07000C8CE2 /* ExperiencePickerRow.swift */; };
+		F7E1D6CC287F7A20000C8CE2 /* ContinueButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7E1D6CB287F7A20000C8CE2 /* ContinueButton.swift */; };
 		F7EE4446283D2D3B00ACE932 /* DropDownMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7EE4445283D2D3B00ACE932 /* DropDownMenu.swift */; };
 		F7EE444A283D36FC00ACE932 /* CascadeUnitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7EE4449283D36FC00ACE932 /* CascadeUnitView.swift */; };
 		F7EE444E283EFC6400ACE932 /* VerticalUnitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7EE444D283EFC6400ACE932 /* VerticalUnitView.swift */; };
@@ -195,6 +199,10 @@
 		F7E1D6B6287F3E29000C8CE2 /* RecipePhoto.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecipePhoto.swift; sourceTree = "<group>"; };
 		F7E1D6B7287F3E29000C8CE2 /* ExperienceButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExperienceButton.swift; sourceTree = "<group>"; };
 		F7E1D6B8287F3E29000C8CE2 /* RecipeTile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecipeTile.swift; sourceTree = "<group>"; };
+		F7E1D6C4287F797A000C8CE2 /* Experience.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Experience.swift; sourceTree = "<group>"; };
+		F7E1D6C7287F79D6000C8CE2 /* ExperiencePicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExperiencePicker.swift; sourceTree = "<group>"; };
+		F7E1D6C9287F7A07000C8CE2 /* ExperiencePickerRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExperiencePickerRow.swift; sourceTree = "<group>"; };
+		F7E1D6CB287F7A20000C8CE2 /* ContinueButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContinueButton.swift; sourceTree = "<group>"; };
 		F7EE4445283D2D3B00ACE932 /* DropDownMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropDownMenu.swift; sourceTree = "<group>"; };
 		F7EE4449283D36FC00ACE932 /* CascadeUnitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CascadeUnitView.swift; sourceTree = "<group>"; };
 		F7EE444D283EFC6400ACE932 /* VerticalUnitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerticalUnitView.swift; sourceTree = "<group>"; };
@@ -535,11 +543,23 @@
 				F7E1D6B3287F3E29000C8CE2 /* RecipeDetail.swift */,
 				F7E1D6B4287F3E29000C8CE2 /* ThreeColumnContentView.swift */,
 				F7E1D6B5287F3E29000C8CE2 /* MasterContentView.swift */,
+				F7E1D6C6287F79C5000C8CE2 /* Experience */,
 				F7E1D6B6287F3E29000C8CE2 /* RecipePhoto.swift */,
 				F7E1D6B7287F3E29000C8CE2 /* ExperienceButton.swift */,
 				F7E1D6B8287F3E29000C8CE2 /* RecipeTile.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		F7E1D6C6287F79C5000C8CE2 /* Experience */ = {
+			isa = PBXGroup;
+			children = (
+				F7E1D6C9287F7A07000C8CE2 /* ExperiencePickerRow.swift */,
+				F7E1D6C4287F797A000C8CE2 /* Experience.swift */,
+				F7E1D6CB287F7A20000C8CE2 /* ContinueButton.swift */,
+				F7E1D6C7287F79D6000C8CE2 /* ExperiencePicker.swift */,
+			);
+			path = Experience;
 			sourceTree = "<group>";
 		};
 		F7EE4447283D2FB000ACE932 /* DropDown1 */ = {
@@ -681,12 +701,14 @@
 				F7C809EB279B4F2500982843 /* NodeBase.swift in Sources */,
 				F7C80A17279BBF3700982843 /* PortBase.swift in Sources */,
 				F7C809C8279B299200982843 /* ContentView.swift in Sources */,
+				F7E1D6C5287F797A000C8CE2 /* Experience.swift in Sources */,
 				F79E3EEB281BA1A400CD0520 /* MyContentView.swift in Sources */,
 				F7E1D6BB287F3E29000C8CE2 /* NavigationModel.swift in Sources */,
 				F75CC4BB281EED8B00692CE5 /* AudioUnitComponents.swift in Sources */,
 				F7300E842825B9DF00E41206 /* AUComponent3View.swift in Sources */,
 				F7E1D6BD287F3E29000C8CE2 /* Category.swift in Sources */,
 				F7C80A08279B51C800982843 /* Storage.swift in Sources */,
+				F7E1D6CA287F7A07000C8CE2 /* ExperiencePickerRow.swift in Sources */,
 				F7E1D6B9287F3E29000C8CE2 /* Recipe.swift in Sources */,
 				F79E3EE9281BA1A400CD0520 /* MyViewType.swift in Sources */,
 				F7C809DA279B2A8800982843 /* HoverAwareDemo2View.swift in Sources */,
@@ -705,6 +727,7 @@
 				F7C809C6279B299200982843 /* VisuSigApp.swift in Sources */,
 				F7FA953227B0635800140F5D /* PortView.swift in Sources */,
 				F75C5276282855D2008DBD23 /* MasterMenuView.swift in Sources */,
+				F7E1D6C8287F79D6000C8CE2 /* ExperiencePicker.swift in Sources */,
 				F7E1D6C1287F3E29000C8CE2 /* RecipePhoto.swift in Sources */,
 				F7C80A1F279BBFA800982843 /* CubicBezierData.swift in Sources */,
 				F7EE444E283EFC6400ACE932 /* VerticalUnitView.swift in Sources */,
@@ -752,6 +775,7 @@
 				F7F4597E27B34E6400B64772 /* WireEditView.swift in Sources */,
 				F79E3EE0281B594B00CD0520 /* MyHelpCommands.swift in Sources */,
 				F75CC4C6281EEE7200692CE5 /* AUComponentControllerView.swift in Sources */,
+				F7E1D6CC287F7A20000C8CE2 /* ContinueButton.swift in Sources */,
 				F79E3EDE281B586600CD0520 /* PreferencesView.swift in Sources */,
 				F75CC4AD281D8A8400692CE5 /* AudioUnitManager.swift in Sources */,
 				F779564A287C91A3007E569B /* EdgeProxy.swift in Sources */,

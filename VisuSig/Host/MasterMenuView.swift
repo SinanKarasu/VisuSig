@@ -18,31 +18,35 @@ struct MasterMenuView: View {
     
     
     var body: some View {
-        VStack {
-            SiKPlayerView(audioUnitManager: audioUnitComponents.audioUnitManager)
-            Picker("Module Type:", selection: $audioUnitType) {
-                Text("Effect").tag(AudioUnitType.effect)
-                Text("Instrument").tag(AudioUnitType.instrument)
+        HStack {
+            MasterContentView()
+            
+            VStack {
+                //1/ SiKPlayerView(audioUnitManager: audioUnitComponents.audioUnitManager)
+                Picker("Module Type:", selection: $audioUnitType) {
+                    Text("Effect").tag(AudioUnitType.effect)
+                    Text("Instrument").tag(AudioUnitType.instrument)
+                }
+                .pickerStyle(.segmented)
+                .onChange(of: audioUnitType) { tag in
+                    //            self.loaded = false
+                    //            self.startRunning()
+                }
+                //HStack {
+                //TopAUManagedMenuView(audioUnitComponents: audioUnitComponents) // probably delete this
+                //TopComponentMenuView(audioUnitComponents: audioUnitComponents)
+                SurfaceView(mesh: mesh, audioUnitComponents: audioUnitComponents)
+                //EffectsToolsView()
+                
+                switch audioUnitType {
+                case .effect:
+                    EffectsMenuView(audioUnitComponents: audioUnitComponents)
+                case .instrument:
+                    InstrumentsMenuView(audioUnitComponents: audioUnitComponents)
+                }
+                //}
+                //Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
             }
-            .pickerStyle(.segmented)
-            .onChange(of: audioUnitType) { tag in
-                //            self.loaded = false
-                //            self.startRunning()
-            }
-            //HStack {
-            //TopAUManagedMenuView(audioUnitComponents: audioUnitComponents) // probably delete this
-            //TopComponentMenuView(audioUnitComponents: audioUnitComponents)
-            SurfaceView(mesh: mesh, audioUnitComponents: audioUnitComponents)
-            //EffectsToolsView()
-
-            switch audioUnitType {
-            case .effect:
-                EffectsMenuView(audioUnitComponents: audioUnitComponents)
-            case .instrument:
-                InstrumentsMenuView(audioUnitComponents: audioUnitComponents)
-            }
-            //}
-            //Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
         }
     }
 }
