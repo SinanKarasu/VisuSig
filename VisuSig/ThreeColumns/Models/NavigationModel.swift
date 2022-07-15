@@ -16,7 +16,7 @@ final class NavigationModel: ObservableObject, Codable {
     private lazy var decoder = JSONDecoder()
     private lazy var encoder = JSONEncoder()
 
-    init(columnVisibility: NavigationSplitViewVisibility = .automatic,
+    init(columnVisibility: NavigationSplitViewVisibility = .all,
          selectedCategory: Category? = nil,
          recipePath: [Recipe] = []
     ) {

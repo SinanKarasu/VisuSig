@@ -47,7 +47,7 @@ struct ThreeColumnContentView: View {
                     }
                 } else {
                     Text("Choose a category")
-                        .navigationTitle("")
+                        .navigationTitle("HeyHey")
                 }
             }
         } detail: {

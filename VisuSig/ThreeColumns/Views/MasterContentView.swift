@@ -12,7 +12,7 @@ struct MasterContentView: View {
     @SceneStorage("experience") private var experience: Experience?
     @SceneStorage("navigation") private var navigationData: Data?
     @StateObject private var navigationModel = NavigationModel()
-    @State private var showExperiencePicker = false
+    @State private var showExperiencePicker = true
 
     var body: some View {
         Group {
