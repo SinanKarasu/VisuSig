@@ -19,7 +19,7 @@ struct MasterMenuView: View {
     
     var body: some View {
         HStack {
-            MasterContentView()
+            // MasterContentView() // This is the thre panel navigation
             
             VStack {
                 //1/ SiKPlayerView(audioUnitManager: audioUnitComponents.audioUnitManager)

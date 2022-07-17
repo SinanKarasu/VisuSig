@@ -123,7 +123,7 @@ struct SurfaceView: View, ContextMenuProtocol  {
                 {
                     ComponentsGridView(selectedIndex: shapeIndex, audioUnitComponents: audioUnitComponents)
                     //.frame(width: min(geometry.size.width - 100, 300))
-                        .frame(minWidth:600, minHeight: 400)
+                        .frame(minWidth:800, minHeight: 400)
                         .onDisappear {
                             //print("Gone:\($shapeIndex)")
                             if self.shapeIndex >= 0 {

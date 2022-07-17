@@ -8,12 +8,11 @@
 import SwiftUI
 
 struct ComponentGridView: View {
+    //@Environment(\.presentationMode) var presentationMode
     @Binding var selectedIndex: Int
-    @Environment(\.presentationMode) var presentationMode
-    
     let audioComponents: [Component]
-    let cellSize: CGSize
-    let viewSize: CGSize
+    var cellSize: CGSize
+    var viewSize: CGSize
     
     let padding: CGFloat = 10
     var columns: Int {
@@ -45,17 +44,21 @@ struct ComponentGridView: View {
     }
     
     var body: some View {
+        let _ = print(">>\(cellSize) , \(viewSize)")
+
         ForEach(0..<finalArray.count, id: \.self) { rowIndex in
             HStack(spacing: 0) {
                 ForEach(0..<finalArray[rowIndex].count, id: \.self) { columnIndex in
                     finalArray[rowIndex][columnIndex].componentIcon
                         .border(Color.yellow) // commentout
-                        .frame(width: cellSize.width, height: cellSize.height)
+                        //.frame(width: cellSize.width, height: cellSize.height)
+                        .frame(minWidth: cellSize.width, minHeight: cellSize.height)
+
                         .contentShape(Rectangle())
                         .padding(padding) // this adds padding around each shape.
                         .onTapGesture {
                             self.selectedIndex = rowIndex * self.columns + columnIndex
-                            self.presentationMode.wrappedValue.dismiss()
+                            //self.presentationMode.wrappedValue.dismiss()
                         }
                 }
             }
@@ -71,8 +74,8 @@ struct ComponentGridView_Previews: PreviewProvider {
     
     static var previews: some View {
         
-        let cellSize = CGSize(width: 100, height: 100)
-        let viewSize = CGSize(width:300, height:800)
+        let cellSize = CGSize(width: 200, height: 100)
+        let viewSize = CGSize(width:600, height:800)
         ComponentGridView(selectedIndex: $selectedIndex,
                           audioComponents: audioUnitComponents.audioUnitComponents,
                           cellSize: cellSize,

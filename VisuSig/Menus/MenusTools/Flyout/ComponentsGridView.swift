@@ -11,10 +11,10 @@ import SwiftUI
 struct ComponentsGridView: View {
     @Binding var selectedIndex: Int
     @ObservedObject var audioUnitComponents: AudioUnitComponents
-
+    let cellSize = CGSize(width: 150.0, height: 60.0)
+    let viewSize = CGSize(width:800.0, height:200.0)
     var body: some View {
-        let cellSize = CGSize(width: 100, height: 100)
-        let viewSize = CGSize(width:600, height:200)
+        let _ = print("\(cellSize) , \(viewSize)")
         GeometryReader { geometry in
             List {
                 Text("Select A Shape")
