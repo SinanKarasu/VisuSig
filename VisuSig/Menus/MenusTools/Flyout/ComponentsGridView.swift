@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct ComponentsGridView: View {
-    @Binding var selectedIndex: Int
+    //@Binding var selectedIndex: Int
     @ObservedObject var audioUnitComponents: AudioUnitComponents
     let cellSize = CGSize(width: 150.0, height: 60.0)
     let viewSize = CGSize(width:800.0, height:200.0)
@@ -18,7 +18,7 @@ struct ComponentsGridView: View {
         GeometryReader { geometry in
             List {
                 Text("Select A Shape")
-                ComponentGridView(selectedIndex: $selectedIndex,
+                ComponentGridLazyView(//selectedIndex: $selectedIndex,
                                audioComponents: audioUnitComponents.audioUnitComponents,
                            cellSize: cellSize,
                            //viewSize: geometry.size
@@ -36,6 +36,6 @@ struct ShapeGridView_Previews: PreviewProvider {
     @State static var selectedIndex: Int = 0
     @StateObject static var audioUnitComponents = AudioUnitComponents()
     static var previews: some View {
-        ComponentsGridView(selectedIndex: $selectedIndex, audioUnitComponents: audioUnitComponents)
+        ComponentsGridView( audioUnitComponents: audioUnitComponents)
     }
 }

@@ -1,0 +1,89 @@
+//
+//  ComponentGridView.swift
+//  ComponentGridView
+//
+//  Created by Sinan Karasu on 8/29/21.
+//
+
+import SwiftUI
+
+struct ComponentGridMenuView: View {
+    //@Environment(\.presentationMode) var presentationMode
+    //@Binding var selectedIndex: Int
+    let audioComponents: [Component]
+    var cellSize: CGSize
+    var viewSize: CGSize
+    
+    let padding: CGFloat = 10
+    var columns: Int {
+        var cols =  viewSize.width / cellSize.width
+        while (cols * cellSize.width + 2*padding * cols) > viewSize.width {
+            cols -= 1
+        }
+        return Int(max(1,cols))
+    }
+    
+    var finalArray: [[Component]] {
+        var array: [[Component]] = []
+        var rowArray: [Component] = []
+
+        for i in 0..<audioComponents.count {
+            if i % columns == 0 {
+                if i != 0 {
+                    array.append(rowArray)
+                }
+                rowArray  = []
+            }
+            rowArray.append(audioComponents[i])
+        }
+        while rowArray.count < columns {
+            rowArray.append(Component(nil, type: .effect))
+        }
+        array.append(rowArray)
+        return array
+    }
+    
+    var body: some View {
+        let _ = print(">>\(cellSize) , \(viewSize)")
+
+        let rows = [
+            GridItem(.fixed(50.00), spacing: 10),
+            GridItem(.adaptive(minimum: 20.00, maximum: 100.00), spacing: 10),
+            GridItem(.fixed(100.00), spacing: 10)]
+        
+        return ScrollView (. horizontal) {
+            LazyHGrid(rows: rows) {
+                
+                ForEach(0..<audioComponents.count, id: \.self) { rowIndex in
+                    audioComponents[rowIndex].componentIcon
+//                                .border(Color.yellow) // commentout
+                            .frame(width: cellSize.width, height: cellSize.height)
+//                                .frame(minWidth: cellSize.width, minHeight: cellSize.height)
+//
+                                .contentShape(Rectangle())
+                                .padding(padding) // this adds padding around each shape.
+//                                .onTapGesture {
+//                                    self.selectedIndex = rowIndex * self.columns + columnIndex
+//                                    //self.presentationMode.wrappedValue.dismiss()
+//                                }
+                }
+            }
+        }
+    }
+}
+
+struct ComponentGridMenuView_Previews: PreviewProvider {
+    @State static var selectedIndex: Int = 1
+    @StateObject static var audioUnitComponents = AudioUnitComponents()
+    
+    static var previews: some View {
+        
+        let cellSize = CGSize(width: 200, height: 100)
+        let viewSize = CGSize(width:600, height:800)
+        ComponentGridMenuView(//selectedIndex: $selectedIndex,
+                          audioComponents: audioUnitComponents.audioUnitComponents,
+                          cellSize: cellSize,
+                          viewSize: viewSize
+        )
+    }
+}

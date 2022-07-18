@@ -121,7 +121,7 @@ struct SurfaceView: View, ContextMenuProtocol  {
                 
                 .sheet(isPresented: self.$selection.showShapes)
                 {
-                    ComponentsGridView(selectedIndex: shapeIndex, audioUnitComponents: audioUnitComponents)
+                    ComponentsGridView( audioUnitComponents: audioUnitComponents)
                     //.frame(width: min(geometry.size.width - 100, 300))
                         .frame(minWidth:800, minHeight: 400)
                         .onDisappear {

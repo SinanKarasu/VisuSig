@@ -101,13 +101,13 @@ public struct Component: Identifiable {
 extension Component {
     var componentIcon : some View {
         return ZStack {
-            Image(systemName: "waveform.and.mic")
-                .resizable()
-                .scaledToFit()
-                .foregroundColor(.purple)
+//            Image(systemName: "waveform.and.mic")
+//                .resizable()
+//                .scaledToFit()
+//                .foregroundColor(.purple)
             Text(nameAndMFG)
                 .foregroundColor(.white)
-                .font(.system(size: 14))
+                .font(.system(size: 12))
         }
         //.frame(width:100, height:100)
     }
