@@ -60,14 +60,23 @@ struct ComponentTableView: View {
             Text("Entries:\($audioUnitComponents.audioUnitComponents.count)")
             Table(audioUnitComponents.audioUnitComponents, selection: $selection) {
                 //Text("id") { Text(String($0.id))}
+                //let comp = $0.avAudioUnitComponent
                 TableColumn("Name") { Text($0.name)}
                 TableColumn("Mfg", value: \.mfg)
-                TableColumn("Custom View")  {  Text("\($0.hasCustomView ? "true":"false")") }
-//                TableColumn("Seconds from GMT", value: \.offset) { Text("\($0.offset)")
+                TableColumn("Custom View")  {  viewOf($0.avAudioUnitComponent?.hasCustomView)  }
+                TableColumn("MIDI Input") { viewOf($0.avAudioUnitComponent?.hasMIDIInput) }
                 
             }
         }
         .frame(width: 600, height:800)
+    }
+
+    func viewOf(_ val: Bool?) -> some View {
+        if let val = val {
+            return Text(val ? "Y":"N")
+        } else {
+            return Text("unknown")
+        }
     }
 
 //    var body: some View {
