@@ -63,8 +63,8 @@ struct ComponentTableView: View {
                 //let comp = $0.avAudioUnitComponent
                 TableColumn("Name") { Text($0.name)}
                 TableColumn("Mfg", value: \.mfg)
-                TableColumn("Custom View")  {  viewOf($0.avAudioUnitComponent?.hasCustomView)  }
-                TableColumn("MIDI Input") { viewOf($0.avAudioUnitComponent?.hasMIDIInput) }
+                TableColumn("Custom\nView")  {  viewOf($0.avAudioUnitComponent?.hasCustomView)  }
+                TableColumn("MIDI\nInput") { viewOf($0.avAudioUnitComponent?.hasMIDIInput) }
                 
             }
         }
