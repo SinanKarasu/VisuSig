@@ -61,14 +61,18 @@ struct ComponentTableView: View {
             Table(audioUnitComponents.audioUnitComponents, selection: $selection) {
                 //Text("id") { Text(String($0.id))}
                 //let comp = $0.avAudioUnitComponent
-                TableColumn("Name") { Text($0.name)}
-                TableColumn("Mfg", value: \.mfg)
-                TableColumn("Custom\nView")  {  viewOf($0.avAudioUnitComponent?.hasCustomView)  }
-                TableColumn("MIDI\nInput") { viewOf($0.avAudioUnitComponent?.hasMIDIInput) }
+                TableColumn("Name") { Text($0.name)} //.width(min: 35, ideal: 35, max:   60)
+                TableColumn("Mfg", value: \.mfg) //.width(min: 35, ideal: 35, max:   60)
+                TableColumn("Type")             { viewOfStr($0.avAudioUnitComponent?.typeName) } //.width(min: 35, ideal: 35, max:   60)
+                TableColumn("Custom\nView")     { viewOf($0.avAudioUnitComponent?.hasCustomView)  }.width(min: 35, ideal: 35, max:   60)
+                TableColumn("MIDI\nInput")      { viewOf($0.avAudioUnitComponent?.hasMIDIInput) }.width(min: 35, ideal: 35, max:   60)
+                TableColumn("MIDI\nOutput")     { viewOf($0.avAudioUnitComponent?.hasMIDIOutput) }.width(min: 35, ideal: 35, max:   60)
+                TableColumn("PASS\nAUVal")      { viewOf($0.avAudioUnitComponent?.passesAUVal) }.width(min: 35, ideal: 35, max:   60)
+
                 
             }
         }
-        .frame(width: 600, height:800)
+        .frame(width: 800, height:800)
     }
 
     func viewOf(_ val: Bool?) -> some View {
@@ -78,6 +82,15 @@ struct ComponentTableView: View {
             return Text("unknown")
         }
     }
+    
+    func viewOfStr(_ val: String?) -> some View {
+        if let val = val {
+            return Text(val)
+        } else {
+            return Text("unknown")
+        }
+    }
+
 
 //    var body: some View {
 //        let _ = print(">>\(cellSize) , \(viewSize)")
