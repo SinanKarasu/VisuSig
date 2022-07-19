@@ -33,34 +33,23 @@ struct ComponentTableView: View {
     
     
     
-    var selectedCity: String {
-//        if let selection = selection {
-//            return selection.uuidString
-//        } else {
-//            return "no selection"
-//        }
-        
-        // 1
+    var selectedUnit: String {
         guard let selection = selection else {
             return "no selection"
         }
         
-        // 2
         let event = audioUnitComponents.audioUnitComponents.first {
             $0.id == selection
         }
-        // 3
         return event!.nameAndMFG
     }
 
     
     var body: some View {
         VStack {
-            Text("SELECTION: ").foregroundColor(.red) + Text(selectedCity)
+            Text("SELECTION: ").foregroundColor(.red) + Text(selectedUnit)
             Text("Entries:\($audioUnitComponents.audioUnitComponents.count)")
             Table(audioUnitComponents.audioUnitComponents, selection: $selection) {
-                //Text("id") { Text(String($0.id))}
-                //let comp = $0.avAudioUnitComponent
                 TableColumn("Name") { Text($0.name)} //.width(min: 35, ideal: 35, max:   60)
                 TableColumn("Mfg", value: \.mfg) //.width(min: 35, ideal: 35, max:   60)
                 TableColumn("Type")             { viewOfStr($0.avAudioUnitComponent?.typeName) } //.width(min: 35, ideal: 35, max:   60)
@@ -68,8 +57,6 @@ struct ComponentTableView: View {
                 TableColumn("MIDI\nInput")      { viewOfBool($0.avAudioUnitComponent?.hasMIDIInput) }.width(min: 35, ideal: 35, max:   60)
                 TableColumn("MIDI\nOutput")     { viewOfBool($0.avAudioUnitComponent?.hasMIDIOutput) }.width(min: 35, ideal: 35, max:   60)
                 TableColumn("PASS\nAUVal")      { viewOfBool($0.avAudioUnitComponent?.passesAUVal) }.width(min: 35, ideal: 35, max:   60)
-
-                
             }
         }
         .frame(width: 800, height:800)
