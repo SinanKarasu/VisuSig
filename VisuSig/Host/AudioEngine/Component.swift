@@ -74,30 +74,9 @@ public struct Component: Identifiable {
         avAudioUnitComponent = component
     }
 
-    public var nameAndMFG: String {
-        return "\(name) (\(mfg))"
-    }
-    
-    public var name: String {
-        guard let component = avAudioUnitComponent else {
-            return audioUnitType == .effect ? "(No Effect)" : "(No Instrument)"
-        }
-        return "\(component.name)"
-    }
-
-
-    public var mfg: String {
-        guard let component = avAudioUnitComponent else {
-            return "(No mfg)"
-        }
-        return "\(component.manufacturerName)"
-    }
-
-    public var hasCustomView: Bool {
-        return avAudioUnitComponent?.hasCustomView ?? false
-    }
 }
 
+// MARK: - identifiers for Tables etc..
 extension Component {
     
     var icon: Image {
@@ -118,6 +97,30 @@ extension Component {
         }
         //.frame(width:100, height:100)
     }
+    
+    public var nameAndMFG: String {
+        return "\(name) (\(mfg))"
+    }
+    
+    public var name: String {
+        guard let component = avAudioUnitComponent else {
+            return audioUnitType == .effect ? "(No Effect)" : "(No Instrument)"
+        }
+        return "\(component.name)"
+    }
+    
+    
+    public var mfg: String {
+        guard let component = avAudioUnitComponent else {
+            return "(No mfg)"
+        }
+        return "\(component.manufacturerName)"
+    }
+    
+    public var hasCustomView: Bool {
+        return avAudioUnitComponent?.hasCustomView ?? false
+    }
+
 }
 
 extension Component: Hashable {
