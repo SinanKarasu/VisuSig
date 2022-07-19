@@ -19,7 +19,7 @@ struct ComponentsGridView: View {
             List {
                 Text("Select A Shape")
                 ComponentTableView(//selectedIndex: $selectedIndex,
-                               audioComponents: audioUnitComponents.audioUnitComponents,
+                    audioUnitComponents: audioUnitComponents, //.audioUnitComponents,
                            cellSize: cellSize,
                            //viewSize: geometry.size
                            viewSize: viewSize

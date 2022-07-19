@@ -17,8 +17,8 @@ struct ComponentTableView: View {
         .init(\.nameAndMFG, order: SortOrder.forward)
     ]
 
-
-    let audioComponents: [Component]
+    @ObservedObject var audioUnitComponents: AudioUnitComponents
+    //let audioComponents: [Component]
     var cellSize: CGSize
     var viewSize: CGSize
     
@@ -45,16 +45,17 @@ struct ComponentTableView: View {
     var body: some View {
         VStack {
             Text("SELECTION: ").foregroundColor(.red) + Text(selectedCity)
-            
-            Table(audioComponents,  sortOrder: $order) {
-                TableColumn("Identifier", value: \.nameAndMFG)
-//                TableColumn("Abbreviation", value: \.abbreviation)
-//                TableColumn("Daylight", value: \.daylight) { Text($0.daylight) }
+            Text("Entries:\($audioUnitComponents.audioUnitComponents.count)")
+            Table(audioUnitComponents.audioUnitComponents) {
+                //Text("id") { Text(String($0.id))}
+                TableColumn("Identifier") { Text($0.name)}
+                TableColumn("Abbreviation", value: \.mfg)
+                TableColumn("Daylight")  {  Text("\($0.hasCustomView ? "true":"false")") }
 //                TableColumn("Seconds from GMT", value: \.offset) { Text("\($0.offset)")
                 
             }
         }
-        .frame(width: 600)
+        .frame(width: 600, height:800)
     }
 
 //    var body: some View {
@@ -72,18 +73,18 @@ struct ComponentTableView: View {
 //    }
 //}
 
-struct ComponentTableView_Previews: PreviewProvider {
-    @State static var selectedIndex: Int = 1
-    @StateObject static var audioUnitComponents = AudioUnitComponents()
-    
-    static var previews: some View {
-        
-        let cellSize = CGSize(width: 200, height: 100)
-        let viewSize = CGSize(width:600, height:800)
-        ComponentTableView(//selectedIndex: $selectedIndex,
-                          audioComponents: audioUnitComponents.audioUnitComponents,
-                          cellSize: cellSize,
-                          viewSize: viewSize
-        )
-    }
-}
+//struct ComponentTableView_Previews: PreviewProvider {
+//    @State static var selectedIndex: Int = 1
+//    @StateObject static var audioUnitComponents = AudioUnitComponents()
+//
+//    static var previews: some View {
+//
+//        let cellSize = CGSize(width: 200, height: 100)
+//        let viewSize = CGSize(width:600, height:800)
+//        ComponentTableView(//selectedIndex: $selectedIndex,
+//                          audioComponents: audioUnitComponents.audioUnitComponents,
+//                          cellSize: cellSize,
+//                          viewSize: viewSize
+//        )
+//    }
+//}
