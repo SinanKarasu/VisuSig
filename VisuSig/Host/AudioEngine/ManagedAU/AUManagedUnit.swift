@@ -8,7 +8,7 @@
 import CoreAudioKit
 
 import AVFoundation
-
+import SwiftUI
 
 class AUManagedUnit: ObservableObject, Identifiable, Hashable {
     static func == (lhs: AUManagedUnit, rhs: AUManagedUnit) -> Bool {
@@ -27,11 +27,15 @@ class AUManagedUnit: ObservableObject, Identifiable, Hashable {
     let componentViewController = ComponentViewController()
     var iconOld: NSImage? = nil
     
-    var icon: NSImage? {
-        get {
-            protoType?.avAudioUnitComponent?.icon ?? nil
-        }
-    }
+//    var icon: Image {
+//        get {
+//            if let x = protoType?.avAudioUnitComponent?.icon {
+//                return Image(nsImage: x)
+//            }
+//            return Image(systemName:"waveform.and.mic")
+//
+//        }
+//    }
     
     var nsViewController: NSViewController? = nil
     let audiioUnitType: AudioUnitType

@@ -46,28 +46,8 @@ struct ComponentGridMenuView: View {
     var body: some View {
         let _ = print(">>\(cellSize) , \(viewSize)")
 
-        let rows = [
-            GridItem(.fixed(50.00), spacing: 10),
-            GridItem(.adaptive(minimum: 20.00, maximum: 100.00), spacing: 10),
-            GridItem(.fixed(100.00), spacing: 10)]
-        
-        return ScrollView (. horizontal) {
-            LazyHGrid(rows: rows) {
-                
-                ForEach(0..<audioComponents.count, id: \.self) { rowIndex in
-                    audioComponents[rowIndex].componentIcon
-//                                .border(Color.yellow) // commentout
-                            .frame(width: cellSize.width, height: cellSize.height)
-//                                .frame(minWidth: cellSize.width, minHeight: cellSize.height)
-//
-                                .contentShape(Rectangle())
-                                .padding(padding) // this adds padding around each shape.
-//                                .onTapGesture {
-//                                    self.selectedIndex = rowIndex * self.columns + columnIndex
-//                                    //self.presentationMode.wrappedValue.dismiss()
-//                                }
-                }
-            }
+        List(audioComponents) { item in
+            item.componentIcon
         }
     }
 }

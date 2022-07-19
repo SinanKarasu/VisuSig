@@ -99,12 +99,19 @@ public struct Component: Identifiable {
 }
 
 extension Component {
+    
+    var icon: Image {
+        get {
+            if let x = avAudioUnitComponent?.icon {
+                return Image(nsImage: x)
+            }
+            return Image(systemName:"waveform.and.mic")
+        }
+    }
+
     var componentIcon : some View {
         return ZStack {
-//            Image(systemName: "waveform.and.mic")
-//                .resizable()
-//                .scaledToFit()
-//                .foregroundColor(.purple)
+            //icon
             Text(nameAndMFG)
                 .foregroundColor(.white)
                 .font(.system(size: 12))
