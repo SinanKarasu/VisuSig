@@ -142,10 +142,10 @@
             filePath = "VisuSig/Menus/MenusTools/Flyout/ComponentTableView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "51"
-            endingLineNumber = "51"
-            landmarkName = "body"
-            landmarkType = "24">
+            startingLineNumber = "63"
+            endingLineNumber = "63"
+            landmarkName = "ComponentTableView"
+            landmarkType = "14">
             <Locations>
                <Location
                   uuid = "FC294CA3-5E30-47F4-B435-0838E786EC16 - f0e746a68058fe07"
@@ -190,8 +190,8 @@
             filePath = "VisuSig/Menus/MenusTools/Flyout/ComponentTableView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "49"
-            endingLineNumber = "49"
+            startingLineNumber = "61"
+            endingLineNumber = "61"
             landmarkName = "body"
             landmarkType = "24">
             <Locations>
@@ -238,10 +238,10 @@
             filePath = "VisuSig/Menus/MenusTools/Flyout/ComponentTableView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "52"
-            endingLineNumber = "52"
-            landmarkName = "body"
-            landmarkType = "24">
+            startingLineNumber = "64"
+            endingLineNumber = "64"
+            landmarkName = "ComponentTableView"
+            landmarkType = "14">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -254,10 +254,10 @@
             filePath = "VisuSig/Menus/MenusTools/Flyout/ComponentTableView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "53"
-            endingLineNumber = "53"
-            landmarkName = "body"
-            landmarkType = "24">
+            startingLineNumber = "65"
+            endingLineNumber = "65"
+            landmarkName = "ComponentTableView"
+            landmarkType = "14">
             <Locations>
                <Location
                   uuid = "A5FFA1CB-3BC3-48DA-8236-CAB7C2BA1053 - f0e746a68058fec5"

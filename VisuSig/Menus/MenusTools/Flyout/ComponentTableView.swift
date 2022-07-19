@@ -11,7 +11,7 @@ struct ComponentTableView: View {
     //@Environment(\.presentationMode) var presentationMode
     //@Binding var selectedIndex: Int
     
-    @State private var selection: Component? = nil
+    @State private var selection: UUID? = nil
     
     @State private var order: [KeyPathComparator<Component>] = [
         .init(\.nameAndMFG, order: SortOrder.forward)
@@ -34,11 +34,23 @@ struct ComponentTableView: View {
     
     
     var selectedCity: String {
-        if let selection = selection {
-            return selection.nameAndMFG
-        } else {
+//        if let selection = selection {
+//            return selection.uuidString
+//        } else {
+//            return "no selection"
+//        }
+        
+        // 1
+        guard let selection = selection else {
             return "no selection"
         }
+        
+        // 2
+        let event = audioUnitComponents.audioUnitComponents.first {
+            $0.id == selection
+        }
+        // 3
+        return event!.nameAndMFG
     }
 
     
@@ -46,11 +58,11 @@ struct ComponentTableView: View {
         VStack {
             Text("SELECTION: ").foregroundColor(.red) + Text(selectedCity)
             Text("Entries:\($audioUnitComponents.audioUnitComponents.count)")
-            Table(audioUnitComponents.audioUnitComponents) {
+            Table(audioUnitComponents.audioUnitComponents, selection: $selection) {
                 //Text("id") { Text(String($0.id))}
-                TableColumn("Identifier") { Text($0.name)}
-                TableColumn("Abbreviation", value: \.mfg)
-                TableColumn("Daylight")  {  Text("\($0.hasCustomView ? "true":"false")") }
+                TableColumn("Name") { Text($0.name)}
+                TableColumn("Mfg", value: \.mfg)
+                TableColumn("Custom View")  {  Text("\($0.hasCustomView ? "true":"false")") }
 //                TableColumn("Seconds from GMT", value: \.offset) { Text("\($0.offset)")
                 
             }
