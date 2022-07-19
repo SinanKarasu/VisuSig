@@ -18,7 +18,7 @@ struct ComponentsGridView: View {
         GeometryReader { geometry in
             List {
                 Text("Select A Shape")
-                ComponentGridLazyView(//selectedIndex: $selectedIndex,
+                ComponentTableView(//selectedIndex: $selectedIndex,
                                audioComponents: audioUnitComponents.audioUnitComponents,
                            cellSize: cellSize,
                            //viewSize: geometry.size

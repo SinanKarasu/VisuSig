@@ -37,6 +37,7 @@
 		F781CF0C2821D7B600ADBF6E /* SiKAudioMixer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F781CF0B2821D7B600ADBF6E /* SiKAudioMixer.swift */; };
 		F78DFA462884CCFE003AC7BD /* ComponentGridLazyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F78DFA452884CCFE003AC7BD /* ComponentGridLazyView.swift */; };
 		F78DFA482884ED98003AC7BD /* ComponentGridMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F78DFA472884ED98003AC7BD /* ComponentGridMenuView.swift */; };
+		F78DFA6B288644A9003AC7BD /* ComponentTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F78DFA6A288644A9003AC7BD /* ComponentTableView.swift */; };
 		F798E8C5283B232900444FE3 /* EffectsToolsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F798E8C4283B232900444FE3 /* EffectsToolsView.swift */; };
 		F798E8C7283B237A00444FE3 /* EffectStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = F798E8C6283B237A00444FE3 /* EffectStorage.swift */; };
 		F798E97B283C620A00444FE3 /* TopComponentMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F798E97A283C620A00444FE3 /* TopComponentMenuView.swift */; };
@@ -141,6 +142,7 @@
 		F781CF0B2821D7B600ADBF6E /* SiKAudioMixer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiKAudioMixer.swift; sourceTree = "<group>"; };
 		F78DFA452884CCFE003AC7BD /* ComponentGridLazyView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComponentGridLazyView.swift; sourceTree = "<group>"; };
 		F78DFA472884ED98003AC7BD /* ComponentGridMenuView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComponentGridMenuView.swift; sourceTree = "<group>"; };
+		F78DFA6A288644A9003AC7BD /* ComponentTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComponentTableView.swift; sourceTree = "<group>"; };
 		F798E8C4283B232900444FE3 /* EffectsToolsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EffectsToolsView.swift; sourceTree = "<group>"; };
 		F798E8C6283B237A00444FE3 /* EffectStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EffectStorage.swift; sourceTree = "<group>"; };
 		F798E97A283C620A00444FE3 /* TopComponentMenuView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopComponentMenuView.swift; sourceTree = "<group>"; };
@@ -592,6 +594,7 @@
 				F798E97D283C73B600444FE3 /* ComponentGridView.swift */,
 				F78DFA452884CCFE003AC7BD /* ComponentGridLazyView.swift */,
 				F78DFA472884ED98003AC7BD /* ComponentGridMenuView.swift */,
+				F78DFA6A288644A9003AC7BD /* ComponentTableView.swift */,
 				F7CE746027BD64DF00BBF6A2 /* MenuOptions.swift */,
 				F7CE746127BD64DF00BBF6A2 /* FlyoutMenuMainView.swift */,
 				F7CE746427BD658800BBF6A2 /* View+Extensions.swift */,
@@ -783,6 +786,7 @@
 				F79E3EE0281B594B00CD0520 /* MyHelpCommands.swift in Sources */,
 				F75CC4C6281EEE7200692CE5 /* AUComponentControllerView.swift in Sources */,
 				F7E1D6CC287F7A20000C8CE2 /* ContinueButton.swift in Sources */,
+				F78DFA6B288644A9003AC7BD /* ComponentTableView.swift in Sources */,
 				F79E3EDE281B586600CD0520 /* PreferencesView.swift in Sources */,
 				F75CC4AD281D8A8400692CE5 /* AudioUnitManager.swift in Sources */,
 				F779564A287C91A3007E569B /* EdgeProxy.swift in Sources */,
