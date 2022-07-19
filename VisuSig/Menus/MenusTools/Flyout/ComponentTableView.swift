@@ -64,10 +64,10 @@ struct ComponentTableView: View {
                 TableColumn("Name") { Text($0.name)} //.width(min: 35, ideal: 35, max:   60)
                 TableColumn("Mfg", value: \.mfg) //.width(min: 35, ideal: 35, max:   60)
                 TableColumn("Type")             { viewOfStr($0.avAudioUnitComponent?.typeName) } //.width(min: 35, ideal: 35, max:   60)
-                TableColumn("Custom\nView")     { viewOf($0.avAudioUnitComponent?.hasCustomView)  }.width(min: 35, ideal: 35, max:   60)
-                TableColumn("MIDI\nInput")      { viewOf($0.avAudioUnitComponent?.hasMIDIInput) }.width(min: 35, ideal: 35, max:   60)
-                TableColumn("MIDI\nOutput")     { viewOf($0.avAudioUnitComponent?.hasMIDIOutput) }.width(min: 35, ideal: 35, max:   60)
-                TableColumn("PASS\nAUVal")      { viewOf($0.avAudioUnitComponent?.passesAUVal) }.width(min: 35, ideal: 35, max:   60)
+                TableColumn("Custom\nView")     { viewOfBool($0.avAudioUnitComponent?.hasCustomView)  }.width(min: 35, ideal: 35, max:   60)
+                TableColumn("MIDI\nInput")      { viewOfBool($0.avAudioUnitComponent?.hasMIDIInput) }.width(min: 35, ideal: 35, max:   60)
+                TableColumn("MIDI\nOutput")     { viewOfBool($0.avAudioUnitComponent?.hasMIDIOutput) }.width(min: 35, ideal: 35, max:   60)
+                TableColumn("PASS\nAUVal")      { viewOfBool($0.avAudioUnitComponent?.passesAUVal) }.width(min: 35, ideal: 35, max:   60)
 
                 
             }
@@ -75,7 +75,7 @@ struct ComponentTableView: View {
         .frame(width: 800, height:800)
     }
 
-    func viewOf(_ val: Bool?) -> some View {
+    func viewOfBool(_ val: Bool?) -> some View {
         if let val = val {
             return Text(val ? "Y":"N")
         } else {
@@ -90,35 +90,21 @@ struct ComponentTableView: View {
             return Text("unknown")
         }
     }
-
-
-//    var body: some View {
-//        let _ = print(">>\(cellSize) , \(viewSize)")
-//
-//        List(audioComponents) { item in
-//            item.componentIcon
-//        }
-//    }
 }
 
-//extension UUID: Comparable {
-//    public static func <(lhs: UUID, rhs: UUID) -> Bool {
-//        return lhs < rhs
-//    }
-//}
 
-//struct ComponentTableView_Previews: PreviewProvider {
-//    @State static var selectedIndex: Int = 1
-//    @StateObject static var audioUnitComponents = AudioUnitComponents()
-//
-//    static var previews: some View {
-//
-//        let cellSize = CGSize(width: 200, height: 100)
-//        let viewSize = CGSize(width:600, height:800)
-//        ComponentTableView(//selectedIndex: $selectedIndex,
-//                          audioComponents: audioUnitComponents.audioUnitComponents,
-//                          cellSize: cellSize,
-//                          viewSize: viewSize
-//        )
-//    }
-//}
+struct ComponentTableView_Previews: PreviewProvider {
+    @State static var selectedIndex: Int = 1
+    @StateObject static var audioUnitComponents = AudioUnitComponents()
+
+    static var previews: some View {
+
+        let cellSize = CGSize(width: 200, height: 100)
+        let viewSize = CGSize(width:600, height:800)
+        ComponentTableView(//selectedIndex: $selectedIndex,
+            audioUnitComponents: audioUnitComponents,
+                          cellSize: cellSize,
+                          viewSize: viewSize
+        )
+    }
+}
