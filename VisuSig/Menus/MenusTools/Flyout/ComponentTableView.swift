@@ -19,20 +19,6 @@ struct ComponentTableView: View {
 
     @ObservedObject var audioUnitComponents: AudioUnitComponents
     @ObservedObject var selectionHandler: SelectionHandler
-    //let audioComponents: [Component]
-//    var cellSize: CGSize
-//    var viewSize: CGSize
-    
-    let padding: CGFloat = 10
-//    var columns: Int {
-//        var cols =  viewSize.width / cellSize.width
-//        while (cols * cellSize.width + 2*padding * cols) > viewSize.width {
-//            cols -= 1
-//        }
-//        return Int(max(1,cols))
-//    }
-    
-    
     
     var selectedUnit: String {
         guard let selection = selection else {
