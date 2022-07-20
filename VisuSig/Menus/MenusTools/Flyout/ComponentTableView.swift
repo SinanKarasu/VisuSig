@@ -18,18 +18,19 @@ struct ComponentTableView: View {
     ]
 
     @ObservedObject var audioUnitComponents: AudioUnitComponents
+    @ObservedObject var selectionHandler: SelectionHandler
     //let audioComponents: [Component]
-    var cellSize: CGSize
-    var viewSize: CGSize
+//    var cellSize: CGSize
+//    var viewSize: CGSize
     
     let padding: CGFloat = 10
-    var columns: Int {
-        var cols =  viewSize.width / cellSize.width
-        while (cols * cellSize.width + 2*padding * cols) > viewSize.width {
-            cols -= 1
-        }
-        return Int(max(1,cols))
-    }
+//    var columns: Int {
+//        var cols =  viewSize.width / cellSize.width
+//        while (cols * cellSize.width + 2*padding * cols) > viewSize.width {
+//            cols -= 1
+//        }
+//        return Int(max(1,cols))
+//    }
     
     
     
@@ -85,13 +86,6 @@ struct ComponentTableView_Previews: PreviewProvider {
     @StateObject static var audioUnitComponents = AudioUnitComponents()
 
     static var previews: some View {
-
-        let cellSize = CGSize(width: 200, height: 100)
-        let viewSize = CGSize(width:600, height:800)
-        ComponentTableView(//selectedIndex: $selectedIndex,
-            audioUnitComponents: audioUnitComponents,
-                          cellSize: cellSize,
-                          viewSize: viewSize
-        )
+        ComponentTableView(audioUnitComponents: audioUnitComponents, selectionHandler: SelectionHandler())
     }
 }
