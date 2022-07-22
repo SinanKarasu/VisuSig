@@ -28,15 +28,22 @@ struct CurvePointView: View {
             .onEnded { value in
                 self.dragging = false
                 point = point0 + (value.location - value.startLocation)
-                point0 = point
+                DispatchQueue.main.async {
+                    point0 = point
+                }
             }
             .onChanged { value in
                 if !self.dragging {
-                    self.dragging = true
-                    point0 = point
+                    DispatchQueue.main.async {
+                        self.dragging = true
+                        point0 = point
+                        point = point0 + (value.location - value.startLocation)
+                    }
+                } else {
+                    DispatchQueue.main.async {
+                        point = point0 + (value.location - value.startLocation)
+                    }
                 }
-                point = point0 + (value.location - value.startLocation)
-
             }
         GeometryReader { proxy in
             Circle()

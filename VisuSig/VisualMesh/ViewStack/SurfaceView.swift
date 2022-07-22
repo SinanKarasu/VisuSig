@@ -8,17 +8,6 @@ struct SurfaceView: View, ContextMenuProtocol  {
     @StateObject var mesh: Mesh
     @StateObject var selection = SelectionHandler()
     @StateObject var portalState = PortalState()
-    //dragging
-//    @State var portalPosition: CGPoint = .zero
-//    @State var dragOffset: CGSize = .zero
-//    @State var isDragging: Bool = false
-//    @State var isDraggingMesh: Bool = false
-//    @State var isWiring: Bool = false
-//
-//    //zooming
-//    @State var zoomScale: CGFloat = 1.0
-//    @State var initialZoomScale: CGFloat?
-//    @State var initialPortalPosition: CGPoint?
     
     @GestureState private var gestureState: CGPoint = .zero
     
@@ -26,18 +15,10 @@ struct SurfaceView: View, ContextMenuProtocol  {
     
     @ObservedObject var audioUnitComponents: AudioUnitComponents
     
-    
-    
-    //    @State var whereAt: CGPoint = .zero
-//    @State var frame: CGRect = .zero
-    
     var body: some View {
         return VStack {
             PortalPositionView(
                 portalState: portalState,
-//                portalPosition: $portalPosition,
-//                dragOffset: $dragOffset,
-//                zoomScale: $zoomScale,
                 whereAt: $selection.whereAt,
                 frame: $portalState.frame
             )

@@ -9,14 +9,9 @@ import SwiftUI
 
 struct PortView: View {
     var port: PortBase
-    //    var isSelected: Bool {
-    //        return selection.isPortSelected(port)
-    //    }
     @ObservedObject var selection: SelectionHandler
     
-    //@GestureState private var gestureState: CGPoint = .zero
     @State var overImg = false
-    @State var inPortReader = false
     var portInfo: some View {
         VStack {
             port.portInfo

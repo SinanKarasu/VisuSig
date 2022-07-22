@@ -10,7 +10,6 @@ struct InstrumentsMenuView: View {
     private  let audioUnitType = AudioUnitType.instrument
     @ObservedObject var audioUnitComponents: AudioUnitComponents
     
-    @State var loaded: Bool = false
     
     var audioUnitManager: AudioUnitManager {
         audioUnitComponents.audioUnitManager

@@ -11,7 +11,6 @@ struct MasterMenuView: View {
     
     @StateObject var audioUnitComponents = AudioUnitComponents()
     @State private  var audioUnitType = AudioUnitType.effect
-    @State var loaded: Bool = false
     
     @StateObject var mesh: Mesh = Mesh.sampleMesh()
 

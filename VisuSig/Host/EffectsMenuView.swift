@@ -9,9 +9,7 @@ import SwiftUI
 struct EffectsMenuView: View {
     private  let audioUnitType = AudioUnitType.effect
     @ObservedObject var audioUnitComponents: AudioUnitComponents
-    
-    @State var loaded: Bool = false
-    
+        
     var audioUnitManager: AudioUnitManager {
         audioUnitComponents.audioUnitManager
     }

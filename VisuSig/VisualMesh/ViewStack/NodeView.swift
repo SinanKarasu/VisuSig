@@ -3,12 +3,8 @@ import SwiftUI
 
 struct NodeView: View {
     
-    //static let width = CGFloat(100)
     @Binding var node: NodeBase
     @ObservedObject var selection: SelectionHandler
-    //@GestureState private var gestureState: CGPoint = .zero
-    @State var forceUpdate = false
-    
     
     var selected: Bool {
         return selection.isNodeSelected(node)
@@ -24,7 +20,7 @@ struct NodeView: View {
                             DispatchQueue.main.async {
                                 self.selection.selectNode(node)
                                 node.addPort(port: PortBase(node: node, name: "\(node.ports.count)"))
-                                forceUpdate.toggle()
+                                //forceUpdate.toggle()
                             }
                         })
                         Button("♠️♠️ - Spades", action: {

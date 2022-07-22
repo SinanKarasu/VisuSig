@@ -12,7 +12,6 @@ struct WireEditView: View {
 
     @ObservedObject var selection: SelectionHandler
     var showPoints: Bool = false
-    @State var overWire = false
 
 
     var body: some View {
