@@ -9,9 +9,11 @@ import SwiftUI
 
 struct PortalPositionView: View {
 
-    @Binding var portalPosition: CGPoint
-    @Binding var dragOffset: CGSize
-    @Binding var zoomScale: CGFloat
+//    @Binding var portalPosition: CGPoint
+//    @Binding var dragOffset: CGSize
+//    @Binding var zoomScale: CGFloat
+    @ObservedObject var portalState: PortalState
+
     @Binding var whereAt: CGPoint
     @Binding var frame: CGRect
     //let proxySize: CGSize
@@ -22,13 +24,13 @@ struct PortalPositionView: View {
             //let p = whereAt - proxySize/2
             HStack {
                 Text(String(format:"drag offset = w:%04.0f\th:%04.0f",
-                            arguments:[dragOffset.width, dragOffset.height])
+                            arguments:[portalState.dragOffset.width, portalState.dragOffset.height])
                 )
                 .font(Font.system(.body, design: .monospaced))
                 .foregroundColor(.orange)
 
                 Text(String(format: "portal position = x:%04.0f\ty:%04.0f",
-                            arguments:[portalPosition.x,portalPosition.y])
+                            arguments:[portalState.portalPosition.x,portalState.portalPosition.y])
                 )
                 .font(Font.system(.body, design: .monospaced))
                 .foregroundColor(.green)
@@ -41,7 +43,7 @@ struct PortalPositionView: View {
                 .font(Font.system(.body, design: .monospaced))
                 .foregroundColor(.red)
 
-                Text(String(format: "zoom: %02.2f", zoomScale))
+                Text(String(format: "zoom: %02.2f", portalState.zoomScale))
                     .font(Font.system(.body, design: .monospaced))
                     .foregroundColor(.purple)
 

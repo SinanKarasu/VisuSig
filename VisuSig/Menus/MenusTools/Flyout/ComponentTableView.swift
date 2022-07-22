@@ -34,8 +34,19 @@ struct ComponentTableView: View {
     
     var body: some View {
         VStack {
-            Text("SELECTION: ").foregroundColor(.red) + Text(selectedUnit)
+            HStack {
+                Text("SELECTION: ").foregroundColor(.red) + Text(selectedUnit)
+                Button ("Choose"){
+                    self.selectionHandler.showShapes = false
+                }
+                Button ("Cancel"){
+                    self.selectionHandler.showShapes = false
+                }
+
+            }
+            
             Text("Entries:\($audioUnitComponents.audioUnitComponents.count)")
+
             Table(audioUnitComponents.audioUnitComponents, selection: $selection) {
                 TableColumn("Name") { Text($0.name)} //.width(min: 35, ideal: 35, max:   60)
                 TableColumn("Mfg", value: \.mfg) //.width(min: 35, ideal: 35, max:   60)

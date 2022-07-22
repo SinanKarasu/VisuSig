@@ -36,6 +36,7 @@
 		F779564C287CBE58007E569B /* AudioGraph.swift in Sources */ = {isa = PBXBuildFile; fileRef = F779564B287CBE58007E569B /* AudioGraph.swift */; };
 		F781CF0C2821D7B600ADBF6E /* SiKAudioMixer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F781CF0B2821D7B600ADBF6E /* SiKAudioMixer.swift */; };
 		F78DFA6B288644A9003AC7BD /* ComponentTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F78DFA6A288644A9003AC7BD /* ComponentTableView.swift */; };
+		F797EA93288A26E60092F811 /* PortalState.swift in Sources */ = {isa = PBXBuildFile; fileRef = F797EA92288A26E60092F811 /* PortalState.swift */; };
 		F798E8C5283B232900444FE3 /* EffectsToolsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F798E8C4283B232900444FE3 /* EffectsToolsView.swift */; };
 		F798E8C7283B237A00444FE3 /* EffectStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = F798E8C6283B237A00444FE3 /* EffectStorage.swift */; };
 		F798E97B283C620A00444FE3 /* TopComponentMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F798E97A283C620A00444FE3 /* TopComponentMenuView.swift */; };
@@ -137,6 +138,7 @@
 		F779564B287CBE58007E569B /* AudioGraph.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioGraph.swift; sourceTree = "<group>"; };
 		F781CF0B2821D7B600ADBF6E /* SiKAudioMixer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiKAudioMixer.swift; sourceTree = "<group>"; };
 		F78DFA6A288644A9003AC7BD /* ComponentTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComponentTableView.swift; sourceTree = "<group>"; };
+		F797EA92288A26E60092F811 /* PortalState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortalState.swift; sourceTree = "<group>"; };
 		F798E8C4283B232900444FE3 /* EffectsToolsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EffectsToolsView.swift; sourceTree = "<group>"; };
 		F798E8C6283B237A00444FE3 /* EffectStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EffectStorage.swift; sourceTree = "<group>"; };
 		F798E97A283C620A00444FE3 /* TopComponentMenuView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopComponentMenuView.swift; sourceTree = "<group>"; };
@@ -456,6 +458,7 @@
 				F7C809FA279B50AC00982843 /* NodeView.swift */,
 				F7FA953127B0635800140F5D /* PortView.swift */,
 				F7C809F6279B4FCB00982843 /* SurfaceView.swift */,
+				F797EA92288A26E60092F811 /* PortalState.swift */,
 			);
 			path = ViewStack;
 			sourceTree = "<group>";
@@ -697,6 +700,7 @@
 				F75FF8D52839EF1A00BC5AC1 /* TopAUManagedMenuView.swift in Sources */,
 				F7C809EB279B4F2500982843 /* NodeBase.swift in Sources */,
 				F7C80A17279BBF3700982843 /* PortBase.swift in Sources */,
+				F797EA93288A26E60092F811 /* PortalState.swift in Sources */,
 				F7C809C8279B299200982843 /* ContentView.swift in Sources */,
 				F7E1D6C5287F797A000C8CE2 /* Experience.swift in Sources */,
 				F79E3EEB281BA1A400CD0520 /* MyContentView.swift in Sources */,

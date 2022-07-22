@@ -7,18 +7,18 @@ struct SurfaceView: View, ContextMenuProtocol  {
     
     @StateObject var mesh: Mesh
     @StateObject var selection = SelectionHandler()
-    
+    @StateObject var portalState = PortalState()
     //dragging
-    @State var portalPosition: CGPoint = .zero
-    @State var dragOffset: CGSize = .zero
-    @State var isDragging: Bool = false
-    @State var isDraggingMesh: Bool = false
-    @State var isWiring: Bool = false
-    
-    //zooming
-    @State var zoomScale: CGFloat = 1.0
-    @State var initialZoomScale: CGFloat?
-    @State var initialPortalPosition: CGPoint?
+//    @State var portalPosition: CGPoint = .zero
+//    @State var dragOffset: CGSize = .zero
+//    @State var isDragging: Bool = false
+//    @State var isDraggingMesh: Bool = false
+//    @State var isWiring: Bool = false
+//
+//    //zooming
+//    @State var zoomScale: CGFloat = 1.0
+//    @State var initialZoomScale: CGFloat?
+//    @State var initialPortalPosition: CGPoint?
     
     @GestureState private var gestureState: CGPoint = .zero
     
@@ -29,29 +29,17 @@ struct SurfaceView: View, ContextMenuProtocol  {
     
     
     //    @State var whereAt: CGPoint = .zero
-    @State var frame: CGRect = .zero
+//    @State var frame: CGRect = .zero
     
     var body: some View {
-        let shapeIndex = Binding<Int> (
-            get: {
-                self.shapeIndex
-            },
-            set: {
-                self.shapeIndex = $0
-                //                if let cell = self.cellData.selectedCell {
-                //                    let index = self.cellData.indexOf(cell: cell)
-                //                    let shapeType = ShapeType.allCases[self.shapeIndex]
-                //                    self.cellData.cells[index].update(shapeType: shapeType)
-                //                }
-            })
-        
         return VStack {
             PortalPositionView(
-                portalPosition: $portalPosition,
-                dragOffset: $dragOffset,
-                zoomScale: $zoomScale,
+                portalState: portalState,
+//                portalPosition: $portalPosition,
+//                dragOffset: $dragOffset,
+//                zoomScale: $zoomScale,
                 whereAt: $selection.whereAt,
-                frame: $frame
+                frame: $portalState.frame
             )
             SelectionHandlerView(selection: selection)
             TextField("Breathe…", text: self.$selection.editingText, onCommit: {
@@ -62,16 +50,16 @@ struct SurfaceView: View, ContextMenuProtocol  {
             
             GeometryReader { proxy in
                 ZStack{
-                    GridCompleteView(size: mesh.meshGranularity * zoomScale)
+                    GridCompleteView(size: mesh.meshGranularity * portalState.zoomScale)
                     MouseLocationView(onMove: pointerCallback)
                     Rectangle().fill(Color.orange).opacity(0.2)
                     
                     MapView(selection: self.selection, mesh: self.mesh)
-                        .scaleEffect(self.zoomScale)
-                        .offset(x: self.portalPosition.x + self.dragOffset.width,
-                                y: self.portalPosition.y + self.dragOffset.height)
+                        .scaleEffect(self.portalState.zoomScale)
+                        .offset(x: self.portalState.portalPosition.x + self.portalState.dragOffset.width,
+                                y: self.portalState.portalPosition.y + self.portalState.dragOffset.height)
                     
-                    if self.isWiring {
+                    if self.portalState.isWiring {
                         SimplePathView(start: selection.startLocation, end: selection.draggingLocation)
                             .zIndex(1)
                     }
@@ -92,16 +80,16 @@ struct SurfaceView: View, ContextMenuProtocol  {
                 .gesture(
                     MagnificationGesture()
                         .onChanged { value in
-                            if self.initialZoomScale == nil {
-                                self.initialZoomScale = self.zoomScale
-                                self.initialPortalPosition = self.portalPosition
+                            if self.portalState.initialZoomScale == nil {
+                                self.portalState.initialZoomScale = self.portalState.zoomScale
+                                self.portalState.initialPortalPosition = self.portalState.portalPosition
                             }
                             self.processScaleChange(value)
                         }
                         .onEnded { value in
                             self.processScaleChange(value)
-                            self.initialZoomScale = nil
-                            self.initialPortalPosition  = nil
+                            self.portalState.initialZoomScale = nil
+                            self.portalState.initialPortalPosition  = nil
                         }
                 )
                 .onTapGesture {
@@ -131,11 +119,11 @@ struct SurfaceView: View, ContextMenuProtocol  {
                                 component.instantiateComponent() { result in
                                     switch result {
                                 case .success(let au):
-                                        addNewNode(mesh: mesh, whereAt: selection.whereAt, containerSize: proxy.size, portalPosition: portalPosition, zoomScale: zoomScale, payload: au)
+                                        addNewNode(mesh: mesh, whereAt: selection.whereAt, containerSize: proxy.size, portalPosition: portalState.portalPosition, zoomScale: portalState.zoomScale, payload: au)
                                 case .failure(let error):
                                     logger.log("Unable to select audio unit: \(String(describing: error))")
                                 }
-                                    self.shapeIndex = -1
+                                    //self.shapeIndex = -1
                                 }
                             }
                         }
@@ -154,7 +142,7 @@ struct SurfaceView: View, ContextMenuProtocol  {
     }
     
     func pointerCallback(_ point: NSPoint, bounds: CGRect) {
-        self.frame = bounds
+        self.portalState.frame = bounds
         self.selection.whereAt = CGPoint(x: point.x, y: bounds.height-point.y)
     }
     
@@ -187,8 +175,8 @@ extension SurfaceView {
         for node in mesh.nodes {
             
             //let endPoint = transformedTo(position: node.position, parent: parent, portalPosition: portalPosition )
-            let endPoint = node.transformedAndScaledNode(parent: parent, portalPosition: portalPosition, zoomScale: self.zoomScale )
-            let dist =  distanceFrom(point, to: endPoint) / self.zoomScale
+            let endPoint = node.transformedAndScaledNode(parent: parent, portalPosition: portalState.portalPosition, zoomScale: self.portalState.zoomScale )
+            let dist =  distanceFrom(point, to: endPoint) / self.portalState.zoomScale
             if dist < node.size.width/2.0 {
                 return node
             }
@@ -200,10 +188,10 @@ extension SurfaceView {
         for node in mesh.nodes {
             for port in node.ports {
                 //let endPoint = port.position.transformedAndScaledPort(parent: parent, portalPosition: portalPosition, zoomScale: self.zoomScale )
-                let endPoint = port.transformedAndScaledPort(parent: parent, portalPosition: portalPosition, zoomScale: self.zoomScale )
-                let dist =  distanceFrom(point, to: endPoint) / self.zoomScale
+                let endPoint = port.transformedAndScaledPort(parent: parent, portalPosition: portalState.portalPosition, zoomScale: self.portalState.zoomScale )
+                let dist =  distanceFrom(point, to: endPoint) / self.portalState.zoomScale
                 if dist < port.size.height/2 {
-                    isWiring = true
+                    portalState.isWiring = true
                     return port
                 }
             }
@@ -215,7 +203,7 @@ extension SurfaceView {
         guard selection.draggingNodes.isEmpty == false else {
             return
         }
-        let scaledTranslation = translation.scaledDownTo(self.zoomScale)
+        let scaledTranslation = translation.scaledDownTo(self.portalState.zoomScale)
         mesh.processNodeTranslation(scaledTranslation,
                                     nodes: selection.draggingNodes,
                                     snapToGrid: snapToGrid)
@@ -223,29 +211,29 @@ extension SurfaceView {
     
     func processDragChange(_ value: DragGesture.Value,
                            containerSize: CGSize) {
-        if isDragging == false {
-            isDragging = true
+        if portalState.isDragging == false {
+            portalState.isDragging = true
             selection.startLocation = value.startLocation
             if let port = self.hitTestPort(point: value.startLocation, parent: containerSize) {
                 selection.firstWirePort = port
                 
-                isDraggingMesh = false
-                isWiring = true
-            } else if !isWiring {
+                portalState.isDraggingMesh = false
+                portalState.isWiring = true
+            } else if !portalState.isWiring {
                 if let node = self.hitTestNode(point: value.startLocation, parent: containerSize) {
-                    isDraggingMesh = false
+                    portalState.isDraggingMesh = false
                     selection.selectNode(node)
                     selection.startDragging(mesh)
                 } else {
-                    isDraggingMesh = true
+                    portalState.isDraggingMesh = true
                 }
             }
         }
         
-        if isDraggingMesh {
-            self.dragOffset = value.translation
+        if portalState.isDraggingMesh {
+            self.portalState.dragOffset = value.translation
             selection.draggingLocation = value.location
-        } else if isWiring {
+        } else if portalState.isWiring {
             selection.draggingLocation = value.location
         } else {
             processNodeTranslation(value.translation, snapToGrid: mesh.snapToGrid)
@@ -253,19 +241,19 @@ extension SurfaceView {
     }
     
     func processDragEnd(_ value: DragGesture.Value, containerSize: CGSize) {
-        isDragging = false
-        dragOffset = .zero
+        portalState.isDragging = false
+        portalState.dragOffset = .zero
         
         selection.draggingLocation = value.location
         
-        if isDraggingMesh {
-            self.portalPosition = CGPoint(x: self.portalPosition.x + value.translation.width,
-                                          y: self.portalPosition.y + value.translation.height)
-        } else if isWiring {
+        if portalState.isDraggingMesh {
+            self.portalState.portalPosition = CGPoint(x: self.portalState.portalPosition.x + value.translation.width,
+                                          y: self.portalState.portalPosition.y + value.translation.height)
+        } else if portalState.isWiring {
             if let port = self.hitTestPort(point: value.location,
                                            parent: containerSize) {
-                isDraggingMesh = false
-                isWiring = true
+                portalState.isDraggingMesh = false
+                portalState.isWiring = true
                 selection.secondWirePort = port
                 if let first = selection.firstWirePort, let second = selection.secondWirePort {
                     if first != second {
@@ -284,7 +272,7 @@ extension SurfaceView {
             processNodeTranslation(value.translation, snapToGrid: mesh.snapToGrid)
             selection.stopDragging(mesh)
         }
-        isWiring = false
+        portalState.isWiring = false
     }
     
 }
@@ -306,10 +294,10 @@ extension SurfaceView {
     }
     
     func processScaleChange(_ value: CGFloat) {
-        let clamped = self.clampedScale(value, initialValue: self.initialZoomScale)
-        self.zoomScale = clamped.scale
-        if clamped.didClamp == false, let point = self.initialPortalPosition {
-            self.portalPosition = self.scaledOffset(value, initialValue: point)
+        let clamped = self.clampedScale(value, initialValue: self.portalState.initialZoomScale)
+        self.portalState.zoomScale = clamped.scale
+        if clamped.didClamp == false, let point = self.portalState.initialPortalPosition {
+            self.portalState.portalPosition = self.scaledOffset(value, initialValue: point)
         }
     }
 }
