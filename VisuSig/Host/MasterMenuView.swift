@@ -21,7 +21,7 @@ struct MasterMenuView: View {
             // MasterContentView() // This is the thre panel navigation
             
             VStack {
-                //1/ SiKPlayerView(audioUnitManager: audioUnitComponents.audioUnitManager)
+                SiKPlayerView(audioUnitManager: audioUnitComponents.audioUnitManager)
                 Picker("Module Type:", selection: $audioUnitType) {
                     Text("Effect").tag(AudioUnitType.effect)
                     Text("Instrument").tag(AudioUnitType.instrument)

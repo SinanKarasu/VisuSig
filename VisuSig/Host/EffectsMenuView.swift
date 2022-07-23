@@ -19,9 +19,11 @@ struct EffectsMenuView: View {
         startRunning()
         return GeometryReader { reader in
             VStack {
-                HStack {
+                VStack {
                     Text("EffectsMenuView")
-                    Text("Count: \(audioUnitComponents.audioUnitComponents.count)")
+                    Text("Effects Count: \(audioUnitComponents.audioUnitComponents.count)")
+                    Text("Managed Count: \(audioUnitComponents.auManagedEffectUnits.count)")
+
                 }
                 ZStack { // note this is a bug fix workaround for XCode 14 beta. Remove it when fixed
                     NavigationView {

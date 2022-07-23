@@ -20,10 +20,10 @@ struct InstrumentsMenuView: View {
         startRunning()
         return GeometryReader { reader in
             VStack {
-                HStack {
+                VStack {
                     Text("Instrument Menu View")
-                    Text("Components: \(audioUnitComponents.instrumentComponents.count)")
-                    Text("Count: \(audioUnitComponents.auManagedInstruments.count)")
+                    Text("Instrument Count: \(audioUnitComponents.instrumentComponents.count)")
+                    Text("Managed Count: \(audioUnitComponents.auManagedInstruments.count)")
                     
                 }
                 ZStack { // note this is a bug fix workaround for XCode 14 beta. Remove it when fixed
