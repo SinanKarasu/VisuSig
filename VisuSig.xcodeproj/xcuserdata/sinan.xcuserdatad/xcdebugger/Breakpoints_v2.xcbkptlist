@@ -3,4 +3,70 @@
    uuid = "53AD29A2-6E4F-4807-A525-5114770D18AA"
    type = "1"
    version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "B7E1B1C8-0F3B-4FA5-9A44-DB6BABC3D1B3"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "VisuSig/Host/AudioUnitComponents.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "128"
+            endingLineNumber = "128"
+            landmarkName = "connectComponent(auManagedUnit:completion:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "B7E1B1C8-0F3B-4FA5-9A44-DB6BABC3D1B3 - e3a386e879878c9e"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "VisuSig.AudioUnitComponents.connectComponent(auManagedUnit: Swift.Optional&lt;VisuSig.AUManagedUnit&gt;, completion: (Swift.Result&lt;Swift.Optional&lt;VisuSig.AUManagedUnit&gt;, Swift.Error&gt;) -&gt; ()) -&gt; ()"
+                  moduleName = "VisuSig"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/sinan/Developer/____FinalMIDIProducts/VisuSig/VisuSig/Host/AudioUnitComponents.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "128"
+                  endingLineNumber = "128"
+                  offsetFromSymbolStart = "128">
+               </Location>
+               <Location
+                  uuid = "B7E1B1C8-0F3B-4FA5-9A44-DB6BABC3D1B3 - e3a386e879878c9e"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "VisuSig.AudioUnitComponents.connectComponent(auManagedUnit: Swift.Optional&lt;VisuSig.AUManagedUnit&gt;, completion: (Swift.Result&lt;Swift.Optional&lt;VisuSig.AUManagedUnit&gt;, Swift.Error&gt;) -&gt; ()) -&gt; ()"
+                  moduleName = "VisuSig"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/sinan/Developer/____FinalMIDIProducts/VisuSig/VisuSig/Host/AudioUnitComponents.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "128"
+                  endingLineNumber = "128"
+                  offsetFromSymbolStart = "164">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "0BA7296B-6A78-448F-8530-54A547DCB2AC"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "VisuSig/Host/AUComponent3View.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "34"
+            endingLineNumber = "34"
+            landmarkName = "body"
+            landmarkType = "24">
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
 </Bucket>

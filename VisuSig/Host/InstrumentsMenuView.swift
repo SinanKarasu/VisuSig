@@ -30,10 +30,7 @@ struct InstrumentsMenuView: View {
                     NavigationView {
                         List {
                             ForEach(0..<audioUnitComponents.auManagedInstruments.count, id: \.self) { index in
-                                NavigationLink(
-                                    destination:
-                                        makeView5(index: index)
-                                )
+                                NavigationLink(destination: makeView5(index: index))
                                 {
                                     Label(audioUnitComponents.auManagedInstruments[index]!.name, systemImage: "pianokeys.inverse")
                                 }
