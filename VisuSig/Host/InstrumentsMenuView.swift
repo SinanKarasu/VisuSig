@@ -17,7 +17,7 @@ struct InstrumentsMenuView: View {
     
     //let audioUnitTypes: [AudioUnitType] = [ .effect, .instrument]
     var body: some View {
-        startRunning()
+        //startRunning()
         return GeometryReader { reader in
             VStack {
                 VStack {
@@ -40,7 +40,7 @@ struct InstrumentsMenuView: View {
                     }
                 }
             }
-            //.onAppear(perform: startRunning)
+            .onAppear(perform: startRunning)
         }
     }
     
