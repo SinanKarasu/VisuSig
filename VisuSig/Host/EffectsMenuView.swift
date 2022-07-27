@@ -25,7 +25,7 @@ struct EffectsMenuView: View {
                     Text("Managed Count: \(audioUnitComponents.auManagedEffectUnits.count)")
 
                 }
-                ZStack { // note this is a bug fix workaround for XCode 14 beta. Remove it when fixed
+                //ZStack { // note this is a bug fix workaround for XCode 14 beta. Remove it when fixed
                     NavigationView {
                         List {
                             ForEach(0..<audioUnitComponents.auManagedEffectUnits.count, id: \.self) { index in
@@ -40,7 +40,7 @@ struct EffectsMenuView: View {
                         }
                         .navigationTitle("Menu")
                     }
-                }
+                //}
             }
             .onAppear(perform: startRunning)
         }
