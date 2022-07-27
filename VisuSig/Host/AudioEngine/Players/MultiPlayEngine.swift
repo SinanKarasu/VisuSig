@@ -7,7 +7,7 @@ A simple playback engine built on AVAudioEngine and its related classes.
 
 import AVFoundation
 
-public class SimplePlayEngine {
+public class MultiPlayEngine {
     
     // The engine's active unit node.
     private var activeAVAudioUnit: AVAudioUnit?
@@ -244,5 +244,4 @@ public class SimplePlayEngine {
     /// Simple MIDI note generator that plays a two-octave scale.
 
 }
-
 

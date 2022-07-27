@@ -49,6 +49,8 @@
 		F79E3EEB281BA1A400CD0520 /* MyContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F79E3EE5281BA1A400CD0520 /* MyContentView.swift */; };
 		F79E3EEC281BA1A400CD0520 /* MiniMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = F79E3EE6281BA1A400CD0520 /* MiniMap.swift */; };
 		F79E3EED281BA1A400CD0520 /* MyFormField.swift in Sources */ = {isa = PBXBuildFile; fileRef = F79E3EE7281BA1A400CD0520 /* MyFormField.swift */; };
+		F7A2CCB82890D54E00FEBB72 /* MultiPlayEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7A2CCB72890D54E00FEBB72 /* MultiPlayEngine.swift */; };
+		F7A2CCBA2890D5AF00FEBB72 /* AV+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7A2CCB92890D5AF00FEBB72 /* AV+Extensions.swift */; };
 		F7A37BE127F23529007D4AEB /* people.json in Resources */ = {isa = PBXBuildFile; fileRef = F7A37BE027F23529007D4AEB /* people.json */; };
 		F7A6286A27BE19E9009211FA /* SimplePathView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7A6286927BE19E9009211FA /* SimplePathView.swift */; };
 		F7C809C6279B299200982843 /* VisuSigApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7C809C5279B299200982843 /* VisuSigApp.swift */; };
@@ -151,6 +153,8 @@
 		F79E3EE5281BA1A400CD0520 /* MyContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyContentView.swift; sourceTree = "<group>"; };
 		F79E3EE6281BA1A400CD0520 /* MiniMap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MiniMap.swift; sourceTree = "<group>"; };
 		F79E3EE7281BA1A400CD0520 /* MyFormField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyFormField.swift; sourceTree = "<group>"; };
+		F7A2CCB72890D54E00FEBB72 /* MultiPlayEngine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultiPlayEngine.swift; sourceTree = "<group>"; };
+		F7A2CCB92890D5AF00FEBB72 /* AV+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AV+Extensions.swift"; sourceTree = "<group>"; };
 		F7A37BE027F23529007D4AEB /* people.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = people.json; sourceTree = "<group>"; };
 		F7A6286927BE19E9009211FA /* SimplePathView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimplePathView.swift; sourceTree = "<group>"; };
 		F7C809C2279B299200982843 /* VisuSig.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VisuSig.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -254,7 +258,9 @@
 			children = (
 				F75CC4B0281D8AEB00692CE5 /* InstrumentPlayer.swift */,
 				F75CC4AE281D8ABA00692CE5 /* SimplePlayEngine.swift */,
+				F7A2CCB72890D54E00FEBB72 /* MultiPlayEngine.swift */,
 				F781CF0B2821D7B600ADBF6E /* SiKAudioMixer.swift */,
+				F7A2CCB92890D5AF00FEBB72 /* AV+Extensions.swift */,
 			);
 			path = Players;
 			sourceTree = "<group>";
@@ -717,11 +723,13 @@
 				F7C80A15279B71E700982843 /* MouseLocationView.swift in Sources */,
 				F7E1D6C3287F3E29000C8CE2 /* RecipeTile.swift in Sources */,
 				F798E981283D2B1600444FE3 /* DropdownSelector.swift in Sources */,
+				F7A2CCB82890D54E00FEBB72 /* MultiPlayEngine.swift in Sources */,
 				F75CC4B1281D8AEB00692CE5 /* InstrumentPlayer.swift in Sources */,
 				F7F9433F27AF924300DD9A50 /* GridCompleteView.swift in Sources */,
 				F79E3EE8281BA1A400CD0520 /* MyPreferenceKey.swift in Sources */,
 				F7C809D8279B2A6E00982843 /* HoverAwareDemo1View.swift in Sources */,
 				F79E3EEC281BA1A400CD0520 /* MiniMap.swift in Sources */,
+				F7A2CCBA2890D5AF00FEBB72 /* AV+Extensions.swift in Sources */,
 				F7E1D6BA287F3E29000C8CE2 /* DataModel.swift in Sources */,
 				F79E3EED281BA1A400CD0520 /* MyFormField.swift in Sources */,
 				F73DDC0C2835770300DABC2F /* Utilities+Extensions.swift in Sources */,
