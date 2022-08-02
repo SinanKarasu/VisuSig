@@ -9,12 +9,14 @@ import SwiftUI
 import AVFoundation
 
 // An enum used to prevent exposing the Core Audio component description's componentType to the UI layer.
-enum AudioUnitType: Int, CaseIterable, Identifiable {
+enum AudioUnitType: Int, CaseIterable {
     case effect
     case instrument
-    var id: Int {self.rawValue}
 }
 
+extension AudioUnitType: Identifiable {
+    var id: RawValue { rawValue }
+}
 // An enum used to prevent exposing the Core Audio AudioComponentInstantiationOptions to the UI layer.
 enum InstantiationType: Int {
     case inProcess
