@@ -14,7 +14,7 @@ struct MasterMenuView: View {
     
     @StateObject var mesh: Mesh = Mesh.sampleMesh()
 
-    let mode = 1
+    let mode = 2
     
     var body: some View {
         HStack {

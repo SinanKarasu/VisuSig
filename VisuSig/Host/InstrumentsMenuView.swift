@@ -26,8 +26,9 @@ struct InstrumentsMenuView: View {
                     Text("Managed Count: \(audioUnitComponents.auManagedInstruments.count)")
                     
                 }
-                //ZStack { // note this is a bug fix workaround for XCode 14 beta. Remove it when fixed
                     NavigationView {
+                        ZStack { // note this is a bug fix workaround for XCode 14 beta. Remove it when fixed
+
                         List {
                             ForEach(0..<audioUnitComponents.auManagedInstruments.count, id: \.self) { index in
                                 NavigationLink(destination: makeView5(index: index))
@@ -38,7 +39,7 @@ struct InstrumentsMenuView: View {
                         }
                         .navigationTitle("Menu")
                     }
-                //}
+                }
             }
             .onAppear(perform: startRunning)
         }
