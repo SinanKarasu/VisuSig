@@ -19,7 +19,7 @@ struct MasterMenuView: View {
     var body: some View {
         HStack {
             if mode == 1 {
-                MasterContentView() // This is the thre panel navigation
+                EmptyView() //MasterContentView() // This is the thre panel navigation
             } else {
                 VStack {
                     SiKPlayerView(audioUnitManager: audioUnitComponents.audioUnitManager)
