@@ -40,7 +40,7 @@ struct MasterMenuView: View {
                     
                     switch audioUnitType {
                     case .effect:
-                        EffectsMenuView(audioUnitComponents: audioUnitComponents)
+                        EffectsMenuSplitView(audioUnitComponents: audioUnitComponents)
                     case .instrument:
                         InstrumentsMenuView(audioUnitComponents: audioUnitComponents)
                     }
