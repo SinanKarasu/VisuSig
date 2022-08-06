@@ -42,7 +42,7 @@ struct MasterMenuView: View {
                     case .effect:
                         EffectsMenuSplitView(audioUnitComponents: audioUnitComponents)
                     case .instrument:
-                        InstrumentsMenuView(audioUnitComponents: audioUnitComponents)
+                        InstrumentsMenuSplitView(audioUnitComponents: audioUnitComponents)
                     }
                     //}
                     //Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)

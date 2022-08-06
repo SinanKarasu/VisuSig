@@ -6,43 +6,41 @@
 
 import SwiftUI
 
-struct EffectsMenuSplitView: View {
-    private  let audioUnitType = AudioUnitType.effect
+struct InstrumentsMenuSplitView: View {
+    private  let audioUnitType = AudioUnitType.instrument
     @ObservedObject var audioUnitComponents: AudioUnitComponents
     @State var columnVisibility: NavigationSplitViewVisibility = .all
-    @State private var selectedUnit: Int?
-    
+    @State private var selectedIndex: Int?
+
     
     var audioUnitManager: AudioUnitManager {
         audioUnitComponents.audioUnitManager
     }
     
-    let audioUnitTypes: [AudioUnitType] = [ .effect, .instrument]
+    //let audioUnitTypes: [AudioUnitType] = [ .effect, .instrument]
     var body: some View {
         //startRunning()
         return GeometryReader { reader in
             VStack {
                 VStack {
-                    Text("EffectsMenuView")
-                    Text("Effects Count: \(audioUnitComponents.audioUnitComponents.count)")
-                    Text("Managed Count: \(audioUnitComponents.auManagedEffectUnits.count)")
+                    Text("Instrument Menu View")
+                    Text("Instrument Count: \(audioUnitComponents.instrumentComponents.count)")
+                    Text("Managed Count: \(audioUnitComponents.auManagedInstruments.count)")
                     
                 }
                 NavigationSplitView (columnVisibility: $columnVisibility) {
                     ZStack { // note this is a bug fix workaround for XCode 14 beta. Remove it when fixed
-                        List(selection: $selectedUnit) {
-                            ForEach(0..<audioUnitComponents.auManagedEffectUnits.count, id: \.self) { index in
-                                Label(audioUnitComponents.auManagedEffectUnits[index]!.name, systemImage: "waveform.circle")
+                        List(selection: $selectedIndex) {
+                            ForEach(0..<audioUnitComponents.auManagedInstruments.count, id: \.self) { index in
+                                Label(audioUnitComponents.auManagedInstruments[index]!.name, systemImage: "pianokeys.inverse")
                             }
                         }
                     }
                     .navigationTitle("Menu")
-                    
                 } detail: {
-                    makeView5(index: selectedUnit ?? 0)
-                        .id(selectedUnit)
+                    makeView5(index: selectedIndex ?? 0)
+                        .id(selectedIndex)
                 }
-                
             }
             .onAppear(perform: startRunning)
         }
@@ -51,7 +49,7 @@ struct EffectsMenuSplitView: View {
     
     func makeView5(index: Int) -> some View {
         if index != 0 {
-            let auManagedUnit = audioUnitComponents.auManagedEffectUnits[index]
+            let auManagedUnit = audioUnitComponents.auManagedInstruments[index]
             auManagedUnit!.loadAudioUnitViewController() { nsViewController in
                 auManagedUnit!.setController(controller: nsViewController)
             }
@@ -60,21 +58,18 @@ struct EffectsMenuSplitView: View {
         return AnyView(Text("No selection made"))
     }
     
-    
     func startRunning() {
-        audioUnitComponents.initializeEffects()
-        //        if !audioUnitComponents.effectsInitialized{
-        //            audioUnitComponents.effectsInitialized = true
-        //            audioUnitComponents.loadAudioUnits(ofType: audioUnitType)
-        //        }
+        DispatchQueue.main.async {
+            if !audioUnitComponents.instsInitialized {
+                audioUnitComponents.instsInitialized = true
+                audioUnitComponents.loadAudioUnits(ofType: audioUnitType)
+            }
+        }
     }
-    
 }
 
-struct EffectsMenuSplitView_Preview: PreviewProvider {
-    @StateObject var audioUnitComponents = AudioUnitComponents()
-    
+struct InstrumentsMenuSplitView_Preview: PreviewProvider {
     static var previews: some View {
-        EffectsMenuSplitView(audioUnitComponents: AudioUnitComponents())
+        InstrumentsMenuSplitView(audioUnitComponents: AudioUnitComponents())
     }
 }
