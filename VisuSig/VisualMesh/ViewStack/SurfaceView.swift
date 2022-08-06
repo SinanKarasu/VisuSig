@@ -90,7 +90,7 @@ struct SurfaceView: View, ContextMenuProtocol  {
                 
                 .sheet(isPresented: self.$selection.showShapes)
                 {
-                    ComponentTableView( audioUnitComponents: audioUnitComponents, selectionHandler: selection)
+                    ComponentTableView( selectedIndex: $shapeIndex, audioUnitComponents: audioUnitComponents, selectionHandler: selection)
                     //.frame(width: min(geometry.size.width - 100, 300))
                         .frame(minWidth:800, minHeight: 400)
                         .onDisappear {

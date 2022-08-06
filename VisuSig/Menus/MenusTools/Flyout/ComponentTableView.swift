@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ComponentTableView: View {
     //@Environment(\.presentationMode) var presentationMode
-    //@Binding var selectedIndex: Int
+    @Binding var selectedIndex: Int
     
     @State private var selection: UUID? = nil
     
@@ -31,6 +31,12 @@ struct ComponentTableView: View {
         return event!.nameAndMFG
     }
 
+    var selectedComponent: Component {
+        let event = audioUnitComponents.audioUnitComponents.first {
+            $0.id == selection
+        }
+        return event!
+    }
     
     var body: some View {
         VStack {
@@ -38,6 +44,7 @@ struct ComponentTableView: View {
                 Text("SELECTION: ").foregroundColor(.red) + Text(selectedUnit)
                 Button ("Choose"){
                     self.selectionHandler.showShapes = false
+                    selectedIndex = audioUnitComponents.audioUnitComponents.firstIndex(of: selectedComponent)!
                 }
                 Button ("Cancel"){
                     self.selectionHandler.showShapes = false
@@ -78,11 +85,11 @@ struct ComponentTableView: View {
 }
 
 
-struct ComponentTableView_Previews: PreviewProvider {
-    @State static var selectedIndex: Int = 1
-    @StateObject static var audioUnitComponents = AudioUnitComponents()
-
-    static var previews: some View {
-        ComponentTableView(audioUnitComponents: audioUnitComponents, selectionHandler: SelectionHandler())
-    }
-}
+//struct ComponentTableView_Previews: PreviewProvider {
+//    @State static var selectedIndex: Int = 1
+//    @StateObject static var audioUnitComponents = AudioUnitComponents()
+//
+//    static var previews: some View {
+//        ComponentTableView(audioUnitComponents: audioUnitComponents, selectionHandler: SelectionHandler())
+//    }
+//}
