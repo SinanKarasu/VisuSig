@@ -77,10 +77,10 @@ struct SurfaceView: View, ContextMenuProtocol  {
                     self.selection.unSelectNodes()
                 }
                 .contextMenu{
-//                    Button("♥️ - Hearts", action: {
-//                        print("selectHearts\(proxy.size)")
-//                        addNewNode(mesh: mesh, whereAt: selection.whereAt, containerSize: proxy.size, portalPosition: portalPosition, zoomScale: zoomScale, payload: nil)
-//                    })
+                    //                    Button("♥️ - Hearts", action: {
+                    //                        print("selectHearts\(proxy.size)")
+                    //                        addNewNode(mesh: mesh, whereAt: selection.whereAt, containerSize: proxy.size, portalPosition: portalPosition, zoomScale: zoomScale, payload: nil)
+                    //                    })
                     Button("♣️ - Clubs", action: {
                         self.selection.showShapes.toggle()
                     })
@@ -99,12 +99,12 @@ struct SurfaceView: View, ContextMenuProtocol  {
                                 let component = audioUnitComponents.audioUnitComponents[self.shapeIndex]
                                 component.instantiateComponent() { result in
                                     switch result {
-                                case .success(let au):
+                                    case .success(let au):
                                         addNewNode(mesh: mesh, whereAt: selection.whereAt, containerSize: proxy.size, portalPosition: portalState.portalPosition, zoomScale: portalState.zoomScale, payload: au)
-                                case .failure(let error):
-                                    logger.log("Unable to select audio unit: \(String(describing: error))")
-                                }
-                                    //self.shapeIndex = -1
+                                    case .failure(let error):
+                                        logger.log("Unable to select audio unit: \(String(describing: error))")
+                                    }
+                                    self.shapeIndex = -1
                                 }
                             }
                         }
@@ -229,7 +229,7 @@ extension SurfaceView {
         
         if portalState.isDraggingMesh {
             self.portalState.portalPosition = CGPoint(x: self.portalState.portalPosition.x + value.translation.width,
-                                          y: self.portalState.portalPosition.y + value.translation.height)
+                                                      y: self.portalState.portalPosition.y + value.translation.height)
         } else if portalState.isWiring {
             if let port = self.hitTestPort(point: value.location,
                                            parent: containerSize) {
