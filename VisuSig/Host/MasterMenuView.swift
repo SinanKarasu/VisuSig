@@ -36,14 +36,14 @@ struct MasterMenuView: View {
                     //TopAUManagedMenuView(audioUnitComponents: audioUnitComponents) // probably delete this
                     //TopComponentMenuView(audioUnitComponents: audioUnitComponents)
                     SurfaceView(mesh: mesh, audioUnitComponents: audioUnitComponents)
-                    //EffectsToolsView()
+                    EffectsToolsView()
                     
-                    switch audioUnitType {
-                    case .effect:
-                        EffectsMenuSplitView(audioUnitComponents: audioUnitComponents)
-                    case .instrument:
-                        InstrumentsMenuSplitView(audioUnitComponents: audioUnitComponents)
-                    }
+//                    switch audioUnitType {
+//                    case .effect:
+//                        EffectsMenuSplitView(audioUnitComponents: audioUnitComponents)
+//                    case .instrument:
+//                        InstrumentsMenuSplitView(audioUnitComponents: audioUnitComponents)
+//                    }
                     //}
                     //Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
                 }

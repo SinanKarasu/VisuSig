@@ -221,16 +221,6 @@
 			path = Additions;
 			sourceTree = "<group>";
 		};
-		F748567728184D6D0038D7B7 /* ControlViews */ = {
-			isa = PBXGroup;
-			children = (
-				F798E8C4283B232900444FE3 /* EffectsToolsView.swift */,
-				F798E8C6283B237A00444FE3 /* EffectStorage.swift */,
-				F748567B28184D6D0038D7B7 /* QGrid.swift */,
-			);
-			path = ControlViews;
-			sourceTree = "<group>";
-		};
 		F75CC4B2281DA28800692CE5 /* Players */ = {
 			isa = PBXGroup;
 			children = (
@@ -362,6 +352,16 @@
 			path = Abandoned;
 			sourceTree = "<group>";
 		};
+		F7C6ADF7289F63120045E740 /* EffectsToolView */ = {
+			isa = PBXGroup;
+			children = (
+				F748567B28184D6D0038D7B7 /* QGrid.swift */,
+				F798E8C4283B232900444FE3 /* EffectsToolsView.swift */,
+				F798E8C6283B237A00444FE3 /* EffectStorage.swift */,
+			);
+			path = EffectsToolView;
+			sourceTree = "<group>";
+		};
 		F7C809B9279B299200982843 = {
 			isa = PBXGroup;
 			children = (
@@ -489,7 +489,7 @@
 				F798E97A283C620A00444FE3 /* TopComponentMenuView.swift */,
 				F75FF89328394EE500BC5AC1 /* Items.swift */,
 				F7EE4447283D2FB000ACE932 /* DropDown1 */,
-				F748567728184D6D0038D7B7 /* ControlViews */,
+				F7C6ADF7289F63120045E740 /* EffectsToolView */,
 				F75FF8D22839A28B00BC5AC1 /* ContextMenuProtocol.swift */,
 				F7EE444B283D7D6400ACE932 /* Flyout */,
 			);
