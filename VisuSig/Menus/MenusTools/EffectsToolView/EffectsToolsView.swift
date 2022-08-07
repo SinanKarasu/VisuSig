@@ -67,7 +67,7 @@ fileprivate struct SheetView: View {
 
 fileprivate struct QConstants {
     static let showDesigner = true
-    static let columnsMax = 2
+    static let columnsMax = 5
     static let vSpacingMaxToGeometryRatio: CGFloat = 0.5 // 50%
     static let vPaddingMaxToGeometryRatio: CGFloat = 0.3 // 30%
     static let hPaddingMaxToGeometryRatio: CGFloat = 0.3 // 30%
@@ -99,6 +99,8 @@ fileprivate class MyLayout: ObservableObject {
 
 struct EffectsToolsView: View {
     
+    @ObservedObject var audioUnitComponents: AudioUnitComponents
+
     @State private var sheetIsShowing = false
     
     @StateObject fileprivate var myLayout = MyLayout()
@@ -113,11 +115,12 @@ struct EffectsToolsView: View {
                     }
             }
         }
-        .frame(width: 100)
+        .frame(minWidth:500, minHeight: 500)
+        //.border(.pink)
     }
     
     private func gridView(_ geometry: GeometryProxy) -> some View {
-        QGrid(EffectStorage.components,
+        QGrid(audioUnitComponents.audioUnitComponents,
               columns: Int(self.myLayout.columns),
               columnsInLandscape: Int(self.myLayout.columns),
               vSpacing: min(self.myLayout.vSpacing, self.myLayout.vSpacingMax(geometry)),
@@ -155,14 +158,15 @@ fileprivate struct GridCell: View {
                 Text(person.mfg).lineLimit(1)
             }
         }
+        .frame(minWidth:100, minHeight: 100)
         //.font(.headline).foregroundColor(.white)
     }
 }
 
-#if DEBUG
-struct EffectsToolsView_Previews : PreviewProvider {
-    static var previews: some View {
-        EffectsToolsView()
-    }
-}
-#endif
+//#if DEBUG
+//struct EffectsToolsView_Previews : PreviewProvider {
+//    static var previews: some View {
+//        EffectsToolsView()
+//    }
+//}
+//#endif

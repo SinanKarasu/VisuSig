@@ -13,7 +13,7 @@ struct MasterMenuView: View {
     @State private  var audioUnitType = AudioUnitType.effect
     
     @StateObject var mesh: Mesh = Mesh.sampleMesh()
-
+    
     let mode = 2
     
     var body: some View {
@@ -21,31 +21,39 @@ struct MasterMenuView: View {
             if mode == 1 {
                 EmptyView() //MasterContentView() // This is the thre panel navigation
             } else {
-                VStack {
-                    SiKPlayerView(audioUnitManager: audioUnitComponents.audioUnitManager)
-                    Picker("Module Type:", selection: $audioUnitType) {
-                        Text("Effect").tag(AudioUnitType.effect)
-                        Text("Instrument").tag(AudioUnitType.instrument)
+                GeometryReader { proxy in
+                    VStack {
+                        SiKPlayerView(audioUnitManager: audioUnitComponents.audioUnitManager)
+                            .border(.yellow)
+                        //HStack {
+                        //TopAUManagedMenuView(audioUnitComponents: audioUnitComponents) // probably delete this
+                        //TopComponentMenuView(audioUnitComponents: audioUnitComponents)
+                        SurfaceView(mesh: mesh, audioUnitComponents: audioUnitComponents)
+                            .border(.orange)
+                        //EffectsToolsView()
+                        EffectsToolsView(audioUnitComponents: audioUnitComponents)
+                        
+                        Picker("Module Type:", selection: $audioUnitType) {
+                            Text("Effect").tag(AudioUnitType.effect)
+                            Text("Instrument").tag(AudioUnitType.instrument)
+                        }
+                        .pickerStyle(.segmented)
+                        .onChange(of: audioUnitType) { tag in
+                            //            self.loaded = false
+                            //            self.startRunning()
+                        }
+                        
+                        switch audioUnitType {
+                        case .effect:
+                            EffectsMenuSplitView(audioUnitComponents: audioUnitComponents)
+                                .border(.blue)
+                        case .instrument:
+                            InstrumentsMenuSplitView(audioUnitComponents: audioUnitComponents)
+                                .border(.green)
+                        }
+                        //}
+                        //Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
                     }
-                    .pickerStyle(.segmented)
-                    .onChange(of: audioUnitType) { tag in
-                        //            self.loaded = false
-                        //            self.startRunning()
-                    }
-                    //HStack {
-                    //TopAUManagedMenuView(audioUnitComponents: audioUnitComponents) // probably delete this
-                    //TopComponentMenuView(audioUnitComponents: audioUnitComponents)
-                    SurfaceView(mesh: mesh, audioUnitComponents: audioUnitComponents)
-                    EffectsToolsView()
-                    
-//                    switch audioUnitType {
-//                    case .effect:
-//                        EffectsMenuSplitView(audioUnitComponents: audioUnitComponents)
-//                    case .instrument:
-//                        InstrumentsMenuSplitView(audioUnitComponents: audioUnitComponents)
-//                    }
-                    //}
-                    //Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
                 }
             }
         }

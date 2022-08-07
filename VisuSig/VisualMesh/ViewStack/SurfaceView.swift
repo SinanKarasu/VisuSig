@@ -111,7 +111,6 @@ struct SurfaceView: View, ContextMenuProtocol  {
                 }
                 //HorizontalUnitView(audioUnitComponents: audioUnitComponents)
                 
-                
             }
         }
     }

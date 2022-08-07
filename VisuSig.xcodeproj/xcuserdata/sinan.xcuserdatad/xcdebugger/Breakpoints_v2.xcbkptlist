@@ -20,5 +20,69 @@
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "D75FC434-8091-433C-A38E-6A90BED185E6"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "VisuSig/Menus/MenusTools/EffectsToolView/EffectsToolsView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "126"
+            endingLineNumber = "126"
+            landmarkName = "gridView(_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "6845FBD8-4E21-4524-B98F-0B309BAF2ABA"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "VisuSig/Menus/MenusTools/EffectsToolView/QGrid.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "74"
+            endingLineNumber = "74"
+            landmarkName = "init(_:columns:columnsInLandscape:vSpacing:hSpacing:vPadding:hPadding:isScrollable:showScrollIndicators:content:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "6845FBD8-4E21-4524-B98F-0B309BAF2ABA - 5d01bf80e129da76"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "VisuSig.QGrid.init(_: &#x3c4;_0_0, columns: Swift.Int, columnsInLandscape: Swift.Optional&lt;Swift.Int&gt;, vSpacing: CoreGraphics.CGFloat, hSpacing: CoreGraphics.CGFloat, vPadding: CoreGraphics.CGFloat, hPadding: CoreGraphics.CGFloat, isScrollable: Swift.Bool, showScrollIndicators: Swift.Bool, content: (&#x3c4;_0_0.Element) -&gt; &#x3c4;_0_1) -&gt; VisuSig.QGrid&lt;&#x3c4;_0_0, &#x3c4;_0_1&gt;"
+                  moduleName = "VisuSig"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/sinan/Developer/____FinalMIDIProducts/VisuSig/VisuSig/Menus/MenusTools/EffectsToolView/QGrid.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "74"
+                  endingLineNumber = "74"
+                  offsetFromSymbolStart = "440">
+               </Location>
+               <Location
+                  uuid = "6845FBD8-4E21-4524-B98F-0B309BAF2ABA - 1e15e480d1d0c7cd"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (&#x3c4;_0_0.Element) -&gt; &#x3c4;_0_0.Element in VisuSig.QGrid.init(_: &#x3c4;_0_0, columns: Swift.Int, columnsInLandscape: Swift.Optional&lt;Swift.Int&gt;, vSpacing: CoreGraphics.CGFloat, hSpacing: CoreGraphics.CGFloat, vPadding: CoreGraphics.CGFloat, hPadding: CoreGraphics.CGFloat, isScrollable: Swift.Bool, showScrollIndicators: Swift.Bool, content: (&#x3c4;_0_0.Element) -&gt; &#x3c4;_0_1) -&gt; VisuSig.QGrid&lt;&#x3c4;_0_0, &#x3c4;_0_1&gt;"
+                  moduleName = "VisuSig"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/sinan/Developer/____FinalMIDIProducts/VisuSig/VisuSig/Menus/MenusTools/EffectsToolView/QGrid.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "74"
+                  endingLineNumber = "74"
+                  offsetFromSymbolStart = "104">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
    </Breakpoints>
 </Bucket>
