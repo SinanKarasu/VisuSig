@@ -29,11 +29,9 @@ struct EffectsMenuSplitView: View {
                     
                 }
                 NavigationSplitView (columnVisibility: $columnVisibility) {
-                    ZStack { // note this is a bug fix workaround for XCode 14 beta. Remove it when fixed
-                        List(selection: $selectedUnit) {
-                            ForEach(0..<audioUnitComponents.auManagedEffectUnits.count, id: \.self) { index in
-                                Label(audioUnitComponents.auManagedEffectUnits[index]!.name, systemImage: "waveform.circle")
-                            }
+                    List(selection: $selectedUnit) {
+                        ForEach(0..<audioUnitComponents.auManagedEffectUnits.count, id: \.self) { index in
+                            Label(audioUnitComponents.auManagedEffectUnits[index]!.name, systemImage: "waveform.circle")
                         }
                     }
                     .navigationTitle("Menu")

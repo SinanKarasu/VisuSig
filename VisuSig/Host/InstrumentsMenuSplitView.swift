@@ -11,7 +11,7 @@ struct InstrumentsMenuSplitView: View {
     @ObservedObject var audioUnitComponents: AudioUnitComponents
     @State var columnVisibility: NavigationSplitViewVisibility = .all
     @State private var selectedIndex: Int?
-
+    
     
     var audioUnitManager: AudioUnitManager {
         audioUnitComponents.audioUnitManager
@@ -29,11 +29,9 @@ struct InstrumentsMenuSplitView: View {
                     
                 }
                 NavigationSplitView (columnVisibility: $columnVisibility) {
-                    ZStack { // note this is a bug fix workaround for XCode 14 beta. Remove it when fixed
-                        List(selection: $selectedIndex) {
-                            ForEach(0..<audioUnitComponents.auManagedInstruments.count, id: \.self) { index in
-                                Label(audioUnitComponents.auManagedInstruments[index]!.name, systemImage: "pianokeys.inverse")
-                            }
+                    List(selection: $selectedIndex) {
+                        ForEach(0..<audioUnitComponents.auManagedInstruments.count, id: \.self) { index in
+                            Label(audioUnitComponents.auManagedInstruments[index]!.name, systemImage: "pianokeys.inverse")
                         }
                     }
                     .navigationTitle("Menu")

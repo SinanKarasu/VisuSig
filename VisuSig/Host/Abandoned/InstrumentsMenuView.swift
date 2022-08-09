@@ -26,19 +26,16 @@ struct InstrumentsMenuView: View {
                     Text("Managed Count: \(audioUnitComponents.auManagedInstruments.count)")
                     
                 }
-                    NavigationView {
-                        ZStack { // note this is a bug fix workaround for XCode 14 beta. Remove it when fixed
-
-                        List {
-                            ForEach(0..<audioUnitComponents.auManagedInstruments.count, id: \.self) { index in
-                                NavigationLink(destination: makeView5(index: index))
-                                {
-                                    Label(audioUnitComponents.auManagedInstruments[index]!.name, systemImage: "pianokeys.inverse")
-                                }
+                NavigationView {
+                    List {
+                        ForEach(0..<audioUnitComponents.auManagedInstruments.count, id: \.self) { index in
+                            NavigationLink(destination: makeView5(index: index))
+                            {
+                                Label(audioUnitComponents.auManagedInstruments[index]!.name, systemImage: "pianokeys.inverse")
                             }
                         }
-                        .navigationTitle("Menu")
                     }
+                    .navigationTitle("Menu")
                 }
             }
             .onAppear(perform: startRunning)

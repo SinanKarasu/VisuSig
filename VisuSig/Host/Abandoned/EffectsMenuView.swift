@@ -9,7 +9,7 @@ import SwiftUI
 struct EffectsMenuView: View {
     private  let audioUnitType = AudioUnitType.effect
     @ObservedObject var audioUnitComponents: AudioUnitComponents
-        
+    
     var audioUnitManager: AudioUnitManager {
         audioUnitComponents.audioUnitManager
     }
@@ -23,24 +23,21 @@ struct EffectsMenuView: View {
                     Text("EffectsMenuView")
                     Text("Effects Count: \(audioUnitComponents.audioUnitComponents.count)")
                     Text("Managed Count: \(audioUnitComponents.auManagedEffectUnits.count)")
-
+                    
                 }
-                    NavigationView {
-                        ZStack { // note this is a bug fix workaround for XCode 14 beta. Remove it when fixed
-
-                        List {
-                            ForEach(0..<audioUnitComponents.auManagedEffectUnits.count, id: \.self) { index in
-                                NavigationLink(
-                                    destination:
-                                        makeView5(index: index)
-                                )
-                                {
-                                    Label(audioUnitComponents.auManagedEffectUnits[index]!.name, systemImage: "waveform.circle")
-                                }
+                NavigationView {
+                    List {
+                        ForEach(0..<audioUnitComponents.auManagedEffectUnits.count, id: \.self) { index in
+                            NavigationLink(
+                                destination:
+                                    makeView5(index: index)
+                            )
+                            {
+                                Label(audioUnitComponents.auManagedEffectUnits[index]!.name, systemImage: "waveform.circle")
                             }
                         }
-                        .navigationTitle("Menu")
                     }
+                    .navigationTitle("Menu")
                 }
             }
             .onAppear(perform: startRunning)
@@ -60,17 +57,17 @@ struct EffectsMenuView: View {
     
     func startRunning() {
         audioUnitComponents.initializeEffects()
-//        if !audioUnitComponents.effectsInitialized{
-//            audioUnitComponents.effectsInitialized = true
-//            audioUnitComponents.loadAudioUnits(ofType: audioUnitType)
-//        }
+        //        if !audioUnitComponents.effectsInitialized{
+        //            audioUnitComponents.effectsInitialized = true
+        //            audioUnitComponents.loadAudioUnits(ofType: audioUnitType)
+        //        }
     }
     
 }
 
 struct EffectsMenuView_Preview: PreviewProvider {
     @StateObject var audioUnitComponents = AudioUnitComponents()
-
+    
     static var previews: some View {
         EffectsMenuView(audioUnitComponents: AudioUnitComponents())
     }
