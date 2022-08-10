@@ -28,20 +28,32 @@ struct EffectsMenuSplitView: View {
                     Text("Managed Count: \(audioUnitComponents.auManagedEffectUnits.count)")
                     
                 }
-                NavigationSplitView (columnVisibility: $columnVisibility) {
-                    List(selection: $selectedUnit) {
-                        ForEach(0..<audioUnitComponents.auManagedEffectUnits.count, id: \.self) { index in
-                            Label(audioUnitComponents.auManagedEffectUnits[index]!.name, systemImage: "waveform.circle")
+                ZStack {
+                    RoundedRectangle(cornerRadius: 10, style: .continuous)
+                        .stroke(.blue, lineWidth: 5)
+                    HStack {
+                        Divider()
+                        VStack {
+                            Divider()
+                            NavigationSplitView (columnVisibility: $columnVisibility) {
+                                List(selection: $selectedUnit) {
+                                    ForEach(0..<audioUnitComponents.auManagedEffectUnits.count, id: \.self) { index in
+                                        Label(audioUnitComponents.auManagedEffectUnits[index]!.name, systemImage: "waveform.circle")
+                                    }
+                                }
+                                //.listRowInsets(EdgeInsets(top: 0, leading: 200, bottom: 0, trailing: 0))
+                                //.listStyle(PlainListStyle())
+                                .navigationTitle("Menu")
+                                
+                            } detail: {
+                                if let selectedUnit = selectedUnit {
+                                    makeView5(index: selectedUnit)
+                                        .id(selectedUnit)
+                                } else {
+                                    Text("Choose something")
+                                }
+                            }
                         }
-                    }
-                    .navigationTitle("Menu")
-                    
-                } detail: {
-                    if let selectedUnit = selectedUnit {
-                        makeView5(index: selectedUnit)
-                            .id(selectedUnit)
-                    } else {
-                        Text("Choose something")
                     }
                 }
             }
