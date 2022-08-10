@@ -7,6 +7,14 @@
 
 import SwiftUI
 
+struct MyBorder: View {
+    let color: Color
+    var body: some View {
+        Rectangle()
+            .stroke(color, lineWidth: 5)
+    }
+}
+
 struct MasterMenuView: View {
     
     @StateObject var audioUnitComponents = AudioUnitComponents()
@@ -31,7 +39,7 @@ struct MasterMenuView: View {
                         SurfaceView(mesh: mesh, audioUnitComponents: audioUnitComponents)
                             .border(.orange)
                         //EffectsToolsView()
-                        EffectsToolsView(audioUnitComponents: audioUnitComponents)
+                        //EffectsToolsView(audioUnitComponents: audioUnitComponents)
                         
                         Picker("Module Type:", selection: $audioUnitType) {
                             Text("Effect").tag(AudioUnitType.effect)
@@ -46,10 +54,10 @@ struct MasterMenuView: View {
                         switch audioUnitType {
                         case .effect:
                             EffectsMenuSplitView(audioUnitComponents: audioUnitComponents)
-                                .border(.blue)
+                                //.border(.blue)
                         case .instrument:
                             InstrumentsMenuSplitView(audioUnitComponents: audioUnitComponents)
-                                .border(.green)
+                                //.border(.green)
                         }
                         //}
                         //Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
