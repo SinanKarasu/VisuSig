@@ -45,7 +45,7 @@ struct EffectsMenuSplitView: View {
                     }
                 }
             }
-            .border(.blue)
+            //.border(.blue) //BUG. Enable this line
             .onAppear(perform: startRunning)
         }
         
