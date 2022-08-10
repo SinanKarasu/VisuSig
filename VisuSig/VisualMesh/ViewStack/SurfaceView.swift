@@ -77,15 +77,16 @@ struct SurfaceView: View, ContextMenuProtocol  {
                     self.selection.unSelectNodes()
                 }
                 .contextMenu{
-                    //                    Button("♥️ - Hearts", action: {
-                    //                        print("selectHearts\(proxy.size)")
-                    //                        addNewNode(mesh: mesh, whereAt: selection.whereAt, containerSize: proxy.size, portalPosition: portalPosition, zoomScale: zoomScale, payload: nil)
-                    //                    })
-                    Button("♣️ - Clubs", action: {
-                        self.selection.showShapes.toggle()
-                    })
-                    Button("♠️ - Spades", action: selectSpades)
-                    Button("♦️ - Diamonds", action: selectDiamonds)
+                    Button(action: { self.selection.showShapes.toggle()})
+                    {
+                        Label("Add Audio Effect Node", systemImage: "waveform.circle")
+                            .labelStyle(.titleAndIcon)
+                    }
+                    Button(action: { print("Not Implemented")})
+                    {
+                        Label("Add SW Effect Node", systemImage: "pianokeys.inverse")
+                            .labelStyle(.titleAndIcon)
+                    }
                 }
                 
                 .sheet(isPresented: self.$selection.showShapes)
