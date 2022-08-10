@@ -6,6 +6,7 @@
 
 import SwiftUI
 
+
 struct EffectsMenuSplitView: View {
     private  let audioUnitType = AudioUnitType.effect
     @ObservedObject var audioUnitComponents: AudioUnitComponents
@@ -20,48 +21,44 @@ struct EffectsMenuSplitView: View {
     let audioUnitTypes: [AudioUnitType] = [ .effect, .instrument]
     var body: some View {
         return GeometryReader { reader in
-            ZStack {
-                Rectangle()
-                    .stroke(.blue, lineWidth: 5)
-                VStack(alignment: .center) {
-                    VStack {
-                        Text("EffectsMenuView")
-                        Text("Effects Count: \(audioUnitComponents.audioUnitComponents.count)")
-                        Text("Managed Count: \(audioUnitComponents.auManagedEffectUnits.count)")
-                        
+            VStack {
+                VStack {
+                    Text("EffectsMenuView")
+                    Text("Effects Count: \(audioUnitComponents.audioUnitComponents.count)")
+                    Text("Managed Count: \(audioUnitComponents.auManagedEffectUnits.count)")
+                    
+                }
+                NavigationSplitView (columnVisibility: $columnVisibility) {
+                    List(selection: $selectedUnit) {
+                        ForEach(0..<audioUnitComponents.auManagedEffectUnits.count, id: \.self) { index in
+                            Label(audioUnitComponents.auManagedEffectUnits[index]!.name, systemImage: "waveform.circle")
+                        }
                     }
-                    NavigationSplitView (columnVisibility: $columnVisibility) {
-                        List(selection: $selectedUnit) {
-                            ForEach(0..<audioUnitComponents.auManagedEffectUnits.count, id: \.self) { index in
-                                Label(audioUnitComponents.auManagedEffectUnits[index]!.name, systemImage: "waveform.circle")
-                            }
-                        }
-                        .navigationTitle("Menu")
-                        
-                    } detail: {
-                        if let selectedUnit = selectedUnit {
-                            makeView5(index: selectedUnit)
-                                .id(selectedUnit)
-                        } else {
-                            Text("Choose something")
-                        }
+                    .navigationTitle("Menu")
+                    
+                } detail: {
+                    if let selectedUnit = selectedUnit {
+                        makeView5(index: selectedUnit)
+                            .id(selectedUnit)
+                    } else {
+                        Text("Choose something")
                     }
                 }
-                
             }
+            .border(.blue)
             .onAppear(perform: startRunning)
         }
-
+        
     }
     
     
     func makeView5(index: Int) -> some View {
         //if index != 0 {
-            let auManagedUnit = audioUnitComponents.auManagedEffectUnits[index]
-            auManagedUnit!.loadAudioUnitViewController() { nsViewController in
-                auManagedUnit!.setController(controller: nsViewController)
-            }
-            return AUComponent3View(auManagedUnit: auManagedUnit!, audioUnitComponents: audioUnitComponents)
+        let auManagedUnit = audioUnitComponents.auManagedEffectUnits[index]
+        auManagedUnit!.loadAudioUnitViewController() { nsViewController in
+            auManagedUnit!.setController(controller: nsViewController)
+        }
+        return AUComponent3View(auManagedUnit: auManagedUnit!, audioUnitComponents: audioUnitComponents)
         //}
         //return AnyView(Text("No selection made"))
     }
