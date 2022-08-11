@@ -54,20 +54,20 @@ struct EffectsMenuSplit2View: View {
         return "no name"
     }
     
-    func makeView5(index: Int) -> some View {
-        let _ = print("index:\(index)")
-        
-        if index != 0 {
-            let auManagedUnit = audioUnitComponents.auManagedEffectUnits[index]
-            let _ = print("Unit is:\(auManagedUnit!.name)")
-            
-            auManagedUnit!.loadAudioUnitViewController() { nsViewController in
-                auManagedUnit!.setController(controller: nsViewController)
-            }
-            return AnyView(AUComponent3View(auManagedUnit: auManagedUnit!, audioUnitComponents: audioUnitComponents))
-        }
-        return AnyView(Text("0 index"))
-    }
+//    func makeView5(index: Int) -> some View {
+//        let _ = print("index:\(index)")
+//        
+//        if index != 0 {
+//            let auManagedUnit = audioUnitComponents.auManagedEffectUnits[index]
+//            let _ = print("Unit is:\(auManagedUnit!.name)")
+//            
+//            auManagedUnit!.loadAudioUnitViewController() { nsViewController in
+//                auManagedUnit!.setController(controller: nsViewController)
+//            }
+//            return AnyView(AUComponent3View(auManagedUnit: auManagedUnit!, audioUnitComponents: audioUnitComponents))
+//        }
+//        return AnyView(Text("0 index"))
+//    }
     
     
     func makeView6(auManagedUnit: AUManagedUnit!) -> some View {
