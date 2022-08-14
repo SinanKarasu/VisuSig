@@ -36,7 +36,7 @@ struct PreferencesView: View {
        
        var body: some View {
            GroupBox(label: Text("Credentials") ) {
-               Form {
+               VStack {
                    Text("Username")
                    TextField("", text: $username)
                    
@@ -57,7 +57,7 @@ struct PreferencesView: View {
        var body: some View {
            VStack {
                GroupBox(label: Text("Font") ) {
-                   Form {
+                   VStack {
                        Picker("Font Family", selection: $family) {
                            Text("Arial").tag(1)
                            Text("Helvetica").tag(2)
@@ -69,7 +69,7 @@ struct PreferencesView: View {
                }
                
                GroupBox(label: Text("Appearance") ) {
-                   Form {
+                   VStack {
                        Picker("Scheme", selection: $scheme) {
                            Text("Dark").tag(1)
                            Text("Light").tag(2)
@@ -89,7 +89,7 @@ struct PreferencesView: View {
    
        var body: some View {
            GroupBox(label: Text("Network Connection") ) {
-               Form {
+               VStack {
                    Toggle(isOn: $logConnection, label: { Text("Output log enabled")})
                    
                    Divider()

@@ -30,7 +30,6 @@ struct MyContentView : View {
                     }
                     .padding(.horizontal, 30)
 
-                // Form Container
                 VStack(alignment: .leading) {
                     // Title
                     VStack {
