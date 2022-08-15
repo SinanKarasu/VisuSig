@@ -6,6 +6,33 @@
 //
 
 import SwiftUI
+import AVFoundation
+
+struct MyArray: View {
+    var texts: [String]
+    @State var showPopUp: Bool = false
+    var body: some View {
+        return Button("\(texts.count)")
+        {
+            showPopUp.toggle()
+        }
+        .buttonStyle(PlainButtonStyle())
+        .background(Color.cyan)
+        .sheet(isPresented: $showPopUp) {
+            VStack {
+                Button("Button")
+                {
+                    showPopUp.toggle()
+                }
+                //SheetView(isVisible: self.$sheetIsShowing, myLayout: myLayout)
+                ForEach(texts, id: \.self) { text in
+                    Text(text)
+                }
+            }
+        }
+        
+    }
+}
 
 struct MyButton: View {
     var text: String
@@ -80,6 +107,8 @@ struct ComponentTableView: View {
                 //TableColumn("Icon") { myIcon(img: $0.avAudioUnitComponent?.icon)}
                 TableColumn("Type")             { viewOfStr($0.avAudioUnitComponent?.typeName) } //.width(min: 35, ideal: 35, max:   60)
                 TableColumn("All Tag\nCount")       { viewOfStr("\($0.avAudioUnitComponent?.allTagNames.count ?? 0)") } //.width(min: 35, ideal: 35, max:   60)
+                TableColumn("All Tags")       { myArray(texts: $0.avAudioUnitComponent) } //.width(min: 35, ideal: 35, max:   60)
+
                 TableColumn("User Tag\nCount")       { viewOfStr("\($0.avAudioUnitComponent?.userTagNames.count ?? 0)") } //.width(min: 35, ideal: 35, max:   60)
                 TableColumn("Custom\nView")     { viewOfBool($0.avAudioUnitComponent?.hasCustomView)  }.width(min: 35, ideal: 35, max:   60)
                 TableColumn("MIDI\nInput")      { viewOfBool($0.avAudioUnitComponent?.hasMIDIInput) }.width(min: 35, ideal: 35, max:   60)
@@ -90,6 +119,16 @@ struct ComponentTableView: View {
         .frame(width: 800, height:800)
     }
     
+    func myArray(texts:AVAudioUnitComponent?)-> some View {
+        if let texts = texts {
+            return MyArray(texts: texts.allTagNames)
+        }
+        return MyArray(texts: ["Hello There"])
+    }
+
+    func myArray(texts:[String])-> some View {
+        return MyArray(texts: texts)
+    }
     func viewOfBool(_ val: Bool?) -> some View {
         if let val = val {
             return Text(val ? "Y":"N")
