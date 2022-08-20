@@ -11,7 +11,6 @@
 		F7300E842825B9DF00E41206 /* AUComponent3View.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7300E832825B9DF00E41206 /* AUComponent3View.swift */; };
 		F73DDC0C2835770300DABC2F /* Utilities+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F73DDC0B2835770300DABC2F /* Utilities+Extensions.swift */; };
 		F73DDC12283577BF00DABC2F /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = F73DDC11283577BF00DABC2F /* Log.swift */; };
-		F74623C7282598A700027187 /* EffectsMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F74623C6282598A700027187 /* EffectsMenuView.swift */; };
 		F74856752817030B0038D7B7 /* NodePortsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F74856742817030B0038D7B7 /* NodePortsView.swift */; };
 		F748568028184D6D0038D7B7 /* QGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = F748567B28184D6D0038D7B7 /* QGrid.swift */; };
 		F75C5276282855D2008DBD23 /* MasterMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F75C5275282855D2008DBD23 /* MasterMenuView.swift */; };
@@ -52,7 +51,6 @@
 		F7A2CCBA2890D5AF00FEBB72 /* AV+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7A2CCB92890D5AF00FEBB72 /* AV+Extensions.swift */; };
 		F7A37BE127F23529007D4AEB /* people.json in Resources */ = {isa = PBXBuildFile; fileRef = F7A37BE027F23529007D4AEB /* people.json */; };
 		F7A6286A27BE19E9009211FA /* SimplePathView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7A6286927BE19E9009211FA /* SimplePathView.swift */; };
-		F7C6ADF3289E0FF80045E740 /* EffectsMenuSplit2View.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7C6ADF2289E0FF80045E740 /* EffectsMenuSplit2View.swift */; };
 		F7C6ADF6289E24DC0045E740 /* InstrumentsMenuSplitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7C6ADF5289E24DC0045E740 /* InstrumentsMenuSplitView.swift */; };
 		F7C809C6279B299200982843 /* VisuSigApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7C809C5279B299200982843 /* VisuSigApp.swift */; };
 		F7C809C8279B299200982843 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7C809C7279B299200982843 /* ContentView.swift */; };
@@ -86,7 +84,6 @@
 		F7CE746327BD64DF00BBF6A2 /* FlyoutMenuMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7CE746127BD64DF00BBF6A2 /* FlyoutMenuMainView.swift */; };
 		F7CE746527BD658800BBF6A2 /* View+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7CE746427BD658800BBF6A2 /* View+Extensions.swift */; };
 		F7CE746727BD693900BBF6A2 /* SelectionHandlerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7CE746627BD693900BBF6A2 /* SelectionHandlerView.swift */; };
-		F7DB712028284EE700FD4A9D /* InstrumentsMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7DB711F28284EE700FD4A9D /* InstrumentsMenuView.swift */; };
 		F7DD1AF2289CB02200E48D97 /* AudioUnitType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7DD1AF1289CB02200E48D97 /* AudioUnitType.swift */; };
 		F7DD1AFC289DF33A00E48D97 /* EffectsMenuSplitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7DD1AFB289DF33A00E48D97 /* EffectsMenuSplitView.swift */; };
 		F7EE4446283D2D3B00ACE932 /* DropDownMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7EE4445283D2D3B00ACE932 /* DropDownMenu.swift */; };
@@ -103,7 +100,6 @@
 		F7300E832825B9DF00E41206 /* AUComponent3View.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AUComponent3View.swift; sourceTree = "<group>"; };
 		F73DDC0B2835770300DABC2F /* Utilities+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Utilities+Extensions.swift"; sourceTree = "<group>"; };
 		F73DDC11283577BF00DABC2F /* Log.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
-		F74623C6282598A700027187 /* EffectsMenuView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EffectsMenuView.swift; sourceTree = "<group>"; };
 		F74856742817030B0038D7B7 /* NodePortsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NodePortsView.swift; sourceTree = "<group>"; };
 		F748567B28184D6D0038D7B7 /* QGrid.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QGrid.swift; sourceTree = "<group>"; };
 		F75C5275282855D2008DBD23 /* MasterMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterMenuView.swift; sourceTree = "<group>"; };
@@ -144,7 +140,6 @@
 		F7A2CCB92890D5AF00FEBB72 /* AV+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AV+Extensions.swift"; sourceTree = "<group>"; };
 		F7A37BE027F23529007D4AEB /* people.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = people.json; sourceTree = "<group>"; };
 		F7A6286927BE19E9009211FA /* SimplePathView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimplePathView.swift; sourceTree = "<group>"; };
-		F7C6ADF2289E0FF80045E740 /* EffectsMenuSplit2View.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EffectsMenuSplit2View.swift; sourceTree = "<group>"; };
 		F7C6ADF5289E24DC0045E740 /* InstrumentsMenuSplitView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InstrumentsMenuSplitView.swift; sourceTree = "<group>"; };
 		F7C809C2279B299200982843 /* VisuSig.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VisuSig.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F7C809C5279B299200982843 /* VisuSigApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisuSigApp.swift; sourceTree = "<group>"; };
@@ -180,7 +175,6 @@
 		F7CE746127BD64DF00BBF6A2 /* FlyoutMenuMainView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlyoutMenuMainView.swift; sourceTree = "<group>"; };
 		F7CE746427BD658800BBF6A2 /* View+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "View+Extensions.swift"; sourceTree = "<group>"; };
 		F7CE746627BD693900BBF6A2 /* SelectionHandlerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionHandlerView.swift; sourceTree = "<group>"; };
-		F7DB711F28284EE700FD4A9D /* InstrumentsMenuView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InstrumentsMenuView.swift; sourceTree = "<group>"; };
 		F7DD1AF1289CB02200E48D97 /* AudioUnitType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioUnitType.swift; sourceTree = "<group>"; };
 		F7DD1AFB289DF33A00E48D97 /* EffectsMenuSplitView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EffectsMenuSplitView.swift; sourceTree = "<group>"; };
 		F7EE4445283D2D3B00ACE932 /* DropDownMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropDownMenu.swift; sourceTree = "<group>"; };
@@ -234,7 +228,6 @@
 		F75CC4B7281EED4E00692CE5 /* Host */ = {
 			isa = PBXGroup;
 			children = (
-				F7C6ADF4289E24A60045E740 /* Abandoned */,
 				F7300E832825B9DF00E41206 /* AUComponent3View.swift */,
 				F75CC4C5281EEE7200692CE5 /* AUComponentControllerView.swift */,
 				F75CC4BA281EED8B00692CE5 /* AudioUnitComponents.swift */,
@@ -338,16 +331,6 @@
 				F79E3EE3281BA1A400CD0520 /* MyViewType.swift */,
 			);
 			path = EditWindows;
-			sourceTree = "<group>";
-		};
-		F7C6ADF4289E24A60045E740 /* Abandoned */ = {
-			isa = PBXGroup;
-			children = (
-				F7DB711F28284EE700FD4A9D /* InstrumentsMenuView.swift */,
-				F74623C6282598A700027187 /* EffectsMenuView.swift */,
-				F7C6ADF2289E0FF80045E740 /* EffectsMenuSplit2View.swift */,
-			);
-			path = Abandoned;
 			sourceTree = "<group>";
 		};
 		F7C6ADF7289F63120045E740 /* EffectsToolView */ = {
@@ -676,7 +659,6 @@
 				F75FF89228394EBF00BC5AC1 /* ToolMenuView.swift in Sources */,
 				F7C809E9279B4F2500982843 /* SelectionHandler.swift in Sources */,
 				F7C809FD279B50CB00982843 /* EdgeMapView.swift in Sources */,
-				F74623C7282598A700027187 /* EffectsMenuView.swift in Sources */,
 				F7CE746227BD64DF00BBF6A2 /* MenuOptions.swift in Sources */,
 				F779564C287CBE58007E569B /* AudioGraph.swift in Sources */,
 				F7C809F9279B500200982843 /* MapView.swift in Sources */,
@@ -693,7 +675,6 @@
 				F7C6ADF6289E24DC0045E740 /* InstrumentsMenuSplitView.swift in Sources */,
 				F75FF8D32839A28B00BC5AC1 /* ContextMenuProtocol.swift in Sources */,
 				F75CC4C1281EEE0500692CE5 /* ComponentViewController.swift in Sources */,
-				F7DB712028284EE700FD4A9D /* InstrumentsMenuView.swift in Sources */,
 				F75CC4CE281F542D00692CE5 /* AUManagedUnit.swift in Sources */,
 				F7EE4446283D2D3B00ACE932 /* DropDownMenu.swift in Sources */,
 				F7C809F0279B4F6100982843 /* CGPoint+Help.swift in Sources */,
@@ -705,7 +686,6 @@
 				F7C809EC279B4F2500982843 /* Mesh+Demo.swift in Sources */,
 				F7A6286A27BE19E9009211FA /* SimplePathView.swift in Sources */,
 				F7C80A13279B6E4600982843 /* PortalPositionView.swift in Sources */,
-				F7C6ADF3289E0FF80045E740 /* EffectsMenuSplit2View.swift in Sources */,
 				F7C80A20279BBFA800982843 /* CurvePointView.swift in Sources */,
 				F7C80A0D279B52BC00982843 /* SimpleLogger.swift in Sources */,
 				F7F4597E27B34E6400B64772 /* WireEditView.swift in Sources */,
