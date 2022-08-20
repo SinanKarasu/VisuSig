@@ -42,8 +42,8 @@ class AUManagedUnit: ObservableObject, Identifiable, Hashable {
     
     public var name: String {
         guard let component = protoType else {
-            //return audioUnitType == .effect ? "(No Effect)" : "(No Instrument)"
-            return "No Name"
+            return audioUnitType == .effect ? "(No Effect)" : "(No Instrument)"
+            //return "No Name"
         }
         return "\(component.name) (\(component.avAudioUnitComponent?.manufacturerName ?? "Unknown"))"
     }

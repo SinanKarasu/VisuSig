@@ -38,7 +38,11 @@ struct EffectsMenuSplitView: View {
                             NavigationSplitView (columnVisibility: $columnVisibility) {
                                 List(selection: $selectedUnit) {
                                     ForEach(0..<audioUnitComponents.auManagedEffectUnits.count, id: \.self) { index in
-                                        Label(audioUnitComponents.auManagedEffectUnits[index]!.name, systemImage: "waveform.circle")
+                                        if let x = audioUnitComponents.auManagedEffectUnits[index] {
+                                            Label(x.name, systemImage: "waveform.circle")
+                                        } else {
+                                            Label("No Effect", systemImage: "waveform.circle")
+                                        }
                                     }
                                 }
                                 //.listRowInsets(EdgeInsets(top: 0, leading: 200, bottom: 0, trailing: 0))
@@ -66,13 +70,14 @@ struct EffectsMenuSplitView: View {
     
     func makeView5(index: Int) -> some View {
         //if index != 0 {
-        let auManagedUnit = audioUnitComponents.auManagedEffectUnits[index]
-        auManagedUnit!.loadAudioUnitViewController() { nsViewController in
-            auManagedUnit!.setController(controller: nsViewController)
+        if let auManagedUnit = audioUnitComponents.auManagedEffectUnits[index] {
+            auManagedUnit.loadAudioUnitViewController() { nsViewController in
+                auManagedUnit.setController(controller: nsViewController)
+            }
+            return AnyView(AUComponent3View(auManagedUnit: auManagedUnit, audioUnitComponents: audioUnitComponents))
+        } else {
+            return AnyView(Text("Select an effect unit"))
         }
-        return AUComponent3View(auManagedUnit: auManagedUnit!, audioUnitComponents: audioUnitComponents)
-        //}
-        //return AnyView(Text("No selection made"))
     }
     
     

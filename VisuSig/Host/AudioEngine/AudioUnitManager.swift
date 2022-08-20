@@ -18,7 +18,7 @@ class AudioUnitManager: ObservableObject {
     
     // Filter out these AUs. They don't make sense for this demo.
     var filterClosure: (AVAudioUnitComponent) -> Bool = {
-        let blacklist = ["AUNewPitch", "AURoundTripAAC", "AUNetSend"]
+        let blacklist = [String]() //["AUNewPitch", "AURoundTripAAC", "AUNetSend"]
         var allowed = !blacklist.contains($0.name)
         if allowed && $0.typeName == AVAudioUnitTypeEffect {
             allowed = $0.hasCustomView

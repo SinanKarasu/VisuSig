@@ -107,9 +107,8 @@ struct ComponentTableView: View {
                 //TableColumn("Icon") { myIcon(img: $0.avAudioUnitComponent?.icon)}
                 TableColumn("Type")             { viewOfStr($0.avAudioUnitComponent?.typeName) } //.width(min: 35, ideal: 35, max:   60)
                 TableColumn("All Tag\nCount")       { viewOfStr("\($0.avAudioUnitComponent?.allTagNames.count ?? 0)") } //.width(min: 35, ideal: 35, max:   60)
-                TableColumn("All Tags")       { myArray(texts: $0.avAudioUnitComponent) } //.width(min: 35, ideal: 35, max:   60)
-
-                TableColumn("User Tag\nCount")       { viewOfStr("\($0.avAudioUnitComponent?.userTagNames.count ?? 0)") } //.width(min: 35, ideal: 35, max:   60)
+                TableColumn("All\nTags")       { allTags(texts: $0.avAudioUnitComponent) } //.width(min: 35, ideal: 35, max:   60)
+                TableColumn("User\nTags")       { userTags(texts: $0.avAudioUnitComponent) } //.width(min: 35, ideal: 35, max:   60)
                 TableColumn("Custom\nView")     { viewOfBool($0.avAudioUnitComponent?.hasCustomView)  }.width(min: 35, ideal: 35, max:   60)
                 TableColumn("MIDI\nInput")      { viewOfBool($0.avAudioUnitComponent?.hasMIDIInput) }.width(min: 35, ideal: 35, max:   60)
                 TableColumn("MIDI\nOutput")     { viewOfBool($0.avAudioUnitComponent?.hasMIDIOutput) }.width(min: 35, ideal: 35, max:   60)
@@ -119,9 +118,16 @@ struct ComponentTableView: View {
         .frame(width: 800, height:800)
     }
     
-    func myArray(texts:AVAudioUnitComponent?)-> some View {
+    func allTags(texts:AVAudioUnitComponent?)-> some View {
         if let texts = texts {
             return MyArray(texts: texts.allTagNames)
+        }
+        return MyArray(texts: ["Hello There"])
+    }
+
+    func userTags(texts:AVAudioUnitComponent?)-> some View {
+        if let texts = texts {
+            return MyArray(texts: texts.userTagNames)
         }
         return MyArray(texts: ["Hello There"])
     }
