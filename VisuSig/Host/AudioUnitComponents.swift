@@ -30,21 +30,29 @@ class AudioUnitComponents:ObservableObject {
     //var emptyDict = [UUID: ComponentViewController]()
     
     
+    init() {
+        startRunning()
+    }
+    
     func initializeEffects(instantiate: Bool = true) {
         if !effectsInitialized{
             effectsInitialized = true
-            loadAudioUnits(ofType: .effect, instantiate: instantiate)
+            DispatchQueue.main.async {
+                self.loadAudioUnits(ofType: .effect, instantiate: instantiate)
+            }
         }
     }
     
     func initializeInstruments(instantiate: Bool = true) {
-        if !effectsInitialized{
-            effectsInitialized = true
-            loadAudioUnits(ofType: .instrument, instantiate: instantiate)
+        if !instsInitialized{
+            instsInitialized = true
+            DispatchQueue.main.async {
+                self.loadAudioUnits(ofType: .instrument, instantiate: instantiate)
+            }
         }
     }
-
-
+    
+    
     func loadAudioUnits(ofType type: AudioUnitType, instantiate: Bool = true) {
         // Ensure audio playback is stopped before loading.
         //audioUnitManager.stopPlayback()
@@ -91,6 +99,11 @@ class AudioUnitComponents:ObservableObject {
             }
         }
     }
+    
+    func startRunning() {
+        initializeEffects()
+        initializeInstruments()
+   }
     
     
     func connectComponent(auManagedUnit: AUManagedUnit?, completion: @escaping (Result<AUManagedUnit?, Error>) -> Void)  {

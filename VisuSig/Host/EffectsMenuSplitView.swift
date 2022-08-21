@@ -62,7 +62,7 @@ struct EffectsMenuSplitView: View {
                 }
             }
             //.border(.blue) //BUG. Enable this line
-            .onAppear(perform: startRunning)
+            //.onAppear(perform: startRunning)
         }
         
     }
@@ -81,20 +81,22 @@ struct EffectsMenuSplitView: View {
     }
     
     
-    func startRunning() {
-        audioUnitComponents.initializeEffects()
-        //        if !audioUnitComponents.effectsInitialized{
-        //            audioUnitComponents.effectsInitialized = true
-        //            audioUnitComponents.loadAudioUnits(ofType: audioUnitType)
-        //        }
-    }
+//    func startRunning() {
+//        audioUnitComponents.initializeEffects()
+//        //        if !audioUnitComponents.effectsInitialized{
+//        //            audioUnitComponents.effectsInitialized = true
+//        //            audioUnitComponents.loadAudioUnits(ofType: audioUnitType)
+//        //        }
+//    }
     
 }
 
+#if DEBUG
 struct EffectsMenuSplitView_Preview: PreviewProvider {
-    @StateObject var audioUnitComponents = AudioUnitComponents()
-    
+    @StateObject static var audioUnitComponents = AudioUnitComponents()
+
     static var previews: some View {
-        EffectsMenuSplitView(audioUnitComponents: AudioUnitComponents())
+        EffectsMenuSplitView(audioUnitComponents: audioUnitComponents)
     }
 }
+#endif

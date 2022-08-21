@@ -40,7 +40,7 @@ struct InstrumentsMenuSplitView: View {
                         .id(selectedIndex)
                 }
             }
-            .onAppear(perform: startRunning)
+            //.onAppear(perform: startRunning)
         }
     }
     
@@ -56,14 +56,9 @@ struct InstrumentsMenuSplitView: View {
         return AnyView(Text("No selection made"))
     }
     
-    func startRunning() {
-        DispatchQueue.main.async {
-            if !audioUnitComponents.instsInitialized {
-                audioUnitComponents.instsInitialized = true
-                audioUnitComponents.loadAudioUnits(ofType: audioUnitType)
-            }
-        }
-    }
+//    func startRunning() {
+//        audioUnitComponents.startRunning()
+//    }
 }
 
 struct InstrumentsMenuSplitView_Preview: PreviewProvider {
