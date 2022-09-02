@@ -47,6 +47,8 @@
 		F79E3EEB281BA1A400CD0520 /* MyContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F79E3EE5281BA1A400CD0520 /* MyContentView.swift */; };
 		F79E3EEC281BA1A400CD0520 /* MiniMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = F79E3EE6281BA1A400CD0520 /* MiniMap.swift */; };
 		F79E3EED281BA1A400CD0520 /* MyFormField.swift in Sources */ = {isa = PBXBuildFile; fileRef = F79E3EE7281BA1A400CD0520 /* MyFormField.swift */; };
+		F7A2914A28C26CB10087F38F /* UtilityFuncs.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7A2914928C26CB10087F38F /* UtilityFuncs.swift */; };
+		F7A2914C28C26CC20087F38F /* ChassisAudioEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7A2914B28C26CC20087F38F /* ChassisAudioEngine.swift */; };
 		F7A2CCB82890D54E00FEBB72 /* MultiPlayEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7A2CCB72890D54E00FEBB72 /* MultiPlayEngine.swift */; };
 		F7A2CCBA2890D5AF00FEBB72 /* AV+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7A2CCB92890D5AF00FEBB72 /* AV+Extensions.swift */; };
 		F7A37BE127F23529007D4AEB /* people.json in Resources */ = {isa = PBXBuildFile; fileRef = F7A37BE027F23529007D4AEB /* people.json */; };
@@ -136,6 +138,8 @@
 		F79E3EE5281BA1A400CD0520 /* MyContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyContentView.swift; sourceTree = "<group>"; };
 		F79E3EE6281BA1A400CD0520 /* MiniMap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MiniMap.swift; sourceTree = "<group>"; };
 		F79E3EE7281BA1A400CD0520 /* MyFormField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyFormField.swift; sourceTree = "<group>"; };
+		F7A2914928C26CB10087F38F /* UtilityFuncs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UtilityFuncs.swift; sourceTree = "<group>"; };
+		F7A2914B28C26CC20087F38F /* ChassisAudioEngine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChassisAudioEngine.swift; sourceTree = "<group>"; };
 		F7A2CCB72890D54E00FEBB72 /* MultiPlayEngine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultiPlayEngine.swift; sourceTree = "<group>"; };
 		F7A2CCB92890D5AF00FEBB72 /* AV+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AV+Extensions.swift"; sourceTree = "<group>"; };
 		F7A37BE027F23529007D4AEB /* people.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = people.json; sourceTree = "<group>"; };
@@ -200,6 +204,8 @@
 		F703871F283809230055C939 /* Chassis */ = {
 			isa = PBXGroup;
 			children = (
+				F7A2914928C26CB10087F38F /* UtilityFuncs.swift */,
+				F7A2914B28C26CC20087F38F /* ChassisAudioEngine.swift */,
 			);
 			path = Chassis;
 			sourceTree = "<group>";
@@ -654,6 +660,7 @@
 				F75C5276282855D2008DBD23 /* MasterMenuView.swift in Sources */,
 				F7C80A1F279BBFA800982843 /* CubicBezierData.swift in Sources */,
 				F7EE444E283EFC6400ACE932 /* VerticalUnitView.swift in Sources */,
+				F7A2914C28C26CC20087F38F /* ChassisAudioEngine.swift in Sources */,
 				F781CF0C2821D7B600ADBF6E /* SiKAudioMixer.swift in Sources */,
 				F798E97B283C620A00444FE3 /* TopComponentMenuView.swift in Sources */,
 				F75FF89228394EBF00BC5AC1 /* ToolMenuView.swift in Sources */,
@@ -696,6 +703,7 @@
 				F75CC4AD281D8A8400692CE5 /* AudioUnitManager.swift in Sources */,
 				F779564A287C91A3007E569B /* EdgeProxy.swift in Sources */,
 				F75CC4C4281EEE4D00692CE5 /* ViewExtensions.swift in Sources */,
+				F7A2914A28C26CB10087F38F /* UtilityFuncs.swift in Sources */,
 				F79E3EEA281BA1A400CD0520 /* MyPreferenceData.swift in Sources */,
 				F75CC4BD281EEDD100692CE5 /* SiKPlayerView.swift in Sources */,
 				F798E8C5283B232900444FE3 /* EffectsToolsView.swift in Sources */,
