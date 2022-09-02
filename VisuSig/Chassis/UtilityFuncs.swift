@@ -20,311 +20,8 @@ import AudioToolbox
     if status == noErr {
         return status
     }
-    
-    let s = status.asString()
-    print("error chars '\(String(describing: s))'")
-    
-    
-    switch status {
-        // AudioToolbox
-    case kAUGraphErr_NodeNotFound:
-        print("kAUGraphErr_NodeNotFound")
-        
-    case kAUGraphErr_OutputNodeErr:
-        print("kAUGraphErr_OutputNodeErr")
-        
-    case kAUGraphErr_InvalidConnection:
-        print("kAUGraphErr_InvalidConnection")
-        
-    case kAUGraphErr_CannotDoInCurrentContext:
-        print("kAUGraphErr_CannotDoInCurrentContext")
-        
-    case kAUGraphErr_InvalidAudioUnit:
-        print("kAUGraphErr_InvalidAudioUnit")
-        
-    case kMIDIInvalidClient :
-        print("kMIDIInvalidClient ")
-        
-        
-    case kMIDIInvalidPort :
-        print("kMIDIInvalidPort ")
-        
-        
-    case kMIDIWrongEndpointType :
-        print("kMIDIWrongEndpointType")
-        
-        
-    case kMIDINoConnection :
-        print("kMIDINoConnection ")
-        
-        
-    case kMIDIUnknownEndpoint :
-        print("kMIDIUnknownEndpoint ")
-        
-        
-    case kMIDIUnknownProperty :
-        print("kMIDIUnknownProperty ")
-        
-        
-    case kMIDIWrongPropertyType :
-        print("kMIDIWrongPropertyType ")
-        
-        
-    case kMIDINoCurrentSetup :
-        print("kMIDINoCurrentSetup ")
-        
-        
-    case kMIDIMessageSendErr :
-        print("kMIDIMessageSendErr ")
-        
-        
-    case kMIDIServerStartErr :
-        print("kMIDIServerStartErr ")
-        
-        
-    case kMIDISetupFormatErr :
-        print("kMIDISetupFormatErr ")
-        
-        
-    case kMIDIWrongThread :
-        print("kMIDIWrongThread ")
-        
-        
-    case kMIDIObjectNotFound :
-        print("kMIDIObjectNotFound ")
-        
-        
-    case kMIDIIDNotUnique :
-        print("kMIDIIDNotUnique ")
-        
-        
-    case kAudioToolboxErr_InvalidSequenceType :
-        print("kAudioToolboxErr_InvalidSequenceType ")
-        
-    case kAudioToolboxErr_TrackIndexError :
-        print("kAudioToolboxErr_TrackIndexError ")
-        
-    case kAudioToolboxErr_TrackNotFound :
-        print("kAudioToolboxErr_TrackNotFound ")
-        
-    case kAudioToolboxErr_EndOfTrack :
-        print("kAudioToolboxErr_EndOfTrack ")
-        
-    case kAudioToolboxErr_StartOfTrack :
-        print("kAudioToolboxErr_StartOfTrack ")
-        
-    case kAudioToolboxErr_IllegalTrackDestination:
-        print("kAudioToolboxErr_IllegalTrackDestination")
-        
-    case kAudioToolboxErr_NoSequence :
-        print("kAudioToolboxErr_NoSequence ")
-        
-    case kAudioToolboxErr_InvalidEventType    :
-        print("kAudioToolboxErr_InvalidEventType")
-        
-    case kAudioToolboxErr_InvalidPlayerState:
-        print("kAudioToolboxErr_InvalidPlayerState")
-        
-    case kAudioUnitErr_InvalidProperty    :
-        print("kAudioUnitErr_InvalidProperty")
-        
-    case kAudioUnitErr_InvalidParameter    :
-        print("kAudioUnitErr_InvalidParameter")
-        
-    case kAudioUnitErr_InvalidElement :
-        print("kAudioUnitErr_InvalidElement")
-        
-    case kAudioUnitErr_NoConnection    :
-        print("kAudioUnitErr_NoConnection")
-        
-    case kAudioUnitErr_FailedInitialization    :
-        print("kAudioUnitErr_FailedInitialization")
-        
-    case kAudioUnitErr_TooManyFramesToProcess:
-        print("kAudioUnitErr_TooManyFramesToProcess")
-        
-    case kAudioUnitErr_InvalidFile:
-        print("kAudioUnitErr_InvalidFile")
-        
-    case kAudioUnitErr_FormatNotSupported :
-        print("kAudioUnitErr_FormatNotSupported")
-        
-    case kAudioUnitErr_Uninitialized:
-        print("kAudioUnitErr_Uninitialized")
-        
-    case kAudioUnitErr_InvalidScope :
-        print("kAudioUnitErr_InvalidScope")
-        
-    case kAudioUnitErr_PropertyNotWritable :
-        print("kAudioUnitErr_PropertyNotWritable")
-        
-    case kAudioUnitErr_InvalidPropertyValue :
-        print("kAudioUnitErr_InvalidPropertyValue")
-        
-    case kAudioUnitErr_PropertyNotInUse :
-        print("kAudioUnitErr_PropertyNotInUse")
-        
-    case kAudioUnitErr_Initialized :
-        print("kAudioUnitErr_Initialized")
-        
-    case kAudioUnitErr_InvalidOfflineRender :
-        print("kAudioUnitErr_InvalidOfflineRender")
-        
-    case kAudioUnitErr_Unauthorized :
-        print("kAudioUnitErr_Unauthorized")
-        
-    case kAudioUnitErr_CannotDoInCurrentContext:
-        print("kAudioUnitErr_CannotDoInCurrentContext")
-        
-    case kAudioUnitErr_FailedInitialization:
-        print("kAudioUnitErr_FailedInitialization")
-        
-    case kAudioUnitErr_FileNotSpecified:
-        print("kAudioUnitErr_FileNotSpecified")
-        
-    case kAudioUnitErr_FormatNotSupported:
-        print("kAudioUnitErr_FormatNotSupported")
-        
-    case kAudioUnitErr_IllegalInstrument:
-        print("kAudioUnitErr_IllegalInstrument")
-        
-    case kAudioUnitErr_Initialized:
-        print("kAudioUnitErr_Initialized")
-        
-    case kAudioUnitErr_InstrumentTypeNotFound:
-        print("kAudioUnitErr_InstrumentTypeNotFound")
-        
-    case kAudioUnitErr_InvalidElement:
-        print("kAudioUnitErr_InvalidElement")
-        
-    case kAudioUnitErr_InvalidFile:
-        print("kAudioUnitErr_InvalidFile")
-        
-    case kAudioUnitErr_InvalidOfflineRender:
-        print("kAudioUnitErr_InvalidOfflineRender")
-        
-    case kAudioUnitErr_InvalidParameter:
-        print("kAudioUnitErr_InvalidParameter")
-        
-    case kAudioUnitErr_InvalidProperty:
-        print("kAudioUnitErr_InvalidProperty")
-        
-    case kAudioUnitErr_InvalidPropertyValue:
-        print("kAudioUnitErr_InvalidPropertyValue")
-        
-    case kAudioUnitErr_InvalidScope:
-        print("kAudioUnitErr_InvalidScope")
-        
-    case kAudioUnitErr_NoConnection:
-        print("kAudioUnitErr_NoConnection")
-        
-    case kAudioUnitErr_PropertyNotInUse:
-        print("kAudioUnitErr_PropertyNotInUse")
-        
-    case kAudioUnitErr_PropertyNotWritable:
-        print("kAudioUnitErr_PropertyNotWritable")
-        
-    case kAudioUnitErr_TooManyFramesToProcess:
-        print("kAudioUnitErr_TooManyFramesToProcess")
-        
-    case kAudioUnitErr_Unauthorized:
-        print("kAudioUnitErr_Unauthorized")
-        
-    case kAudioUnitErr_Uninitialized:
-        print("kAudioUnitErr_Uninitialized")
-        
-    case kAudioUnitErr_UnknownFileType:
-        print("kAudioUnitErr_UnknownFileType")
-        
-    case kAudioComponentErr_InstanceInvalidated:
-        print("kAudioComponentErr_InstanceInvalidated ")
-        
-    case kAudioComponentErr_DuplicateDescription:
-        print("kAudioComponentErr_DuplicateDescription ")
-        
-    case kAudioComponentErr_UnsupportedType:
-        print("kAudioComponentErr_UnsupportedType ")
-        
-    case kAudioComponentErr_TooManyInstances:
-        print("kAudioComponentErr_TooManyInstances ")
-        
-    case kAudioComponentErr_NotPermitted:
-        print("kAudioComponentErr_NotPermitted ")
-        
-    case kAudioComponentErr_InitializationTimedOut:
-        print("kAudioComponentErr_InitializationTimedOut ")
-        
-    case kAudioComponentErr_InvalidFormat:
-        print("kAudioComponentErr_InvalidFormat ")
-        
-        // in CoreAudioTypes
-    case kAudio_UnimplementedError :
-        print("kAudio_UnimplementedError")
-        
-    case kAudio_FileNotFoundError :
-        print("kAudio_FileNotFoundError")
-        
-    case kAudio_FilePermissionError :
-        print("kAudio_FilePermissionError")
-        
-    case kAudio_TooManyFilesOpenError :
-        print("kAudio_TooManyFilesOpenError")
-        
-    case kAudio_BadFilePathError :
-        print("kAudio_BadFilePathError")
-        
-    case kAudio_ParamError :
-        print("kAudio_ParamError") // the infamous -50
-        
-    case kAudio_MemFullError :
-        print("kAudio_MemFullError")
-        
-        
-    default:
-        print("huh?")
-        print("bad status \(status)")
-        //print("\(__LINE__) bad status \(error)")
-    }
+    print("Status: \(status.detailedErrorMessage() ?? String(describing: status.asString()))")
     return status
-}
-
-@discardableResult public func checkError2(error: OSStatus, operation: String) -> OSStatus {
-
-    if (error == noErr) {
-        return error
-    }
-    else if (error < 0) {
-        print("OSStatus Error code less than zero")
-        print("Error: \(error)")
-    } else {
-        let count = 5
-        let stride = MemoryLayout<OSStatus>.stride
-        let byteCount = stride * count
-
-        var error_ =  CFSwapInt32HostToBig(UInt32(error))
-        var charArray: [CChar] = [CChar](repeating: 0, count: byteCount )
-        withUnsafeBytes(of: &error_) { (buffer: UnsafeRawBufferPointer) in
-            for (index, byte) in buffer.enumerated() {
-                charArray[index + 1] = CChar(byte)
-            }
-        }
-
-        let v1 = charArray[1], v2 = charArray[2], v3 = charArray[3], v4 = charArray[4]
-
-        if (isprint(Int32(v1)) > 0 && isprint(Int32(v2)) > 0 && isprint(Int32(v3)) > 0 && isprint(Int32(v4)) > 0) {
-            charArray[0] = "\'".utf8CString[0]
-            charArray[5] = "\'".utf8CString[0]
-            let errStr = NSString(bytes: &charArray, length: charArray.count, encoding: String.Encoding.ascii.rawValue)
-            print("Error: \(operation) (\(errStr!))")
-        }
-        else {
-            print("Error: \(error)")
-        }
-
-    }
-    
-    exit(1)
-
 }
 
 let isDebug = true
@@ -346,6 +43,57 @@ extension OSStatus {
     //**************************
     func detailedErrorMessage() -> String? {
         switch(self) {
+        case 0: return "Success"
+            //***** AUGraph errors
+            // AVAudioRecorder errors
+        case kAudioFileUnspecifiedError:
+            return "kAudioFileUnspecifiedError"
+            
+        case kAudioFileUnsupportedFileTypeError:
+            return "kAudioFileUnsupportedFileTypeError"
+            
+        case kAudioFileUnsupportedDataFormatError:
+            return "kAudioFileUnsupportedDataFormatError"
+            
+        case kAudioFileUnsupportedPropertyError:
+            return "kAudioFileUnsupportedPropertyError"
+            
+        case kAudioFileBadPropertySizeError:
+            return "kAudioFileBadPropertySizeError"
+            
+        case kAudioFilePermissionsError:
+            return "kAudioFilePermissionsError"
+            
+        case kAudioFileNotOptimizedError:
+            return "kAudioFileNotOptimizedError"
+            
+        case kAudioFileInvalidChunkError:
+            return "kAudioFileInvalidChunkError"
+            
+        case kAudioFileDoesNotAllow64BitDataSizeError:
+            return "kAudioFileDoesNotAllow64BitDataSizeError"
+            
+        case kAudioFileInvalidPacketOffsetError:
+            return "kAudioFileInvalidPacketOffsetError"
+            
+        case kAudioFileInvalidFileError:
+            return "kAudioFileInvalidFileError"
+            
+        case kAudioFileOperationNotSupportedError:
+            return "kAudioFileOperationNotSupportedError"
+            
+        case kAudioFileNotOpenError:
+            return "kAudioFileNotOpenError"
+            
+        case kAudioFileEndOfFileError:
+            return "kAudioFileEndOfFileError"
+            
+        case kAudioFilePositionError:
+            return "kAudioFilePositionError"
+            
+        case kAudioFileFileNotFoundError:
+            return "kAudioFileFileNotFoundError"
+            
             //***** AUGraph errors
         case kAUGraphErr_NodeNotFound:             return "AUGraph Node Not Found"
         case kAUGraphErr_InvalidConnection:        return "AUGraph Invalid Connection"
@@ -407,15 +155,6 @@ extension OSStatus {
         case kAudioUnitErr_UnknownFileType:          return "AudioUnit Unknown File Type"
         case kAudioUnitErr_RenderTimeout:             return "AudioUnit Rendre Timeout"
             
-            //***** AudioComponent errors
-        case kAudioComponentErr_DuplicateDescription:   return "AudioComponent Duplicate Description"
-        case kAudioComponentErr_InitializationTimedOut: return "AudioComponent Initialization Timed Out"
-        case kAudioComponentErr_InstanceInvalidated:    return "AudioComponent Instance Invalidated"
-        case kAudioComponentErr_InvalidFormat:          return "AudioComponent Invalid Format"
-        case kAudioComponentErr_NotPermitted:           return "AudioComponent Not Permitted "
-        case kAudioComponentErr_TooManyInstances:       return "AudioComponent Too Many Instances"
-        case kAudioComponentErr_UnsupportedType:        return "AudioComponent Unsupported Type"
-            
             //***** Audio errors
         case kAudio_BadFilePathError:      return "Audio Bad File Path Error"
         case kAudio_FileNotFoundError:     return "Audio File Not Found Error"
@@ -425,7 +164,7 @@ extension OSStatus {
         case kAudio_TooManyFilesOpenError: return "Audio Too Many Files Open Error"
         case kAudio_UnimplementedError:    return "Audio Unimplemented Error"
             
-        default: return nil
+        default: return "Unknown error (no description)"
         } // switch(self)
     } // detailedErrorMessage
     
