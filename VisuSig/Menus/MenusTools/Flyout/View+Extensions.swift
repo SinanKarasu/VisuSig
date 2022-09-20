@@ -18,3 +18,29 @@ extension View {
     }
 
 }
+
+struct CustomBorder: ViewModifier {
+    @State var color: Color
+    @State var radius: CGFloat
+    @State var lineWidth: CGFloat
+    
+    func body (content: Content) -> some View
+    {
+        content
+            .background(
+                RoundedRectangle(cornerRadius: radius)
+                    .stroke(color, lineWidth: lineWidth)
+            )
+        
+    }
+}
+
+extension View {
+    
+    
+    func addBorder(_ color: Color, radius: Int = 10, lineWidth: Int = 5) -> some View
+    {
+        self.modifier( CustomBorder(color: color, radius: CGFloat(radius), lineWidth: CGFloat(lineWidth) ) )
+    }
+}
+

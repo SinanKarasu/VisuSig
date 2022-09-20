@@ -116,7 +116,7 @@ struct EffectsToolsView: View {
             }
         }
         .frame(minWidth:500, minHeight: 500)
-        //.border(.pink)
+        .addBorder(.pink)
     }
     
     private func gridView(_ geometry: GeometryProxy) -> some View {

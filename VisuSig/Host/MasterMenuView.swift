@@ -14,6 +14,12 @@ struct MyBorder: View {
             .stroke(color, lineWidth: 5)
     }
 }
+// colors
+// black, brown, clear, cyan, gray, green, indigo, mint, orange, pink, purple, red, teal, white, yellow
+
+let skyBlue = Color(red: 0.4627, green: 0.8392, blue: 1.0)
+let lemonYellow = Color(hue: 0.1639, saturation: 1, brightness: 1)
+let steelGray = Color(white: 0.4745)
 
 struct MasterMenuView: View {
     
@@ -32,12 +38,12 @@ struct MasterMenuView: View {
                 GeometryReader { proxy in
                     VStack {
                         SiKPlayerView(audioUnitManager: audioUnitComponents.audioUnitManager)
-                            .border(.yellow)
+                            .addBorder(.yellow)
                         //HStack {
                         //TopAUManagedMenuView(audioUnitComponents: audioUnitComponents) // probably delete this
                         //TopComponentMenuView(audioUnitComponents: audioUnitComponents)
                         SurfaceView(mesh: mesh, audioUnitComponents: audioUnitComponents)
-                            .border(.orange)
+                            .addBorder(.orange)
                         //EffectsToolsView()
                         //EffectsToolsView(audioUnitComponents: audioUnitComponents)
                         
@@ -54,10 +60,10 @@ struct MasterMenuView: View {
                         switch audioUnitType {
                         case .effect:
                             EffectsMenuSplitView(audioUnitComponents: audioUnitComponents)
-                                //.border(.blue)
+                                .addBorder(.blue)
                         case .instrument:
                             InstrumentsMenuSplitView(audioUnitComponents: audioUnitComponents)
-                                //.border(.green)
+                                .addBorder(.green)
                         }
                         //}
                         //Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)

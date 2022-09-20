@@ -28,18 +28,27 @@ struct InstrumentsMenuSplitView: View {
                     Text("Managed Count: \(audioUnitComponents.auManagedInstruments.count)")
                     
                 }
-                NavigationSplitView (columnVisibility: $columnVisibility) {
-                    List(selection: $selectedIndex) {
-                        ForEach(0..<audioUnitComponents.auManagedInstruments.count, id: \.self) { index in
-                            Label(audioUnitComponents.auManagedInstruments[index]!.name, systemImage: "pianokeys.inverse")
+                ZStack {
+                    RoundedRectangle(cornerRadius: 10, style: .continuous)
+                        .stroke(.green, lineWidth: 5)
+                    HStack {
+                        Divider()
+                        
+                        NavigationSplitView (columnVisibility: $columnVisibility) {
+                            List(selection: $selectedIndex) {
+                                ForEach(0..<audioUnitComponents.auManagedInstruments.count, id: \.self) { index in
+                                    Label(audioUnitComponents.auManagedInstruments[index]!.name, systemImage: "pianokeys.inverse")
+                                }
+                            }
+                            .navigationTitle("Menu")
+                        } detail: {
+                            makeView5(index: selectedIndex ?? 0)
+                                .id(selectedIndex)
                         }
                     }
-                    .navigationTitle("Menu")
-                } detail: {
-                    makeView5(index: selectedIndex ?? 0)
-                        .id(selectedIndex)
                 }
             }
+
             //.onAppear(perform: startRunning)
         }
     }
