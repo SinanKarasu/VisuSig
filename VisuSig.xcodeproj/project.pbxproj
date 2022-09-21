@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F702D98A28DB667F0094BA12 /* Extension+Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = F702D98928DB667F0094BA12 /* Extension+Color.swift */; };
 		F72D0DDB27B9A35C00516B4A /* LayeredWire.swift in Sources */ = {isa = PBXBuildFile; fileRef = F72D0DDA27B9A35C00516B4A /* LayeredWire.swift */; };
 		F7300E842825B9DF00E41206 /* AUComponent3View.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7300E832825B9DF00E41206 /* AUComponent3View.swift */; };
 		F73DDC0C2835770300DABC2F /* Utilities+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F73DDC0B2835770300DABC2F /* Utilities+Extensions.swift */; };
@@ -98,6 +99,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		F702D98928DB667F0094BA12 /* Extension+Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+Color.swift"; sourceTree = "<group>"; };
 		F72D0DDA27B9A35C00516B4A /* LayeredWire.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayeredWire.swift; sourceTree = "<group>"; };
 		F7300E832825B9DF00E41206 /* AUComponent3View.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AUComponent3View.swift; sourceTree = "<group>"; };
 		F73DDC0B2835770300DABC2F /* Utilities+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Utilities+Extensions.swift"; sourceTree = "<group>"; };
@@ -215,6 +217,7 @@
 			children = (
 				F73DDC0B2835770300DABC2F /* Utilities+Extensions.swift */,
 				F73DDC11283577BF00DABC2F /* Log.swift */,
+				F702D98928DB667F0094BA12 /* Extension+Color.swift */,
 			);
 			path = Additions;
 			sourceTree = "<group>";
@@ -705,6 +708,7 @@
 				F75CC4C4281EEE4D00692CE5 /* ViewExtensions.swift in Sources */,
 				F7A2914A28C26CB10087F38F /* UtilityFuncs.swift in Sources */,
 				F79E3EEA281BA1A400CD0520 /* MyPreferenceData.swift in Sources */,
+				F702D98A28DB667F0094BA12 /* Extension+Color.swift in Sources */,
 				F75CC4BD281EEDD100692CE5 /* SiKPlayerView.swift in Sources */,
 				F798E8C5283B232900444FE3 /* EffectsToolsView.swift in Sources */,
 				F7DD1AFC289DF33A00E48D97 /* EffectsMenuSplitView.swift in Sources */,
