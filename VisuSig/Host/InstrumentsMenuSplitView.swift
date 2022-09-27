@@ -62,6 +62,9 @@ struct InstrumentsMenuSplitView: View {
             }
             return AnyView(AUComponentView(auManagedUnit: auManagedUnit!, audioUnitComponents: audioUnitComponents))
         }
+        if audioUnitComponents.auManagedInstruments.count < 1 {
+            return AnyView(Text("Instruments are DISABLED"))
+        }
         return AnyView(Text("No selection made"))
     }
     
