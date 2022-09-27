@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		F702D98A28DB667F0094BA12 /* Extension+Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = F702D98928DB667F0094BA12 /* Extension+Color.swift */; };
 		F72D0DDB27B9A35C00516B4A /* LayeredWire.swift in Sources */ = {isa = PBXBuildFile; fileRef = F72D0DDA27B9A35C00516B4A /* LayeredWire.swift */; };
-		F7300E842825B9DF00E41206 /* AUComponent3View.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7300E832825B9DF00E41206 /* AUComponent3View.swift */; };
+		F7300E842825B9DF00E41206 /* AUComponentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7300E832825B9DF00E41206 /* AUComponentView.swift */; };
 		F73DDC0C2835770300DABC2F /* Utilities+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F73DDC0B2835770300DABC2F /* Utilities+Extensions.swift */; };
 		F73DDC12283577BF00DABC2F /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = F73DDC11283577BF00DABC2F /* Log.swift */; };
 		F74856752817030B0038D7B7 /* NodePortsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F74856742817030B0038D7B7 /* NodePortsView.swift */; };
@@ -101,7 +101,7 @@
 /* Begin PBXFileReference section */
 		F702D98928DB667F0094BA12 /* Extension+Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+Color.swift"; sourceTree = "<group>"; };
 		F72D0DDA27B9A35C00516B4A /* LayeredWire.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayeredWire.swift; sourceTree = "<group>"; };
-		F7300E832825B9DF00E41206 /* AUComponent3View.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AUComponent3View.swift; sourceTree = "<group>"; };
+		F7300E832825B9DF00E41206 /* AUComponentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AUComponentView.swift; sourceTree = "<group>"; };
 		F73DDC0B2835770300DABC2F /* Utilities+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Utilities+Extensions.swift"; sourceTree = "<group>"; };
 		F73DDC11283577BF00DABC2F /* Log.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
 		F74856742817030B0038D7B7 /* NodePortsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NodePortsView.swift; sourceTree = "<group>"; };
@@ -237,7 +237,7 @@
 		F75CC4B7281EED4E00692CE5 /* Host */ = {
 			isa = PBXGroup;
 			children = (
-				F7300E832825B9DF00E41206 /* AUComponent3View.swift */,
+				F7300E832825B9DF00E41206 /* AUComponentView.swift */,
 				F75CC4C5281EEE7200692CE5 /* AUComponentControllerView.swift */,
 				F75CC4BA281EED8B00692CE5 /* AudioUnitComponents.swift */,
 				F75CC4C0281EEE0500692CE5 /* ComponentViewController.swift */,
@@ -642,7 +642,7 @@
 				F7C809C8279B299200982843 /* ContentView.swift in Sources */,
 				F79E3EEB281BA1A400CD0520 /* MyContentView.swift in Sources */,
 				F75CC4BB281EED8B00692CE5 /* AudioUnitComponents.swift in Sources */,
-				F7300E842825B9DF00E41206 /* AUComponent3View.swift in Sources */,
+				F7300E842825B9DF00E41206 /* AUComponentView.swift in Sources */,
 				F7C80A08279B51C800982843 /* Storage.swift in Sources */,
 				F79E3EE9281BA1A400CD0520 /* MyViewType.swift in Sources */,
 				F7C809DA279B2A8800982843 /* HoverAwareDemo2View.swift in Sources */,

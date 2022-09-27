@@ -60,7 +60,7 @@ struct InstrumentsMenuSplitView: View {
             auManagedUnit!.loadAudioUnitViewController() { nsViewController in
                 auManagedUnit!.setController(controller: nsViewController)
             }
-            return AnyView(AUComponent3View(auManagedUnit: auManagedUnit!, audioUnitComponents: audioUnitComponents))
+            return AnyView(AUComponentView(auManagedUnit: auManagedUnit!, audioUnitComponents: audioUnitComponents))
         }
         return AnyView(Text("No selection made"))
     }

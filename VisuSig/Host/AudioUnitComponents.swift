@@ -102,7 +102,7 @@ class AudioUnitComponents:ObservableObject {
     
     func startRunning() {
         initializeEffects()
-        initializeInstruments()
+        //initializeInstruments() //sik disabled temporarily
    }
     
     

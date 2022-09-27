@@ -74,7 +74,7 @@ struct EffectsMenuSplitView: View {
             auManagedUnit.loadAudioUnitViewController() { nsViewController in
                 auManagedUnit.setController(controller: nsViewController)
             }
-            return AnyView(AUComponent3View(auManagedUnit: auManagedUnit, audioUnitComponents: audioUnitComponents))
+            return AnyView(AUComponentView(auManagedUnit: auManagedUnit, audioUnitComponents: audioUnitComponents))
         } else {
             return AnyView(Text("Select an effect unit"))
         }
@@ -93,7 +93,7 @@ struct EffectsMenuSplitView: View {
 
 #if DEBUG
 struct EffectsMenuSplitView_Preview: PreviewProvider {
-    @StateObject static var audioUnitComponents = AudioUnitComponents()
+    static var audioUnitComponents = AudioUnitComponents()
 
     static var previews: some View {
         EffectsMenuSplitView(audioUnitComponents: audioUnitComponents)

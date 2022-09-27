@@ -1,5 +1,5 @@
 //
-//  AUComponent3View.swift
+//  AUComponentView.swift
 //  SiKAUv3Host
 //
 //  Created by Sinan Karasu on 3/10/21.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct AUComponent3View: View {
+struct AUComponentView: View {
     @ObservedObject var auManagedUnit: AUManagedUnit
     var audioUnitComponents: AudioUnitComponents
     // change this to be the persistent one.
