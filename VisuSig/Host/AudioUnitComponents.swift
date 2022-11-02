@@ -12,50 +12,49 @@ import os
 
 let logger = Logger()
 
-class AudioUnitComponents:ObservableObject {
-    
+class AudioUnitComponents: ObservableObject {
     private var options = AudioComponentInstantiationOptions.loadOutOfProcess
-    
+
     var audioUnitComponents = [Component]()
     var instrumentComponents = [Component]()
-    
+
     var audioUnitManager = AudioUnitManager()
     @Published var auManagedEffectUnits = [AUManagedUnit?]()
     @Published var auManagedInstruments = [AUManagedUnit?]()
-    
+
     var effectsInitialized = false
     var instsInitialized = false
-    
-    
-    //var emptyDict = [UUID: ComponentViewController]()
-    
-    
+
+
+    // var emptyDict = [UUID: ComponentViewController]()
+
+
     init() {
         startRunning()
     }
-    
+
     func initializeEffects(instantiate: Bool = true) {
-        if !effectsInitialized{
+        if !effectsInitialized {
             effectsInitialized = true
             DispatchQueue.main.async {
                 self.loadAudioUnits(ofType: .effect, instantiate: instantiate)
             }
         }
     }
-    
+
     func initializeInstruments(instantiate: Bool = true) {
-        if !instsInitialized{
+        if !instsInitialized {
             instsInitialized = true
             DispatchQueue.main.async {
                 self.loadAudioUnits(ofType: .instrument, instantiate: instantiate)
             }
         }
     }
-    
-    
+
+
     func loadAudioUnits(ofType type: AudioUnitType, instantiate: Bool = true) {
         // Ensure audio playback is stopped before loading.
-        //audioUnitManager.stopPlayback()
+        // audioUnitManager.stopPlayback()
         // Load audio units.
         audioUnitManager.loadAudioUnits(ofType: type) {  audioUnits in
             switch type {
@@ -64,13 +63,13 @@ class AudioUnitComponents:ObservableObject {
             case .instrument:
                 self.instrumentComponents = audioUnits
             }
-            //DispatchQueue.main.async {
+            // DispatchQueue.main.async {
             DispatchQueue.global(qos: .default).async {
                 self.instantiateAllComponents(ofType: type)
             }
         }
     }
-    
+
     func instantiateAllComponents(ofType type: AudioUnitType) {
         var auManaged = [AUManagedUnit?]()
         var components = [Component]()
@@ -82,7 +81,7 @@ class AudioUnitComponents:ObservableObject {
         }
         for index in 0 ..< components.count {
             DispatchQueue.main.async {
-                components[index].instantiateComponent() { result in
+                components[index].instantiateComponent { result in
                     switch result {
                     case .success(let au):
                         auManaged.append(au)
@@ -99,15 +98,14 @@ class AudioUnitComponents:ObservableObject {
             }
         }
     }
-    
+
     func startRunning() {
         initializeEffects()
-        //initializeInstruments() //sik disabled temporarily
+        // initializeInstruments() //sik disabled temporarily
    }
-    
-    
-    func connectComponent(auManagedUnit: AUManagedUnit?, completion: @escaping (Result<AUManagedUnit?, Error>) -> Void)  {
-        
+
+
+    func connectComponent(auManagedUnit: AUManagedUnit?, completion: @escaping (Result<AUManagedUnit?, Error>) -> Void) {
         // nil out existing component
         //        var auManagedUnit: AUManagedUnit? = nil
         //
@@ -148,10 +146,9 @@ class AudioUnitComponents:ObservableObject {
                 completion(.success(auManagedUnit))
             }
         }
-        
     }
-    
-    
+
+
     func descAU(desc: AudioComponentDescription) -> String {
         let x = stringFrom4B(desc.componentType) ?? "????"
         let y = stringFrom4B(desc.componentSubType) ?? "????"
@@ -161,12 +158,12 @@ class AudioUnitComponents:ObservableObject {
         + " mfg:" + z
         return code
     }
-    
-    
+
+
     func stringFrom4B(_ xx: UInt32) -> String? {
         return String(data: Data(byteArray(from: xx)), encoding: .utf8)
     }
-    
+
     func byteArray<T>(from value: T) -> [UInt8] where T: FixedWidthInteger {
         withUnsafeBytes(of: value.bigEndian, Array.init)
     }

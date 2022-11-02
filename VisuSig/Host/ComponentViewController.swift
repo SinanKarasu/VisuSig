@@ -11,17 +11,14 @@ import CoreAudioKit
 import Cocoa
 
 
-
 class ComponentViewController: AUViewController, Identifiable {
-
     class CustomView: NSView {
-
         var viewSize: CGSize
 
 
-        init( viewSize: CGSize =  CGSize(width: 800, height: 600)) {
+        init( viewSize: CGSize = CGSize(width: 800, height: 600)) {
             self.viewSize = viewSize
-            super.init(frame: NSRect(x:0, y:0, width: viewSize.width, height: viewSize.height))
+            super.init(frame: NSRect(x: 0, y: 0, width: viewSize.width, height: viewSize.height))
         }
 
         required init?(coder: NSCoder) {
@@ -31,12 +28,11 @@ class ComponentViewController: AUViewController, Identifiable {
         override var intrinsicContentSize: CGSize {
             return viewSize
         }
-
     }
 
     let id = UUID()
 
-    var viewSize: CGSize = CGSize(width: 800, height: 600)
+    var viewSize = CGSize(width: 800, height: 600)
     var subView: NSView?
 
     init(subView: NSView? = nil) {

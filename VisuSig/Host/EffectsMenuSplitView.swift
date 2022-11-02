@@ -12,21 +12,20 @@ struct EffectsMenuSplitView: View {
     @ObservedObject var audioUnitComponents: AudioUnitComponents
     @State var columnVisibility: NavigationSplitViewVisibility = .all
     @State private var selectedUnit: Int?
-    
-    
+
+
     var audioUnitManager: AudioUnitManager {
         audioUnitComponents.audioUnitManager
     }
-    
+
     let audioUnitTypes: [AudioUnitType] = [ .effect, .instrument]
     var body: some View {
-        return GeometryReader { reader in
+        return GeometryReader { _ in
             VStack {
                 VStack {
                     Text("EffectsMenuView")
                     Text("Effects Count: \(audioUnitComponents.audioUnitComponents.count)")
                     Text("Managed Count: \(audioUnitComponents.auManagedEffectUnits.count)")
-                    
                 }
                 ZStack {
                     RoundedRectangle(cornerRadius: 10, style: .continuous)
@@ -35,7 +34,7 @@ struct EffectsMenuSplitView: View {
                         Divider()
                         VStack {
                             Divider()
-                            NavigationSplitView (columnVisibility: $columnVisibility) {
+                            NavigationSplitView(columnVisibility: $columnVisibility) {
                                 List(selection: $selectedUnit) {
                                     ForEach(0..<audioUnitComponents.auManagedEffectUnits.count, id: \.self) { index in
                                         if let x = audioUnitComponents.auManagedEffectUnits[index] {
@@ -45,10 +44,9 @@ struct EffectsMenuSplitView: View {
                                         }
                                     }
                                 }
-                                //.listRowInsets(EdgeInsets(top: 0, leading: 200, bottom: 0, trailing: 0))
-                                //.listStyle(PlainListStyle())
+                                // .listRowInsets(EdgeInsets(top: 0, leading: 200, bottom: 0, trailing: 0))
+                                // .listStyle(PlainListStyle())
                                 .navigationTitle("Menu")
-                                
                             } detail: {
                                 if let selectedUnit = selectedUnit {
                                     makeView5(index: selectedUnit)
@@ -61,17 +59,16 @@ struct EffectsMenuSplitView: View {
                     }
                 }
             }
-            //.border(.blue) //BUG. Enable this line
-            //.onAppear(perform: startRunning)
+            // .border(.blue) //BUG. Enable this line
+            // .onAppear(perform: startRunning)
         }
-        
     }
-    
-    
+
+
     func makeView5(index: Int) -> some View {
-        //if index != 0 {
+        // if index != 0 {
         if let auManagedUnit = audioUnitComponents.auManagedEffectUnits[index] {
-            auManagedUnit.loadAudioUnitViewController() { nsViewController in
+            auManagedUnit.loadAudioUnitViewController { nsViewController in
                 auManagedUnit.setController(controller: nsViewController)
             }
             return AnyView(AUComponentView(auManagedUnit: auManagedUnit, audioUnitComponents: audioUnitComponents))
@@ -79,8 +76,8 @@ struct EffectsMenuSplitView: View {
             return AnyView(Text("Select an effect unit"))
         }
     }
-    
-    
+
+
 //    func startRunning() {
 //        audioUnitComponents.initializeEffects()
 //        //        if !audioUnitComponents.effectsInitialized{
@@ -88,7 +85,7 @@ struct EffectsMenuSplitView: View {
 //        //            audioUnitComponents.loadAudioUnits(ofType: audioUnitType)
 //        //        }
 //    }
-    
+
 }
 
 #if DEBUG

@@ -7,7 +7,6 @@
 
 import Foundation
 class Storage {
-
     static func restore() -> Mesh {
         let proxy = StorageHandler().restore()
         let mesh = Mesh(storage: proxy)
@@ -19,9 +18,7 @@ class Storage {
             try StorageHandler().save(mesh.storageObject)
             DLog("MSG: Mesh save OK")
         } catch {
-            DLog("ERROR: Mesh save failed -",error)
+            DLog("ERROR: Mesh save failed -", error)
         }
     }
-    
-    
 }

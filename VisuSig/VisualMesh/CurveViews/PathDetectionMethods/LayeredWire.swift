@@ -8,29 +8,26 @@
 import SwiftUI
 
 
-
 struct LayeredWire: View {
-
     @ObservedObject var cubicBezierData: CubicBezierData
     @ObservedObject var selection: SelectionHandler
-    @State private var pt: CGPoint = CGPoint(x: 50, y: 30)
+    @State private var pt = CGPoint(x: 50, y: 30)
 
-    let primaryColor   = Color.blue
-    
+    let primaryColor = Color.blue
+
 
     var body: some View {
-
         let secondaryColor = primaryColor.opacity(0.7)
 
         let g = DragGesture(minimumDistance: 0, coordinateSpace: .local)
             .onEnded {
-                self.pt = $0.location//.applying(.init(translationX: -20, y: -20))
+                self.pt = $0.location// .applying(.init(translationX: -20, y: -20))
                 print("Got a Wire gesture:\(self.pt)")
             }
 
         let offset: CGFloat = 3
         let offsetPath = offSetBezierPathShape2(by: offset, from: cubicBezierData.from.position, to: cubicBezierData.to.position, withControl: cubicBezierData.cp1, and: cubicBezierData.cp2)
-        let path = Path() { newPath in
+        let path = Path { newPath in
             newPath.addPath(offsetPath)
             newPath.addLine(to: cubicBezierData.to.position)
             newPath.addCurve(to: cubicBezierData.from.position, control1: cubicBezierData.cp2, control2: cubicBezierData.cp1)
@@ -39,23 +36,21 @@ struct LayeredWire: View {
 
 //        let c1 = path.contains(pt, eoFill: true) ? "true" : "false"
 //        let c2 = path.contains(pt, eoFill: false) ? "true" : "false"
-        GeometryReader { proxy in
+        GeometryReader { _ in
             ZStack {
-                //Text(String("\(cubicBezierData.from.position) : \(cubicBezierData.to.position)")).position(cubicBezierData.from.position)
+                // Text(String("\(cubicBezierData.from.position) : \(cubicBezierData.to.position)")).position(cubicBezierData.from.position)
                 path
                     .fill(Color.cyan, style: FillStyle(eoFill: false, antialiased: false))
                     .contentShape(path)
                     .gesture(g)
-                                        .contextMenu{  // Wire ops
+                                        .contextMenu {  // Wire ops
                                             Button("⛑ - Delete Wire", action: {
                                                 print("delete")
                                                 Mesh.deleteEdge(edge: cubicBezierData.edge)
                                             })
                                             Button("♦️♦️♦️ - Diamonds", action: {
-
                                             })
                                         }
-
 
 
                 Path { p in
@@ -72,22 +67,19 @@ struct LayeredWire: View {
 //                let c1 = path.contains(pt, eoFill: true) ? "true" : "false"
 //                let c2 = path.contains(pt, eoFill: false) ? "true" : "false"
 //                let _ = print("c1:\(c1), c2:\(c2)")
-                CurvePointView(point: $cubicBezierData.cp1, color:.red)
-                CurvePointView(point: $cubicBezierData.cp2, color:.green)
-
+                CurvePointView(point: $cubicBezierData.cp1, color: .red)
+                CurvePointView(point: $cubicBezierData.cp2, color: .green)
             }
         }
-
     }
 
 //    private func theShape() -> some View {
 //
 //    }
 
-    private func offSetBezierPathShape2(by offset: CGFloat, from point1: CGPoint, to point2: CGPoint, withControl controlPoint1: CGPoint, and controlPoint2:CGPoint) -> Path {
+    private func offSetBezierPathShape2(by offset: CGFloat, from point1: CGPoint, to point2: CGPoint, withControl controlPoint1: CGPoint, and controlPoint2: CGPoint) -> Path {
         var lastPoint = cubicBezier(at: 0, point1: point1, point2: point2, controlPoint1: controlPoint1, controlPoint2: controlPoint2)
-        let path = Path() { path in
-
+        let path = Path { path in
             let numberOfPoints = 100
             for i in 1 ... numberOfPoints {
                 let time = CGFloat(i) / CGFloat(numberOfPoints)
@@ -96,7 +88,7 @@ struct LayeredWire: View {
                 // calculate the angle to the offset point
                 // this is the angle between the two points, plus 90 degrees (pi / 2.0)
 
-                let angle = atan2(point.y - lastPoint.y, point.x - lastPoint.x) + .pi / 2;
+                let angle = atan2(point.y - lastPoint.y, point.x - lastPoint.x) + .pi / 2
 
                 if i == 1 {
                     path.move(to: calculateOffset(of: lastPoint, by: offset, angle: angle))
@@ -134,9 +126,4 @@ struct LayeredWire: View {
 
         return CGPoint(x: x, y: y)
     }
-
-
 }
-
-
-

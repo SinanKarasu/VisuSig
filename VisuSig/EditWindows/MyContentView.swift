@@ -8,18 +8,16 @@
 import SwiftUI
 
 
-struct MyContentView : View {
-    @State private var fieldValues = Array<String>(repeating: "", count: 5)
+struct MyContentView: View {
+    @State private var fieldValues = [String](repeating: "", count: 5)
     @State private var length: Float = 360
     @State private var twitterFieldPreset = false
 
     var body: some View {
-
         VStack {
             Spacer()
 
             HStack(alignment: .center) {
-
                 // This view puts a gray rectangle where the minimap elements will be.
                 // We will reference its size and position later, to make sure the mini map elements
                 // are overlayed right on top of it.
@@ -62,16 +60,12 @@ struct MyContentView : View {
                         if twitterFieldPreset {
                             MyFormField(fieldValue: $fieldValues[4], label: "Twitter")
                         }
-
-
                     }.frame(width: CGFloat(length))
-
                 }.transformAnchorPreference(key: MyPreferenceKey.self, value: .bounds) {
                     $0.append(MyPreferenceData(vtype: .formContainer, bounds: $1))
                 }
 
                 Spacer()
-
             }
             .overlayPreferenceValue(MyPreferenceKey.self) { preferences in
                 GeometryReader { geometry in
@@ -83,4 +77,3 @@ struct MyContentView : View {
         }.background(Color(red: 0.1, green: 0.2, blue: 0.5, opacity: 0.9)).edgesIgnoringSafeArea(.all)
     }
 }
-

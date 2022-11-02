@@ -1,4 +1,3 @@
-
 import Foundation
 import CoreGraphics
 
@@ -7,9 +6,9 @@ class EdgeBase: Identifiable, ObservableObject {
     @Published var startPort: PortBase
     @Published var endPort: PortBase
 
-    @Published var data : CubicBezierData?
+    @Published var data: CubicBezierData?
 
-    init(start:PortBase, end:PortBase, data: CubicBezierData? = nil) {
+    init(start: PortBase, end: PortBase, data: CubicBezierData? = nil) {
         self.startPort = start
         self.endPort = end
         self.data = CubicBezierData(edge: self)
@@ -28,15 +27,13 @@ class EdgeBase: Identifiable, ObservableObject {
         endPort = try container.decode(PortBase.self, forKey: .endPort)
         data = CubicBezierData(edge: self)
     }
-
 }
 
 
-extension EdgeBase : Hashable {
+extension EdgeBase: Hashable {
     func hash(into hasher: inout Hasher) {
         hasher.combine(id)
     }
-
 }
 
 extension EdgeBase: Equatable {
@@ -45,7 +42,7 @@ extension EdgeBase: Equatable {
     }
 }
 
-extension EdgeBase:Codable {
+extension EdgeBase: Codable {
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(startPort, forKey: .startPort)

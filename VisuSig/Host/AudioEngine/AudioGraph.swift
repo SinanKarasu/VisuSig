@@ -11,7 +11,7 @@ import AudioToolbox
 
 
 class AudioGraph: Mesh {
-    let engine: AVAudioEngine = AVAudioEngine()
+    let engine = AVAudioEngine()
     private var _playerLoopBuffer: AVAudioPCMBuffer!
 
     func makeEngineConnections(edges: [EdgeBase]) {
@@ -20,10 +20,10 @@ class AudioGraph: Mesh {
          
          By default, the mixer's output format (sample rate and channel count) will track the format
          of the output node. You may however make the connection explicitly with a different format. */
-        
+
         // get the engine's optional singleton main mixer node
         let mainMixer = engine.mainMixerNode
-        
+
         /*  Nodes have input and output buses (AVAudioNodeBus). Use connect:to:fromBus:toBus:format: to
          establish connections betweeen nodes. Connections are always one-to-one, never one-to-many or
          many-to-one.
@@ -39,11 +39,11 @@ class AudioGraph: Mesh {
          @param format if non-null, the format of the source node's output bus is set to this
          format. In all cases, the format of the destination node's input bus is set to
          match that of the source node's output bus. */
-        
+
         let stereoFormat = AVAudioFormat(standardFormatWithSampleRate: 44100, channels: 2)
         let playerFormat = _playerLoopBuffer.format
-        
-        
+
+
         // establish a connection between nodes
         for edge in edges {
 //            // connect the player to the reverb
@@ -64,7 +64,7 @@ class AudioGraph: Mesh {
 //        ]
 //        _engine.connect(_sampler, to: destinationNodes, fromBus: 0, format: stereoFormat)
     }
-    
+
 //    func myBuffer() {
 //
 //        // make a silent stereo buffer

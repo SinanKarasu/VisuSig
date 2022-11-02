@@ -9,7 +9,6 @@ import Foundation
 import AVFoundation
 
 class InstrumentPlayer {
-
     private var isPlaying = false
     private var isDone = false
     private var noteBlock: AUScheduleMIDIEventBlock
@@ -46,7 +45,6 @@ class InstrumentPlayer {
         let cbytes = UnsafeMutablePointer<UInt8>.allocate(capacity: 3)
 
         DispatchQueue.global(qos: .default).async {
-
             var step = 0
 
             // The steps arrays define the musical intervals of a scale (w = whole step, h = half step).
@@ -73,7 +71,6 @@ class InstrumentPlayer {
 
             var note = 0
             self.synced(self.isDone) {
-
                 while self.isPlaying {
                     // lengthen the releaseTime by 5% each time up to 10 seconds.
                     if releaseTime < 10.0 {
@@ -105,7 +102,6 @@ class InstrumentPlayer {
                     if step >= steps.count {
                         step = 0
                     }
-
                 } // while isPlaying
 
                 cbytes[0] = 0xB0

@@ -15,7 +15,7 @@ class CubicBezierData: ObservableObject, Hashable {
     func hash(into hasher: inout Hasher) {
         hasher.combine(id)
     }
-    
+
     let id = UUID()
     @Published var from: PortBase
     @Published var to: PortBase
@@ -23,7 +23,6 @@ class CubicBezierData: ObservableObject, Hashable {
     @Published var cp2: CGPoint = .zero
     @Published var color = Color.red
     @Published var edge: EdgeBase
-
 
 
 //    init(from: PortBase, to: PortBase, cp1: CGPoint, cp2: CGPoint) {
@@ -49,17 +48,14 @@ class CubicBezierData: ObservableObject, Hashable {
         reCalc()
        // self.init(from: from, to: to, cp1: cp1, cp2: cp2)
     }
-    
+
     func reCalc() {
         let bias = 4.0
-        self.cp1 = CGPoint(x: (self.to.x-self.from.x)/bias+self.from.x, y: to.y)
-        self.cp2 = CGPoint(x: self.to.x , y: (to.y-self.from.y)/bias+self.from.y)
+        self.cp1 = CGPoint(x: (self.to.x - self.from.x) / bias + self.from.x, y: to.y)
+        self.cp2 = CGPoint(x: self.to.x, y: (to.y - self.from.y) / bias + self.from.y)
     }
 
     convenience init(edgeProxy: EdgeProxy) {
-
         self.init(edge: edgeProxy.edge)
-
     }
-
 }

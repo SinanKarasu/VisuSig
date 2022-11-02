@@ -9,19 +9,19 @@ import SwiftUI
 
 
 struct HorizontalUnitView: View {
-      @State private var reset: Bool = false
+      @State private var reset = false
       @State private var witnessPresent = false
       @State private var timeAlive: String = "n/a"
-      @State private var useShortForm: Bool = true
-      @State private var useUppercase: Bool = true
-      
+      @State private var useShortForm = true
+      @State private var useUppercase = true
+
     var audioUnitComponents: AudioUnitComponents
-    
+
       var body: some View {
           VStack(spacing: 20) {
               Text("Witness view is \(witnessPresent ? "" : "not") rendered")
               Text("Witness view time alive: \(timeAlive)")
-              
+
               ScrollView(.horizontal) {
                   LazyHStack {
                       ForEach(0..<audioUnitComponents.audioUnitComponents.count, id: \.self) { idx in
@@ -31,19 +31,18 @@ struct HorizontalUnitView: View {
                       }
                   }
               }
-              .frame(minWidth:200)
+              .frame(minWidth: 200)
               .font(.title)
-              
+
               Button("Reset") {
                   self.reset.toggle()
                   self.timeAlive = "n/a"
               }
-              
           }
           .font(.title2)
           .id(reset)
       }
-      
+
       struct UnitView: View {
           @State private var alive: Int = 0
           @State private var isRed = false
@@ -51,9 +50,9 @@ struct HorizontalUnitView: View {
           @Binding var useShortForm: Bool
           var component: Component
           let useUppercase: Bool
-          
+
           let timer = Timer.publish(every: 1.0, on: .main, in: .common).autoconnect()
-          
+
           var body: some View {
               component.componentIcon
                   .foregroundColor(isRed ? Color.red : Color.primary)
@@ -61,7 +60,7 @@ struct HorizontalUnitView: View {
                   .onReceive(timer) { _ in
                       self.alive += 1
                       self.timeAlive = "\(alive) \(useShortForm ? "s" : "seconds")"
-                      
+
                       if useUppercase {
                           self.timeAlive = self.timeAlive.uppercased()
                       }

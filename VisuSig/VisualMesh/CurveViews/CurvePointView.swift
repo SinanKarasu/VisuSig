@@ -14,15 +14,15 @@ struct CurvePointView: View {
 
 
     @GestureState private var gestureState: CGPoint = .zero
-    //@State private var draggingLocation = CGPoint.zero
-    //@State private var startLocation = CGPoint.zero
+    // @State private var draggingLocation = CGPoint.zero
+    // @State private var startLocation = CGPoint.zero
     @State private var dragging = false
     @State var point0: CGPoint = .zero
 
 
     var body: some View {
         let dragGesture = DragGesture(minimumDistance: 10, coordinateSpace: .named(meshCoordinateSpace))
-            .updating($gestureState) { (value, state, transaction) in
+            .updating($gestureState) { value, state, _ in
                 state = value.location
             }
             .onEnded { value in
@@ -45,14 +45,14 @@ struct CurvePointView: View {
                     }
                 }
             }
-        GeometryReader { proxy in
+        GeometryReader { _ in
             Circle()
                 .frame(width: size, height: size)
                 .overlay(
                     Circle()
                         .stroke(color, lineWidth: 2)
                 )
-                .offset(x: -size/2, y: -size/2)
+                .offset(x: -size / 2, y: -size / 2)
                 .offset(x: point.x, y: point.y)
         }
         .gesture(dragGesture)

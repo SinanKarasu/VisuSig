@@ -16,7 +16,6 @@ struct DropDownMenu: View {
     }
 
 
-
     var body: some View {
         let options: [DropdownOption] = [
             DropdownOption(key: uniqueKey, value: "Sunday"),
@@ -34,7 +33,7 @@ struct DropDownMenu: View {
                 options: options,
                 onOptionSelected: { option in
                     print(option)
-            })
+                })
             .padding(.horizontal)
             .zIndex(1)
 

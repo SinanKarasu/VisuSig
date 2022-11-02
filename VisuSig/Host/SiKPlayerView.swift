@@ -8,10 +8,10 @@
 import SwiftUI
 
 
-//var episode: Episode
-//@State private var playState: PlayState = .paused
+// var episode: Episode
+// @State private var playState: PlayState = .paused
 //
-//var body: some View {
+// var body: some View {
 //    VStack {
 //        Text(episode.title)
 //        Text(episode.showTitle)
@@ -20,7 +20,7 @@ import SwiftUI
 //    .onChange(of: playState) { [playState] newState in
 //        model.playStateDidChange(from: playState, to: newState)
 //    }
-//}
+// }
 
 struct SiKPlayerView: View {
     @State var playing = false
@@ -35,7 +35,6 @@ struct SiKPlayerView: View {
                 .imageScale(.large)
                 .frame(width: 64, height: 64)
         }
-
     }
 }
 

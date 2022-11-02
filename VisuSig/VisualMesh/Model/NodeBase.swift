@@ -1,20 +1,18 @@
-
 import SwiftUI
 import AVFoundation
 
-class NodeBase: Identifiable, ObservableObject  {
+class NodeBase: Identifiable, ObservableObject {
     @Published var id = UUID()
     @Published var text: String = "Sick Root"
     @Published var position: CGPoint = .zero
 
-    @Published var ports = [PortBase]()
-    {
-        willSet{
+    @Published var ports = [PortBase]() {
+        willSet {
             objectWillChange.send()
         }
     }
-    
-    var payload: AUManagedUnit? = nil
+
+    var payload: AUManagedUnit?
 
     init(text: String = "", position: CGPoint = .zero, payload: AUManagedUnit?) {
         self.position = position
@@ -28,9 +26,8 @@ class NodeBase: Identifiable, ObservableObject  {
         text = try container.decode(String.self, forKey: .text)
         position = try container.decode(CGPoint.self, forKey: .position)
     }
-    
-    let defaultSize = CGSize(width: 200,height: 200)
 
+    let defaultSize = CGSize(width: 200, height: 200)
 }
 
 extension NodeBase: Hashable {
@@ -59,8 +56,6 @@ extension NodeBase: Codable {
         try container.encode(text, forKey: .text)
         try container.encode(position, forKey: .position)
     }
-
-    
 }
 
 extension NodeBase {
@@ -68,7 +63,7 @@ extension NodeBase {
         VStack {
             if payload == nil {
             Text(text)
-            Text(String(format:"%.2f",position.x)+":"+String(format:"%.2f",position.y))
+            Text(String(format: "%.2f", position.x) + ":" + String(format: "%.2f", position.y))
             } else {
                 Text(payload!.name)
             }
@@ -79,7 +74,7 @@ extension NodeBase {
 
 extension NodeBase {
     var size: CGSize {
-        CGSize(width: max(defaultSize.width, CGFloat(Double(ports.count)*30.0)), height: defaultSize.height)
+        CGSize(width: max(defaultSize.width, CGFloat(Double(ports.count) * 30.0)), height: defaultSize.height)
     }
 
     @discardableResult
@@ -91,7 +86,7 @@ extension NodeBase {
 
 extension NodeBase {
     var portAreaHeight: CGFloat {
-        return ports.max { $0.size.height < $1.size.height}!.size.height
+        return ports.max { $0.size.height < $1.size.height }!.size.height
     }
 }
 
@@ -103,11 +98,9 @@ extension NodeBase {
         .alignCenterInParent(parent)
         .translatedBy(x: portalPosition.x, y: portalPosition.y)
     }
-
 }
 
 extension NodeBase {
-   
     var avAudioUnit: AVAudioUnit? {
         payload?.avAudioUnit
     }
@@ -115,5 +108,4 @@ extension NodeBase {
     var visualID: String {
         return id.uuidString + "\(text.hashValue)"
     }
-
 }

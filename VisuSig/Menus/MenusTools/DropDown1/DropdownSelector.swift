@@ -63,7 +63,7 @@ struct Dropdown: View {
 
 struct DropdownSelector: View {
     @State private var shouldShowDropdown = false
-    @State private var selectedOption: DropdownOption? = nil
+    @State private var selectedOption: DropdownOption?
     var placeholder: String
     var options: [DropdownOption]
     var onOptionSelected: ((_ option: DropdownOption) -> Void)?
@@ -76,7 +76,7 @@ struct DropdownSelector: View {
             HStack {
                 Text(selectedOption == nil ? placeholder : selectedOption!.value)
                     .font(.system(size: 14))
-                    .foregroundColor(selectedOption == nil ? Color.gray: Color.black)
+                    .foregroundColor(selectedOption == nil ? Color.gray : Color.black)
 
                 Spacer()
 
@@ -89,7 +89,7 @@ struct DropdownSelector: View {
         }
         .padding(.horizontal)
         .cornerRadius(5)
-        //.frame(width: .infinity, height: self.buttonHeight)
+        // .frame(width: .infinity, height: self.buttonHeight)
         .overlay(
             RoundedRectangle(cornerRadius: 5)
                 .stroke(Color.gray, lineWidth: 1)
@@ -137,7 +137,7 @@ struct DropdownSelector_Previews: PreviewProvider {
                 options: options,
                 onOptionSelected: { option in
                     print(option)
-            })
+                })
             .padding(.horizontal)
             .zIndex(1)
 

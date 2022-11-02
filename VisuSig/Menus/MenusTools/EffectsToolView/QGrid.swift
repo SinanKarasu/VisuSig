@@ -30,8 +30,8 @@ import SwiftUI
 /// A container that presents rows of data arranged in multiple columns.
 @available(iOS 13.0, OSX 10.15, *)
 public struct QGrid<Data, Content>: View
-where Data : RandomAccessCollection, Content : View, Data.Element : Identifiable {
-    private struct QGridIndex : Identifiable { var id: Int }
+where Data: RandomAccessCollection, Content: View, Data.Element: Identifiable {
+    private struct QGridIndex: Identifiable { var id: Int }
 
     // MARK: - STORED PROPERTIES
 
@@ -94,7 +94,7 @@ where Data : RandomAccessCollection, Content : View, Data.Element : Identifiable
     }
 
     /// Declares the content and behavior of this view.
-    public var body : some View {
+    public var body: some View {
         GeometryReader { geometry in
             Group {
                 if !self.data.isEmpty {
@@ -122,11 +122,11 @@ where Data : RandomAccessCollection, Content : View, Data.Element : Identifiable
                 .map { QGridIndex(id: $0) }) { column in
                     self.content(self.data[index + column.id])
                         .frame(width: self.contentWidthFor(geometry))
-                }
+            }
             if isLastRow { Spacer() }
         }
     }
-    
+
     private func content(using geometry: GeometryProxy) -> some View {
         VStack(spacing: self.vSpacing) {
             ForEach((0..<self.rows).map { QGridIndex(id: $0) }) { row in
@@ -134,22 +134,21 @@ where Data : RandomAccessCollection, Content : View, Data.Element : Identifiable
                                 geometry: geometry)
             }
             // Handle last row
-            if (self.data.count % self.cols > 0) {
+            if self.data.count % self.cols > 0 {
                 self.rowAtIndex(self.cols * self.rows,
                                 geometry: geometry,
                                 isLastRow: true)
             }
         }
     }
-    
+
     // MARK: - HELPER FUNCTIONS
 
     private func contentWidthFor(_ geometry: GeometryProxy) -> CGFloat {
         let hSpacings = hSpacing * (CGFloat(self.cols) - 1)
         let width = geometry.size.width - hSpacings - hPadding * 2
         let cWidth = width / CGFloat(self.cols)
-        //print("cWidth: \(cWidth)")
+        // print("cWidth: \(cWidth)")
         return min(cWidth, 100) // sik make parameter
     }
 }
-

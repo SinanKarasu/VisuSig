@@ -13,15 +13,15 @@ class MenuOptions {
             FlyoutMenuOption(image: Image(systemName: "trash"), color: .blue,
                              action: {
                                  print("Trash")
-                                 //self.cellData.delete(cell: self.node)
+                                 // self.cellData.delete(cell: self.node)
                              }),
             FlyoutMenuOption(image: Image(systemName: "square.on.circle"), color: .green,
                              action: {
                                  print("Modal")
-                                 //self.modalViews.showShapes = true
+                                 // self.modalViews.showShapes = true
                              }),
             FlyoutMenuOption(image: Image(systemName: "link"), color: .blue),
-            //FlyoutMenuView.FlyoutMenuOption(image: Self.crayonImage, color: .orange)
+            // FlyoutMenuView.FlyoutMenuOption(image: Self.crayonImage, color: .orange)
             FlyoutMenuOption(image: Image(systemName: "pencil"), color: .orange)
         ]
         return flyoutMenuOptions

@@ -1,4 +1,3 @@
-
 import Foundation
 import CoreGraphics
 
@@ -8,20 +7,19 @@ struct DragInfo {
 }
 
 class SelectionHandler: ObservableObject {
-
     @Published var draggingNodes = [DragInfo]()
     @Published private(set) var selectedNodeIDs = [UUID]()
     @Published private(set) var selectedPortIDs = [UUID]()
     @Published var whereAt: CGPoint = .zero
     @Published var draggingLocation = CGPoint.zero
     @Published var startLocation = CGPoint.zero
-    var firstWirePort: PortBase? = nil
-    var secondWirePort: PortBase? = nil
+    var firstWirePort: PortBase?
+    var secondWirePort: PortBase?
     @Published var editingText: String = ""
-    
-    
+
+
     // Modal Views
-    @Published var showShapes: Bool = false
+    @Published var showShapes = false
 
 
     func unSelectNodes() {
@@ -32,7 +30,7 @@ class SelectionHandler: ObservableObject {
         if add {
             selectedNodeIDs.append(node.id) // fix for multiple selection.
             editingText = ""
-        } else if !isNodeSelected(node){
+        } else if !isNodeSelected(node) {
             selectedNodeIDs = [node.id]
             editingText = node.text
         }
@@ -58,7 +56,7 @@ class SelectionHandler: ObservableObject {
         if add {
             selectedPortIDs.append(port.id) // fix for multiple selection.
             editingText = ""
-        } else if !isPortSelected(port){
+        } else if !isPortSelected(port) {
             selectedPortIDs = [port.id]
             editingText = port.name
         }
@@ -67,11 +65,10 @@ class SelectionHandler: ObservableObject {
     func unSelectPort(_ port: PortBase, all: Bool = false) {
         if all {
             selectedPortIDs = []
-        } else if !isPortSelected(port){
+        } else if !isPortSelected(port) {
             selectedPortIDs = selectedPortIDs.filter {
                 $0 != port.id
             }
-
         }
     }
 
@@ -87,5 +84,4 @@ class SelectionHandler: ObservableObject {
     func stopDragging(_ mesh: Mesh) {
         draggingNodes = []
     }
-
 }

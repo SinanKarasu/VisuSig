@@ -15,8 +15,7 @@ import AudioToolbox
 ///  - returns: The String representation.
 
 
-@discardableResult func checkError(status: OSStatus, mess: String) -> OSStatus{
-    
+@discardableResult func checkError(status: OSStatus, mess: String) -> OSStatus {
     if status == noErr {
         return status
     }
@@ -26,82 +25,82 @@ import AudioToolbox
 
 let isDebug = true
 
-//**************************
+// **************************
 // OSStatus extensions for logging
-//**************************
+// **************************
 extension OSStatus {
-    //**************************
+    // **************************
     func asString() -> String? {
         let n = UInt32(bitPattern: self.littleEndian)
         guard let n1 = UnicodeScalar((n >> 24) & 255), n1.isASCII else { return nil }
         guard let n2 = UnicodeScalar((n >> 16) & 255), n2.isASCII else { return nil }
-        guard let n3 = UnicodeScalar((n >>  8) & 255), n3.isASCII else { return nil }
-        guard let n4 = UnicodeScalar( n        & 255), n4.isASCII else { return nil }
+        guard let n3 = UnicodeScalar((n >> 8) & 255), n3.isASCII else { return nil }
+        guard let n4 = UnicodeScalar( n & 255), n4.isASCII else { return nil }
         return String(n1) + String(n2) + String(n3) + String(n4)
     } // asString
-    
-    //**************************
+
+    // **************************
     func detailedErrorMessage() -> String? {
-        switch(self) {
+        switch self {
         case 0: return "Success"
-            //***** AUGraph errors
+            // ***** AUGraph errors
             // AVAudioRecorder errors
         case kAudioFileUnspecifiedError:
             return "kAudioFileUnspecifiedError"
-            
+
         case kAudioFileUnsupportedFileTypeError:
             return "kAudioFileUnsupportedFileTypeError"
-            
+
         case kAudioFileUnsupportedDataFormatError:
             return "kAudioFileUnsupportedDataFormatError"
-            
+
         case kAudioFileUnsupportedPropertyError:
             return "kAudioFileUnsupportedPropertyError"
-            
+
         case kAudioFileBadPropertySizeError:
             return "kAudioFileBadPropertySizeError"
-            
+
         case kAudioFilePermissionsError:
             return "kAudioFilePermissionsError"
-            
+
         case kAudioFileNotOptimizedError:
             return "kAudioFileNotOptimizedError"
-            
+
         case kAudioFileInvalidChunkError:
             return "kAudioFileInvalidChunkError"
-            
+
         case kAudioFileDoesNotAllow64BitDataSizeError:
             return "kAudioFileDoesNotAllow64BitDataSizeError"
-            
+
         case kAudioFileInvalidPacketOffsetError:
             return "kAudioFileInvalidPacketOffsetError"
-            
+
         case kAudioFileInvalidFileError:
             return "kAudioFileInvalidFileError"
-            
+
         case kAudioFileOperationNotSupportedError:
             return "kAudioFileOperationNotSupportedError"
-            
+
         case kAudioFileNotOpenError:
             return "kAudioFileNotOpenError"
-            
+
         case kAudioFileEndOfFileError:
             return "kAudioFileEndOfFileError"
-            
+
         case kAudioFilePositionError:
             return "kAudioFilePositionError"
-            
+
         case kAudioFileFileNotFoundError:
             return "kAudioFileFileNotFoundError"
-            
-            //***** AUGraph errors
+
+            // ***** AUGraph errors
         case kAUGraphErr_NodeNotFound:             return "AUGraph Node Not Found"
         case kAUGraphErr_InvalidConnection:        return "AUGraph Invalid Connection"
         case kAUGraphErr_OutputNodeErr:            return "AUGraph Output Node Error"
         case kAUGraphErr_CannotDoInCurrentContext: return "AUGraph Cannot Do In Current Context"
         case kAUGraphErr_InvalidAudioUnit:         return "AUGraph Invalid Audio Unit"
-            
-            //***** MIDI errors
+
+            // ***** MIDI errors
         case kMIDIInvalidClient:     return "MIDI Invalid Client"
         case kMIDIInvalidPort:       return "MIDI Invalid Port"
         case kMIDIWrongEndpointType: return "MIDI Wrong Endpoint Type"
@@ -117,8 +116,8 @@ extension OSStatus {
         case kMIDIObjectNotFound:    return "MIDI Object Not Found"
         case kMIDIIDNotUnique:       return "MIDI ID Not Unique"
         case kMIDINotPermitted:      return "MIDI Not Permitted"
-            
-            //***** AudioToolbox errors
+
+            // ***** AudioToolbox errors
         case kAudioToolboxErr_CannotDoInCurrentContext: return "AudioToolbox Cannot Do In Current Context"
         case kAudioToolboxErr_EndOfTrack:               return "AudioToolbox End Of Track"
         case kAudioToolboxErr_IllegalTrackDestination:  return "AudioToolbox Illegal Track Destination"
@@ -130,8 +129,8 @@ extension OSStatus {
         case kAudioToolboxErr_TrackIndexError:          return "AudioToolbox Track Index Error"
         case kAudioToolboxErr_TrackNotFound:            return "AudioToolbox Track Not Found"
         case kAudioToolboxError_NoTrackDestination:     return "AudioToolbox No Track Destination"
-            
-            //***** AudioUnit errors
+
+            // ***** AudioUnit errors
         case kAudioUnitErr_CannotDoInCurrentContext: return "AudioUnit Cannot Do In Current Context"
         case kAudioUnitErr_FailedInitialization:     return "AudioUnit Failed Initialization"
         case kAudioUnitErr_FileNotSpecified:         return "AudioUnit File Not Specified"
@@ -154,8 +153,8 @@ extension OSStatus {
         case kAudioUnitErr_Uninitialized:            return "AudioUnit Uninitialized"
         case kAudioUnitErr_UnknownFileType:          return "AudioUnit Unknown File Type"
         case kAudioUnitErr_RenderTimeout:             return "AudioUnit Rendre Timeout"
-            
-            //***** Audio errors
+
+            // ***** Audio errors
         case kAudio_BadFilePathError:      return "Audio Bad File Path Error"
         case kAudio_FileNotFoundError:     return "Audio File Not Found Error"
         case kAudio_FilePermissionError:   return "Audio File Permission Error"
@@ -163,32 +162,29 @@ extension OSStatus {
         case kAudio_ParamError:            return "Audio Param Error"
         case kAudio_TooManyFilesOpenError: return "Audio Too Many Files Open Error"
         case kAudio_UnimplementedError:    return "Audio Unimplemented Error"
-            
+
         default: return "Unknown error (no description)"
         } // switch(self)
     } // detailedErrorMessage
-    
-    //**************************
+
+    // **************************
     func debugLog(filePath: String = #file, line: Int = #line, funcName: String = #function) {
         guard isDebug, self != noErr else { return }
         let fileComponents = filePath.components(separatedBy: "/")
         let fileName = fileComponents.last ?? "???"
-        
+
         var logString = "OSStatus = \(self) in \(fileName) - \(funcName), line \(line)"
-        
-        if let errorMessage = self.detailedErrorMessage() { logString = errorMessage + ", " + logString }
-        else if let errorCode = self.asString()           { logString = errorCode    + ", " + logString }
-        
+
+        if let errorMessage = self.detailedErrorMessage() { logString = errorMessage + ", " + logString } else if let errorCode = self.asString() { logString = errorCode + ", " + logString }
+
         NSLog(logString)
     } // debugLog
 } // extension OSStatus
 
 
-
-
 // Utility Functions
 
-//func checkError(error:OSStatus, operation: String){
+// func checkError(error:OSStatus, operation: String){
 //    func fourCCToStringVer2(_ value: FourCharCode) -> String {
 //        // sik: Look into possible CFSwapInt32HostToBig here. The following must be swapped end to end
 //        let utf16 = [
@@ -211,22 +207,20 @@ extension OSStatus {
 //    print ("Error: \(dummy)")
 //    exit(1)
 //
-//}
+// }
 
 
-
-//func fourCharCodeFrom(string : String) -> FourCharCode
-//{
+// func fourCharCodeFrom(string : String) -> FourCharCode
+// {
 //    assert(string.count == 4, "String length must be 4")
 //    var result : FourCharCode = 0
 //    for char in string.utf16 {
 //        result = (result << 8) + FourCharCode(char)
 //    }
 //    return result
-//}
+// }
 
-//func fourCharCodeSwiftier(from string : String) -> FourCharCode
-//{
+// func fourCharCodeSwiftier(from string : String) -> FourCharCode
+// {
 //    return string.utf16.reduce(0, {$0 << 8 + FourCharCode($1)})
-//}
-
+// }

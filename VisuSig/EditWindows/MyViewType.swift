@@ -14,4 +14,3 @@ enum MyViewType: Equatable {
     case title // form title
     case miniMapArea // view placed behind the minimap elements
 }
-

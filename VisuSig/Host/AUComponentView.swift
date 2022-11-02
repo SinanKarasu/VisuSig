@@ -15,13 +15,12 @@ struct AUComponentView: View {
         self.auManagedUnit = auManagedUnit
         self.audioUnitComponents = audioUnitComponents
     }
-    
+
     var body: some View {
         return GeometryReader { reader in
             VStack {
                 Button(action: {
                     self.auManagedUnit.toggleViewMode()
-
                 }) {
                     Image(systemName: "location.viewfinder")
                         .imageScale(.large)
@@ -41,13 +40,11 @@ struct AUComponentView: View {
             }
         }
     }
-    
+
     func makeView(size: CGSize) -> some View {
         AUComponentControllerView(
                                            componentViewController: auManagedUnit.componentViewController,
                                            size: size
         )
     }
-    
 }
-

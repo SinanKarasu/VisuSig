@@ -25,7 +25,7 @@ import AudioToolbox
 import Combine
 
 public protocol ChassisEngineConnectable: AnyObject {
-    //var updater: DisplayLink? { get set }
+    // var updater: DisplayLink? { get set }
     var progressObserver: AnyPublisher<Double, Never> { get }
     var isPlaying: Bool { get }
 
@@ -56,13 +56,13 @@ public protocol ChassisEngineConnectable: AnyObject {
     func changeVolume(to value: Float, track: Track)
     func changePan(to value: Float, track: Track)
     func getVolume(for track: Track) -> Float
-    func getPan(for track:Track) -> Float
+    func getPan(for track: Track) -> Float
 }
 
 // swiftlint:disable type_body_length
 public class ChassisAudioEngine: ChassisEngineConnectable {
-    public var isPlaying: Bool = false
-    //public var updater: DisplayLink?
+    public var isPlaying = false
+    // public var updater: DisplayLink?
     @Published private var progress: Double = 0
     public var progressObserver: AnyPublisher<Double, Never> {
         $progress.eraseToAnyPublisher()
@@ -72,24 +72,24 @@ public class ChassisAudioEngine: ChassisEngineConnectable {
     private var engine = AVAudioEngine()
     private var legacyNodes = [AVAudioPlayerNode]()
     private var nodes = [NodeUse]()
-    private var tokenizedFiles: [UUID : FileInfo] = [:]
+    private var tokenizedFiles: [UUID: FileInfo] = [:]
     private var durationTable: [String: Double] = [:]
     private var legacyFiles: [(AVAudioFile, AVAudioTime?)] = []
     private var audioFormat: AVAudioFormat?
     private var recordNode: AVAudioInputNode?
-    private var isRecording: Bool = false
+    private var isRecording = false
     private var sinkNode: AVAudioSinkNode?
-    
+
     private struct FileInfo {
         let file: AVAudioFile
         let node: AVAudioPlayerNode?
         let startTime: AVAudioTime?
     }
-    
+
     private class NodeUse {
         var node: AVAudioPlayerNode
         var inUse: Bool
-        
+
         init(node: AVAudioPlayerNode, inUse: Bool = true) {
             self.node = node
             self.inUse = inUse
@@ -101,7 +101,7 @@ public class ChassisAudioEngine: ChassisEngineConnectable {
     */
     public init() {
         setUpEngine()
-        //setUpDisplayLink()
+        // setUpDisplayLink()
     }
 
     /**
@@ -137,7 +137,7 @@ public class ChassisAudioEngine: ChassisEngineConnectable {
             stop()
         }
     }
-    
+
     /**
     Gets current mix playhead position
 
@@ -152,8 +152,7 @@ public class ChassisAudioEngine: ChassisEngineConnectable {
             let nodeTime = nodeUse.node.lastRenderTime,
             let playerTime = nodeUse.node.playerTime(forNodeTime: nodeTime) {
             return playerTime.sampleTime
-        }
-        else if let player = legacyNodes.first,
+        } else if let player = legacyNodes.first,
             let nodeTime = player.lastRenderTime,
             let playerTime = player.playerTime(forNodeTime: nodeTime) {
             return playerTime.sampleTime
@@ -211,7 +210,7 @@ public class ChassisAudioEngine: ChassisEngineConnectable {
             node.scheduleFile(file, at: time)
         }
     }
-    
+
     private func reloadLegacyFiles() {
         legacyFiles.forEach {
             addFileToMix($0.0,
@@ -219,7 +218,7 @@ public class ChassisAudioEngine: ChassisEngineConnectable {
                          isLegacyTrack: true)
         }
     }
-    
+
     private func reloadFiles() {
         tokenizedFiles.forEach {
             addFileToMix($1.file,
@@ -227,7 +226,7 @@ public class ChassisAudioEngine: ChassisEngineConnectable {
                          isLegacyTrack: false, token: $0)
         }
     }
-    
+
     /**
     Loads a Track into AVAudioEngine.
 
@@ -309,11 +308,11 @@ public class ChassisAudioEngine: ChassisEngineConnectable {
             let audioTime = AVAudioTime(sampleTime: Int64(getMixLength() *
                                                       (track.startTime ?? 0) * sampleRate),
                                     atRate: sampleRate)
-        
+
             let matchingTracks = legacyFiles.filter {
                 $0.url == file.url && $1 == audioTime
             }.enumerated()
-            
+
             for trackToRemove in matchingTracks {
                 let nodeToRemove = legacyNodes.remove(at: trackToRemove.offset)
                 self.engine.disconnectNodeOutput(nodeToRemove)
@@ -326,9 +325,9 @@ public class ChassisAudioEngine: ChassisEngineConnectable {
     - This method plays the current mix. It is relative to the last time played, unless stop has been called.
     */
     public func play() {
-        guard (!self.legacyNodes.isEmpty || !self.tokenizedFiles.isEmpty) else { return }
+        guard !self.legacyNodes.isEmpty || !self.tokenizedFiles.isEmpty else { return }
         DispatchQueue.global(qos: .userInitiated).async {
-            //guard let updater = self.updater else { return }
+            // guard let updater = self.updater else { return }
             if !self.engine.isRunning {
                 do {
                     try self.engine.start()
@@ -338,7 +337,7 @@ public class ChassisAudioEngine: ChassisEngineConnectable {
             }
             if !self.isPlaying {
                 self.isPlaying = true
-                //updater.isPaused = false
+                // updater.isPaused = false
                 self.legacyNodes.forEach {
                     $0.play(at: nil)
                 }
@@ -359,9 +358,9 @@ public class ChassisAudioEngine: ChassisEngineConnectable {
     */
     public func pause() {
         DispatchQueue.global(qos: .userInitiated).async {
-            //guard let updater = self.updater else { return }
+            // guard let updater = self.updater else { return }
             self.isPlaying = false
-            //updater.isPaused = true
+            // updater.isPaused = true
             self.legacyNodes.forEach {
                 $0.pause()
             }
@@ -379,9 +378,9 @@ public class ChassisAudioEngine: ChassisEngineConnectable {
     */
     public func stop() {
         DispatchQueue.global(qos: .userInitiated).sync {
-            //guard let updater = self.updater else { return }
+            // guard let updater = self.updater else { return }
             isPlaying = false
-            //updater.isPaused = true
+            // updater.isPaused = true
             DispatchQueue.main.async {
                 self.progress = 0.0
             }
@@ -599,7 +598,7 @@ public class ChassisAudioEngine: ChassisEngineConnectable {
             return nil
         }
 
-        sinkNode = AVAudioSinkNode { (_, frames, audioBufferList) -> OSStatus in
+        sinkNode = AVAudioSinkNode { _, frames, audioBufferList -> OSStatus in
             ExtAudioFileWrite(fileToSave, frames, audioBufferList)
             return noErr
         }
@@ -752,7 +751,7 @@ public class ChassisAudioEngine: ChassisEngineConnectable {
             outputFormat.mBitsPerChannel = 0
             outputFormat.mFormatID = kAudioFormatMPEG4AAC
             outputFormat.mChannelsPerFrame = 2
-            var size: UInt32 = UInt32(MemoryLayout.size(ofValue: outputFormat))
+            var size = UInt32(MemoryLayout.size(ofValue: outputFormat))
             if checkError(status: AudioFormatGetProperty(kAudioFormatProperty_FormatInfo,
                                                          0,
                                                          nil,
@@ -762,8 +761,8 @@ public class ChassisAudioEngine: ChassisEngineConnectable {
                 return nil
             }
 
-            var infoSize: UInt32 = UInt32(MemoryLayout<AudioStreamBasicDescription>.size)
-            
+            var infoSize = UInt32(MemoryLayout<AudioStreamBasicDescription>.size)
+
             if checkError(status: ExtAudioFileGetProperty(unwrappedInputFile,
                                                           kExtAudioFileProperty_FileDataFormat,
                                                           &infoSize,
@@ -771,7 +770,7 @@ public class ChassisAudioEngine: ChassisEngineConnectable {
                           mess: "ExtAudioFileGetProperty failed") != noErr {
                 return nil
             }
-            
+
             fileExtension = "m4a"
             audioFileTypeID = kAudioFileM4AType
         default:
@@ -790,7 +789,7 @@ public class ChassisAudioEngine: ChassisEngineConnectable {
         }
 
         guard let unwrappedOutputFile = outputFile else { return nil }
-        
+
         if checkError(status: ExtAudioFileSetProperty(unwrappedOutputFile,
                                                       kExtAudioFileProperty_ClientDataFormat,
                                                       UInt32(MemoryLayout<AudioStreamBasicDescription>.size),
@@ -798,7 +797,7 @@ public class ChassisAudioEngine: ChassisEngineConnectable {
                       mess: "ExtAudioFileSetProperty failed on output file") != noErr {
             return nil
         }
-        
+
         if checkError(status: convert(outputFormat: outputFormat,
                                       inputFile: unwrappedInputFile,
                                       outputFile: unwrappedOutputFile),
@@ -807,7 +806,7 @@ public class ChassisAudioEngine: ChassisEngineConnectable {
         }
         ExtAudioFileDispose(unwrappedInputFile)
         ExtAudioFileDispose(unwrappedOutputFile)
-        
+
         return outputFileURL as URL
     }
 
@@ -851,7 +850,7 @@ public class ChassisAudioEngine: ChassisEngineConnectable {
             }
         }
     }
-    
+
     public func changeVolume(to value: Float, track: Track) {
         if let token = track.token {
             let selectedNode = tokenizedFiles[token]?.node
@@ -862,18 +861,18 @@ public class ChassisAudioEngine: ChassisEngineConnectable {
             let audioTime = AVAudioTime(sampleTime: Int64(getMixLength() *
                                                       (track.startTime ?? 0) * sampleRate),
                                     atRate: sampleRate)
-        
+
             let matchingTracks = legacyFiles.filter {
                 $0.url == file.url && $1 == audioTime
             }.enumerated()
-            
+
             for trackCandidate in matchingTracks {
                 let selectedNode = legacyNodes[trackCandidate.offset]
                 selectedNode.volume = value
             }
         }
     }
-    
+
     public func changePan(to value: Float, track: Track) {
         if let token = track.token {
             let selectedNode = tokenizedFiles[token]?.node
@@ -884,18 +883,18 @@ public class ChassisAudioEngine: ChassisEngineConnectable {
             let audioTime = AVAudioTime(sampleTime: Int64(getMixLength() *
                                                       (track.startTime ?? 0) * sampleRate),
                                     atRate: sampleRate)
-        
+
             let matchingTracks = legacyFiles.filter {
                 $0.url == file.url && $1 == audioTime
             }.enumerated()
-            
+
             for trackCandidate in matchingTracks {
                 let selectedNode = legacyNodes[trackCandidate.offset]
                 selectedNode.pan = value
             }
         }
     }
-    
+
     public func getVolume(for track: Track) -> Float {
         if let token = track.token {
             let selectedNode = tokenizedFiles[token]?.node
@@ -906,11 +905,11 @@ public class ChassisAudioEngine: ChassisEngineConnectable {
             let audioTime = AVAudioTime(sampleTime: Int64(getMixLength() *
                                                       (track.startTime ?? 0) * sampleRate),
                                     atRate: sampleRate)
-        
+
             let matchingTracks = legacyFiles.filter {
                 $0.url == file.url && $1 == audioTime
             }.enumerated()
-            
+
             for trackCandidate in matchingTracks {
                 let selectedNode = legacyNodes[trackCandidate.offset]
                 return selectedNode.volume
@@ -918,7 +917,7 @@ public class ChassisAudioEngine: ChassisEngineConnectable {
         }
         return 1.0
     }
-    
+
     public func getPan(for track: Track) -> Float {
         if let token = track.token {
             let selectedNode = tokenizedFiles[token]?.node
@@ -929,11 +928,11 @@ public class ChassisAudioEngine: ChassisEngineConnectable {
             let audioTime = AVAudioTime(sampleTime: Int64(getMixLength() *
                                                       (track.startTime ?? 0) * sampleRate),
                                     atRate: sampleRate)
-        
+
             let matchingTracks = legacyFiles.filter {
                 $0.url == file.url && $1 == audioTime
             }.enumerated()
-            
+
             for trackCandidate in matchingTracks {
                 let selectedNode = legacyNodes[trackCandidate.offset]
                 return selectedNode.pan

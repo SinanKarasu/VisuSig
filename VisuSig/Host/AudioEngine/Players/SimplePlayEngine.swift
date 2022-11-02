@@ -8,7 +8,6 @@ A simple playback engine built on AVAudioEngine and its related classes.
 import AVFoundation
 
 public class SimplePlayEngine {
-    
     // The engine's active unit node.
     private var activeAVAudioUnit: AVAudioUnit?
 
@@ -16,26 +15,26 @@ public class SimplePlayEngine {
 
     // Synchronizes starting/stopping the engine and scheduling file segments.
     private let stateChangeQueue = DispatchQueue(label: "com.example.apple-samplecode.StateChangeQueue")
-    
+
     // Playback engine.
     private let engine = AVAudioEngine()
-    
+
     // Engine's player node.
     private let player = AVAudioPlayerNode()
 
     // File to play.
     private var file: AVAudioFile?
-    
+
     // Whether we are playing.
     private var isPlaying = false
-    
+
     // This block will be called every render cycle and will receive MIDI events
-    private let midiOutBlock: AUMIDIOutputEventBlock = { sampleTime, cable, length, data in return noErr }
+    private let midiOutBlock: AUMIDIOutputEventBlock = { _, _, _, _ in return noErr }
 
     private var componentType: OSType {
         return activeAVAudioUnit?.audioComponentDescription.componentType ?? kAudioUnitType_Effect
     }
-    
+
     private var isEffect: Bool {
         // SimplePlayEngine only supports effects or instruments.
         // If it's not an instrument, it's an effect
@@ -68,9 +67,9 @@ public class SimplePlayEngine {
             fatalError("Could not create AVAudioFile instance. error: \(error).")
         }
     }
-    
+
     // MARK: Playback State
-    
+
     public func startPlaying() {
         stateChangeQueue.sync {
             if !self.isPlaying { self.startPlayingInternal() }
@@ -91,19 +90,19 @@ public class SimplePlayEngine {
         }
         return isPlaying
     }
-    
+
     private func startPlayingInternal() {
         // assumptions: we are protected by stateChangeQueue. we are not playing.
-        
+
         if isEffect {
             // Schedule buffers on the player.
             scheduleEffectLoop()
             scheduleEffectLoop()
         }
-        
+
         let hardwareFormat = engine.outputNode.outputFormat(forBus: 0)
         engine.connect(engine.mainMixerNode, to: engine.outputNode, format: hardwareFormat)
-        
+
         // Start the engine.
         do {
             try engine.start()
@@ -111,7 +110,7 @@ public class SimplePlayEngine {
             isPlaying = false
             fatalError("Could not start engine. error: \(error).")
         }
-        
+
         if isEffect {
             // Start the player.
             player.play()
@@ -122,7 +121,7 @@ public class SimplePlayEngine {
 
         isPlaying = true
     }
-    
+
     private func stopPlayingInternal() {
         if isEffect {
             player.stop()
@@ -132,12 +131,12 @@ public class SimplePlayEngine {
         engine.stop()
         isPlaying = false
     }
-    
+
     private func scheduleEffectLoop() {
         guard let file = file else {
             fatalError("`file` must not be nil in \(#function).")
         }
-        
+
         player.scheduleFile(file, at: nil) {
             self.stateChangeQueue.async {
                 if self.isPlaying {
@@ -160,7 +159,6 @@ public class SimplePlayEngine {
     }
 
     public func connect(avAudioUnit: AVAudioUnit?, completion: @escaping (() -> Void) = {}) {
-
         // If effect, ensure audio loop is reset (but only once per call to this method)
         var needsAudioLoopReset = true
 
@@ -168,7 +166,7 @@ public class SimplePlayEngine {
         if let audioUnit = activeAVAudioUnit {
             if isEffect {
                 // Break the player -> effect connection.
-                //print("engine:\(engine)")
+                // print("engine:\(engine)")
                 engine.disconnectNodeInput(audioUnit)
             }
 
@@ -244,5 +242,3 @@ public class SimplePlayEngine {
     /// Simple MIDI note generator that plays a two-octave scale.
 
 }
-
-

@@ -17,4 +17,3 @@ struct MyPreferenceKey: PreferenceKey {
         value.append(contentsOf: nextValue())
     }
 }
-

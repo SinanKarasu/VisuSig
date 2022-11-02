@@ -18,10 +18,9 @@ class SiKAudioMixer {
     let keysPlayer = AVAudioPlayerNode()
     let clickPlayer = AVAudioPlayerNode()
     let mixer = AVAudioMixerNode()
-    
-    
-    init() {        
-        
+
+
+    init() {
         if let drumAudioPath = Bundle.main.path(forResource: "Drums1", ofType: "mp3") {
             let drumsAudioUrl = URL(fileURLWithPath: drumAudioPath)
             let drumsAudioFile = try? AVAudioFile(forReading: drumsAudioUrl)
@@ -30,8 +29,8 @@ class SiKAudioMixer {
         }
         drumPlayer.play()
         engine.attach(drumPlayer)
-        
-        
+
+
         if let bassAudioPath = Bundle.main.path(forResource: "Bass1", ofType: "mp3") {
             let bassAudioUrl = URL(fileURLWithPath: bassAudioPath)
             let bassAudioFile = try? AVAudioFile(forReading: bassAudioUrl)
@@ -40,8 +39,8 @@ class SiKAudioMixer {
         }
         bassPlayer.play()
         engine.attach(bassPlayer)
-        
-        
+
+
         if let keysAudioPath = Bundle.main.path(forResource: "Keys1", ofType: "mp3") {
             let keysAudioUrl = URL(fileURLWithPath: keysAudioPath)
             let keysAudioFile = try? AVAudioFile(forReading: keysAudioUrl)
@@ -50,8 +49,8 @@ class SiKAudioMixer {
         }
         keysPlayer.play()
         engine.attach(keysPlayer)
-        
-        
+
+
         if let clickAudioPath = Bundle.main.path(forResource: "Click1", ofType: "mp3") {
             let clickAudioUrl = URL(fileURLWithPath: clickAudioPath)
             let clickAudioFile = try? AVAudioFile(forReading: clickAudioUrl)
@@ -60,14 +59,13 @@ class SiKAudioMixer {
         }
         clickPlayer.play()
         engine.attach(clickPlayer)
-        
+
         engine.attach(mixer)
-        
+
         engine.prepare()
         do {
             try engine.start()
-        }
-        catch {
+        } catch {
             print(error.localizedDescription)
         }
     }

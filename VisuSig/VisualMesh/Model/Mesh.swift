@@ -1,9 +1,7 @@
-
 import Foundation
 import CoreGraphics
 
 class Mesh: ObservableObject {
-
     let snapToGrid = false
     static var meshes = [Mesh]()
     static func deleteEdge(edge: EdgeBase) {
@@ -22,7 +20,7 @@ class Mesh: ObservableObject {
         editingText = ""
         Mesh.meshes.append(self)
     }
-    
+
 //    deinit() {
 //        Mesh.meshes.remove(self)
 //    }
@@ -32,20 +30,18 @@ class Mesh: ObservableObject {
         nodes = storage.nodes
         edges = storage.edges
         Mesh.meshes.append(self)
-        //rebuildLinks()
+        // rebuildLinks()
     }
 
     func removeEdge(edge: EdgeBase) {
-        edges.removeAll{$0.id == edge.id}
+        edges.removeAll { $0.id == edge.id }
     }
-    var edges = [EdgeBase]()
-    {
+    var edges = [EdgeBase]() {
         didSet {
-            //rebuildLinks()
+            // rebuildLinks()
             objectWillChange.send()
         }
     }
-
 
 
     func nodeWithID(_ nodeID: UUID) -> NodeBase? {
@@ -58,7 +54,7 @@ class Mesh: ObservableObject {
 
 
     func portWithID(_ portID: UUID) -> PortBase? {
-        var retVal: PortBase? = nil
+        var retVal: PortBase?
         nodes.forEach { node in
             let aPort = node.ports.filter({ $0.id == portID }).first
             if  aPort != nil {
@@ -68,20 +64,17 @@ class Mesh: ObservableObject {
         }
         return retVal
     }
-
 }
 
 
-
 extension Mesh {
-
     func updateNodeText(_ srcNode: NodeBase, string: String) {
         srcNode.text = string
     }
 
     func positionNode(_ node: NodeBase, position: CGPoint) {
         node.position = position
-        //rebuildLinks()
+        // rebuildLinks()
     }
 
     func processNodeTranslation(_ translation: CGSize, nodes: [DragInfo], snapToGrid: Bool = false) {
@@ -89,30 +82,27 @@ extension Mesh {
             if let node = nodeWithID(draginfo.id) {
                 var nextPosition = draginfo.originalPosition.translatedBy(x: translation.width, y: translation.height)
                 if snapToGrid {
-                    //let granularity: CGFloat = 10.0
-                    nextPosition.x = (nextPosition.x/meshGranularity).rounded(.toNearestOrEven) * meshGranularity
-                    nextPosition.y = (nextPosition.y/meshGranularity).rounded(.toNearestOrEven) * meshGranularity
+                    // let granularity: CGFloat = 10.0
+                    nextPosition.x = (nextPosition.x / meshGranularity).rounded(.toNearestOrEven) * meshGranularity
+                    nextPosition.y = (nextPosition.y / meshGranularity).rounded(.toNearestOrEven) * meshGranularity
                 }
                 positionNode(node, position: nextPosition)
             }
         })
     }
 
-    func roundToTens(x : Double) -> Int {
+    func roundToTens(x: Double) -> Int {
         return 10 * Int(round(x / 10.0))
     }
-
 }
 
 extension Mesh {
-
     func addNode(_ node: NodeBase) {
         nodes.append(node)
         node.addPort(port: PortBase(node: node, name: "DefaultPort"))
     }
 
     func connect(_ parent: PortBase, to child: PortBase) {
-
         let newedge = EdgeBase(start: parent, end: child)
         let exists = edges.contains(where: { edge in
             return newedge == edge
@@ -127,13 +117,12 @@ extension Mesh {
 }
 
 extension Mesh {
-
     @discardableResult func addDemoChild(_ parent: NodeBase, at point: CGPoint? = nil, defaultPort: Bool = true) -> NodeBase {
         let target = point ?? parent.position
         let child = NodeBase(text: "child", position: target, payload: nil)
         addNode(child)
         connect(parent.ports[0], to: child.ports[0])
-        //rebuildLinks()
+        // rebuildLinks()
         return child
     }
 
@@ -168,7 +157,6 @@ extension Mesh {
 
 extension Mesh {
     func meshCoordinates(whereAt: CGPoint, containerSize: CGSize, portalPosition: CGPoint, zoomScale: CGFloat) -> CGPoint {
-        return (whereAt - containerSize/2.0 - portalPosition) / zoomScale
+        return (whereAt - containerSize / 2.0 - portalPosition) / zoomScale
     }
-
 }

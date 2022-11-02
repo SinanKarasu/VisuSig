@@ -11,30 +11,29 @@ struct InstrumentsMenuSplitView: View {
     @ObservedObject var audioUnitComponents: AudioUnitComponents
     @State var columnVisibility: NavigationSplitViewVisibility = .all
     @State private var selectedIndex: Int?
-    
-    
+
+
     var audioUnitManager: AudioUnitManager {
         audioUnitComponents.audioUnitManager
     }
-    
-    //let audioUnitTypes: [AudioUnitType] = [ .effect, .instrument]
+
+    // let audioUnitTypes: [AudioUnitType] = [ .effect, .instrument]
     var body: some View {
-        //startRunning()
-        return GeometryReader { reader in
+        // startRunning()
+        return GeometryReader { _ in
             VStack {
                 VStack {
                     Text("Instrument Menu View")
                     Text("Instrument Count: \(audioUnitComponents.instrumentComponents.count)")
                     Text("Managed Count: \(audioUnitComponents.auManagedInstruments.count)")
-                    
                 }
                 ZStack {
                     RoundedRectangle(cornerRadius: 10, style: .continuous)
                         .stroke(.green, lineWidth: 5)
                     HStack {
                         Divider()
-                        
-                        NavigationSplitView (columnVisibility: $columnVisibility) {
+
+                        NavigationSplitView(columnVisibility: $columnVisibility) {
                             List(selection: $selectedIndex) {
                                 ForEach(0..<audioUnitComponents.auManagedInstruments.count, id: \.self) { index in
                                     Label(audioUnitComponents.auManagedInstruments[index]!.name, systemImage: "pianokeys.inverse")
@@ -49,15 +48,15 @@ struct InstrumentsMenuSplitView: View {
                 }
             }
 
-            //.onAppear(perform: startRunning)
+            // .onAppear(perform: startRunning)
         }
     }
-    
-    
+
+
     func makeView5(index: Int) -> some View {
         if index != 0 {
             let auManagedUnit = audioUnitComponents.auManagedInstruments[index]
-            auManagedUnit!.loadAudioUnitViewController() { nsViewController in
+            auManagedUnit!.loadAudioUnitViewController { nsViewController in
                 auManagedUnit!.setController(controller: nsViewController)
             }
             return AnyView(AUComponentView(auManagedUnit: auManagedUnit!, audioUnitComponents: audioUnitComponents))
@@ -67,7 +66,7 @@ struct InstrumentsMenuSplitView: View {
         }
         return AnyView(Text("No selection made"))
     }
-    
+
 //    func startRunning() {
 //        audioUnitComponents.startRunning()
 //    }

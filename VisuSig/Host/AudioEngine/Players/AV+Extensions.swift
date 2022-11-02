@@ -19,22 +19,19 @@ extension AVAudioMixerNode {
     }
 }
 
-//extension AVAudioNode {
+// extension AVAudioNode {
 //    var inputCount: Int { numberOfInputs }
 //
 //    func inputConnections() -> [AVAudioConnectionPoint] {
 //        return (0 ..< inputCount).compactMap { engine?.inputConnectionPoint(for: self, inputBus: $0) }
 //    }
-//}
+// }
 
 
 extension AVAudioNode {
-    
     /// Disconnect without breaking other connections.
         func disconnect(input: AVAudioNode, format: AVAudioFormat? ) {
-    
             if let engine = engine {
-    
                 var newConnections: [AVAudioNode: [AVAudioConnectionPoint]] = [:]
                 for bus in 0 ..< numberOfInputs {
                     if let cp = engine.inputConnectionPoint(for: self, inputBus: bus) {
@@ -44,7 +41,7 @@ extension AVAudioNode {
                         }
                     }
                 }
-    
+
                 for (node, connections) in newConnections {
                     if connections.isEmpty {
                         engine.disconnectNodeOutput(node)
@@ -54,7 +51,7 @@ extension AVAudioNode {
                 }
             }
         }
-    
+
     /// Make a connection without breaking other connections.
     func connect(input: AVAudioNode, bus: Int, format: AVAudioFormat?) {
         if let engine = engine {

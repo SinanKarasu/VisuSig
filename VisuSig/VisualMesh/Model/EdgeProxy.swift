@@ -15,6 +15,6 @@ struct EdgeProxy: Identifiable, Hashable {
     var edge: EdgeBase
     init(edge: EdgeBase) {
         self.edge = edge
-        //self.end = edge.end
+        // self.end = edge.end
     }
 }

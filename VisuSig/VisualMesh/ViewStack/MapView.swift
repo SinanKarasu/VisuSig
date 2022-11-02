@@ -1,9 +1,6 @@
-
-
 import SwiftUI
 
 struct MapView: View {
-
     @ObservedObject var selection: SelectionHandler
     @ObservedObject var mesh: Mesh
 
@@ -14,4 +11,3 @@ struct MapView: View {
         }
     }
 }
-

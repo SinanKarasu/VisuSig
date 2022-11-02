@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct ToolMenu2View: View {
-
     // Used to refresh the view periodically
     @State var refresh = false
 
@@ -56,7 +55,6 @@ struct ToolMenu2View: View {
                         } label: {
                             systemIcon(forURL: item)?.resizable().aspectRatio(contentMode: .fit)
                         }.buttonStyle(PlainButtonStyle())
-
                     }
                 }.frame(height: 75).offset(y: -15)
 
@@ -88,7 +86,7 @@ struct ToolMenu2View: View {
                                 .fill(Color.white)
                                 .frame(width: 13, height: 8)
                                 .offset(y: 5)
-                                .shadow(color: Color(red: 168/255, green: 238/255, blue: 1), radius: 7, x: 0, y: 0)
+                                .shadow(color: Color(red: 168 / 255, green: 238 / 255, blue: 1), radius: 7, x: 0, y: 0)
                         } else {
                             Spacer().frame(width: 13)
                         }
@@ -101,7 +99,7 @@ struct ToolMenu2View: View {
             })
         }
     }
-    
+
     func systemIcon(forURL url: String) -> Image? {
         guard let icon =
                 NSWorkspace.shared.icon(forFile: url.replacingOccurrences(of: "file://", with: ""))
@@ -112,9 +110,7 @@ struct ToolMenu2View: View {
         let nsImage = NSImage(cgImage: icon, size: CGSize(width: icon.width, height: icon.height))
         return Image(nsImage: nsImage)
     }
-
 }
-
 
 
 struct ToolMenu2View_Previews: PreviewProvider {

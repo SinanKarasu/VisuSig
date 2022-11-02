@@ -8,13 +8,12 @@
 
 import SwiftUI
 
-//sik separate
-fileprivate struct SheetView: View {
+// sik separate
+private struct SheetView: View {
     @Binding var isVisible: Bool
     @ObservedObject fileprivate var myLayout: MyLayout
-    
+
     var body: some View {
-        
         VStack {
             GeometryReader { geometry in
                 self.designerView(geometry)
@@ -26,7 +25,7 @@ fileprivate struct SheetView: View {
         }
         .frame(width: 300, height: 300)
     }
-    
+
     private func designerView(_ geometry: GeometryProxy) -> some View {
         return VStack {
             layoutSlider(name: "Columns:",
@@ -48,7 +47,7 @@ fileprivate struct SheetView: View {
         }
         .padding([.bottom], 10)
     }
-    
+
     private func layoutSlider(name: String,
                               layoutParam: Binding<CGFloat>,
                               minValue: CGFloat = 0.0,
@@ -65,7 +64,7 @@ fileprivate struct SheetView: View {
 }
 ///
 
-fileprivate struct QConstants {
+private struct QConstants {
     static let showDesigner = true
     static let columnsMax = 5
     static let vSpacingMaxToGeometryRatio: CGFloat = 0.5 // 50%
@@ -73,38 +72,37 @@ fileprivate struct QConstants {
     static let hPaddingMaxToGeometryRatio: CGFloat = 0.3 // 30%
 }
 
-fileprivate class MyLayout: ObservableObject {
+private class MyLayout: ObservableObject {
     @Published var columns: CGFloat = 4.0
     @Published var vSpacing: CGFloat = 10.0
     @Published var hSpacing: CGFloat = 10.0
     @Published var vPadding: CGFloat = 0.0
     @Published var hPadding: CGFloat = 10.0
-    
+
     func vSpacingMax(_ geometry: GeometryProxy) -> CGFloat {
         return geometry.size.height * QConstants.vSpacingMaxToGeometryRatio
     }
-    
+
     func hSpacingMax(_ geometry: GeometryProxy) -> CGFloat {
-        return max(geometry.size.width/self.self.columns - 2 * self.hPadding, 1.0)
+        return max(geometry.size.width / self.self.columns - 2 * self.hPadding, 1.0)
     }
-    
+
     func vPaddingMax(_ geometry: GeometryProxy) -> CGFloat {
         return geometry.size.height * QConstants.vPaddingMaxToGeometryRatio
     }
-    
+
     func hPaddingMax(_ geometry: GeometryProxy) -> CGFloat {
         return geometry.size.width * QConstants.hPaddingMaxToGeometryRatio
     }
 }
 
 struct EffectsToolsView: View {
-    
     @ObservedObject var audioUnitComponents: AudioUnitComponents
 
     @State private var sheetIsShowing = false
-    
+
     @StateObject fileprivate var myLayout = MyLayout()
-    
+
     var body: some View {
         VStack {
             Button("Resize") { self.sheetIsShowing.toggle() }
@@ -115,10 +113,10 @@ struct EffectsToolsView: View {
                     }
             }
         }
-        .frame(minWidth:500, minHeight: 500)
+        .frame(minWidth: 500, minHeight: 500)
         .addBorder(.pink)
     }
-    
+
     private func gridView(_ geometry: GeometryProxy) -> some View {
         QGrid(audioUnitComponents.audioUnitComponents,
               columns: Int(self.myLayout.columns),
@@ -127,30 +125,29 @@ struct EffectsToolsView: View {
               hSpacing: max(min(self.myLayout.hSpacing, self.myLayout.hSpacingMax(geometry)), 0.0),
               vPadding: min(self.myLayout.vPadding, self.myLayout.vPaddingMax(geometry)),
               hPadding: max(min(self.myLayout.hPadding, self.myLayout.hPaddingMax(geometry)), 0.0),
-              showScrollIndicators: true)
-        {
+              showScrollIndicators: true) {
             GridCell(person: $0)
         }
     }
 }
 
-fileprivate struct GridCell: View {
+private struct GridCell: View {
     var person: Component
-    
+
     var body: some View {
-        ZStack() {
-            //Image(person.imageName)
+        ZStack {
+            // Image(person.imageName)
             Image(systemName: "waveform")
-            //.foregroundColor(.green)
+            // .foregroundColor(.green)
                 .resizable()
                 .scaledToFit()
                 .clipShape(Circle())
-            //.shadow(color: .purple, radius: 5)
-            //.padding([.horizontal, .top], 7)
+            // .shadow(color: .purple, radius: 5)
+            // .padding([.horizontal, .top], 7)
                 .foregroundColor(.green)
                 .opacity(0.4)
             Button("OK") {
-               print("OK") //self.isVisible = false
+               print("OK") // self.isVisible = false
             }
 
             VStack {
@@ -158,15 +155,15 @@ fileprivate struct GridCell: View {
                 Text(person.mfg).lineLimit(1)
             }
         }
-        .frame(minWidth:100, minHeight: 100)
-        //.font(.headline).foregroundColor(.white)
+        .frame(minWidth: 100, minHeight: 100)
+        // .font(.headline).foregroundColor(.white)
     }
 }
 
-//#if DEBUG
-//struct EffectsToolsView_Previews : PreviewProvider {
+// #if DEBUG
+// struct EffectsToolsView_Previews : PreviewProvider {
 //    static var previews: some View {
 //        EffectsToolsView()
 //    }
-//}
-//#endif
+// }
+// #endif

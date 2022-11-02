@@ -58,5 +58,4 @@ struct MiniMap: View {
             .offset(x: (self.geometry[pref.bounds].minX - containerPosition.x) / factor + miniMapPosition.x,
                     y: (self.geometry[pref.bounds].minY - containerPosition.y) / factor + miniMapPosition.y)
     }
-
 }

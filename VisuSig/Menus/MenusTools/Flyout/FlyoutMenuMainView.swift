@@ -11,16 +11,15 @@ struct FlyoutMenuOption {
     var image: Image
     var color: Color
     var action: () -> Void = {}
-
 }
 struct FlyoutMenuMainView: View {
-    @State var isOpen: Bool = false
+    @State var isOpen = false
     let flyoutMenuOptions: [FlyoutMenuOption]
     let menuDiameter: CGFloat = 150
     let iconDiameter: CGFloat = 44
 
     var radius: CGFloat {
-        return menuDiameter/2
+        return menuDiameter / 2
     }
 
     var body: some View {
@@ -30,10 +29,8 @@ struct FlyoutMenuMainView: View {
                     isOpen.toggle()
                 }
                 self.endTextEditing()
-            }){
-
+            }) {
                 ZStack {
-
                     Circle()
                         .foregroundColor(.red)
                     Image(systemName: "plus")
@@ -46,8 +43,8 @@ struct FlyoutMenuMainView: View {
                 .frame(width: .zero, height: .zero)
 
 
-                //.foregroundColor(.mint)
-                //.background(.red)
+                // .foregroundColor(.mint)
+                // .background(.red)
             }
             ZStack {
                 Circle()
@@ -59,39 +56,34 @@ struct FlyoutMenuMainView: View {
             }
             .frame(width: .zero, height: .zero)
         }
-
     }
 
-    func drawOption(index: Int) -> some View{
+    func drawOption(index: Int) -> some View {
         let angle = (.pi / 4) * CGFloat(index) - .pi / 3
         let offset = CGSize(width: cos(angle) * radius,
                             height: sin(angle) * radius)
         let option = flyoutMenuOptions[index]
         return Button(action: {
             option.action()
-        })
-        {
+        }) {
             ZStack {
-                
                 Circle()
                     .foregroundColor(option.color)
 
                 option.image
                     .font(.system(size: 20, weight: .medium))
-                    .foregroundColor(.white) //sik change
+                    .foregroundColor(.white) // sik change
             }
         }.buttonStyle(PlainButtonStyle())
             .frame(width: 44) // was width: 44
             .scaleEffect(isOpen ? 1.5 : 0.6)
             .offset(offset)
-
     }
-
 }
 
-//struct FlyoutMenuMainView_Previews: PreviewProvider {
+// struct FlyoutMenuMainView_Previews: PreviewProvider {
 //    @State static var isOpen = false
 //    static var previews: some View {
 //        FlyoutMenuMainView(isOpen: $isOpen)
 //    }
-//}
+// }
