@@ -284,13 +284,6 @@
 			path = NSViews;
 			sourceTree = "<group>";
 		};
-		F781CF0A2821D79900ADBF6E /* Experiments */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Experiments;
-			sourceTree = "<group>";
-		};
 		F79E3EDA281B4A0400CD0520 /* VisualMesh */ = {
 			isa = PBXGroup;
 			children = (
@@ -376,7 +369,6 @@
 				F703871F283809230055C939 /* Chassis */,
 				F7C809C7279B299200982843 /* ContentView.swift */,
 				F79E3EE1281BA18900CD0520 /* EditWindows */,
-				F781CF0A2821D79900ADBF6E /* Experiments */,
 				F75CC4B7281EED4E00692CE5 /* Host */,
 				F75CC4C7281EEED700692CE5 /* Media */,
 				F7EE444C283D8F4E00ACE932 /* Menus */,
