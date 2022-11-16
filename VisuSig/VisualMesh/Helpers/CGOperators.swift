@@ -4,8 +4,7 @@
  *  Licensed under the MIT license. See LICENSE file.
  */
 
-import Foundation
-import CoreGraphics
+import SwiftUI
 
 /// Protocol used to describe a type as a Core Graphics 2D vector
 /// Default implementations are provided for `CGPoint`, `CGSize` & `CGVector`
@@ -83,6 +82,35 @@ public extension CGVectorProtocol {
     /// Example: `CGSize(width: 30, height: 90) / 3 = CGSize(width: 10, height: 30)`
     static func /(lhs: Self, rhs: CGFloat) -> Self {
         return lhs.applying(operator: /, with: rhs)
+    }
+}
+
+extension CGPoint: VectorArithmetic {
+    public static func -= (lhs: inout CGPoint, rhs: CGPoint) {
+        lhs.x -= rhs.x
+        lhs.y -= rhs.y
+    }
+    
+    public static func - (lhs: CGPoint, rhs: CGPoint) -> CGPoint {
+        CGPoint(x: lhs.x - rhs.x, y: lhs.y - rhs.y)
+    }
+    
+    public static func += (lhs: inout CGPoint, rhs: CGPoint) {
+        lhs.x += rhs.x
+        lhs.y += rhs.y
+    }
+    
+    public mutating func scale(by rhs: Double) {
+        x *= CGFloat(rhs)
+        y *= CGFloat(rhs)
+    }
+    
+    public var magnitudeSquared: Double {
+        Double(x*x+y*y)
+    }
+    
+    public static func + (lhs: CGPoint, rhs: CGPoint) -> CGPoint {
+        CGPoint(x: lhs.x + rhs.x, y: lhs.y + rhs.y)
     }
 }
 
