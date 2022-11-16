@@ -58,6 +58,8 @@ extension CGVector: CGVectorProtocol {
     }
 }
 
+
+
 public extension CGVectorProtocol {
     /// Add two vectors, returning a new vector with the sum of their X & Y components
     /// Example: `CGPoint(x: 10, y: 20) + CGPoint(x: 20, y: 40) = CGPoint(x: 30, y: 60)`
@@ -125,5 +127,13 @@ private extension CGVectorProtocol {
     func applying(operator o: (CGFloat, CGFloat) -> CGFloat, with constant: CGFloat) -> Self {
         let components = self.components
         return Self(components: (o(components.x, constant), o(components.y, constant)))
+    }
+}
+
+
+extension CGPoint: Hashable {
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(x)
+        hasher.combine(y)
     }
 }

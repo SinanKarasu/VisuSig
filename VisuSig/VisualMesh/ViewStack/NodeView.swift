@@ -3,11 +3,11 @@ import SwiftUI
 struct NodeView: View {
     @Binding var node: NodeBase
     @ObservedObject var selection: SelectionHandler
-
+    
     var selected: Bool {
         return selection.isNodeSelected(node)
     }
-
+    
     var body: some View {
         VStack(spacing: 0) {
             ZStack {
@@ -42,10 +42,10 @@ struct NodeView: View {
             .coordinateSpace(name: node.id.uuidString)
         }
     }
-
+    
     func theNodeView(selected: Bool) -> some View {
         let width = node.size.width// CGFloat(100)
-
+        
         return Rectangle()
             .fill(Color.green)
             .overlay(Rectangle()
@@ -55,11 +55,12 @@ struct NodeView: View {
         // .padding(EdgeInsets(top: 0, leading: 8, bottom: 0, trailing: 8)))
             .frame(width: width, height: width, alignment: .center)
     }
-
-
+    
+    
     // MARK: Menus
     func flyoutMenu() -> some View {
         let flyoutMenuOptions = MenuOptions().setupOptions()
         return FlyoutMenuMainView(flyoutMenuOptions: flyoutMenuOptions)
     }
 }
+
