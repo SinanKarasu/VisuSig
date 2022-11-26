@@ -2,7 +2,7 @@ import SwiftUI
 import AVFoundation
 
 class NodeBase: Identifiable, ObservableObject {
-    @Published var id = UUID()
+    let id = UUID()
     @Published var text: String = "Sick Root"
     @Published var position: CGPoint = .zero
 
