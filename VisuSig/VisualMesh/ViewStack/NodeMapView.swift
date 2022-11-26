@@ -11,7 +11,7 @@ struct NodeMapView: View {
                 // let _ = print("nodeMapView\(selection.whereAt)")
                 // VStack(spacing: 0) {
                     ZStack {
-                    NodeView(node: $nodes[index!], selection: self.selection)
+                    NodeView(node: nodes[index!], selection: self.selection)
                         .offset(x: node.position.x, y: node.position.y)
                         .onTapGesture {
                             // TODO: sik add the options to TapGesture
@@ -25,7 +25,7 @@ struct NodeMapView: View {
                             print("nodeMapView\(selection.whereAt)")
                             self.selection.selectNode(node, add: add)
                         }
-                    NodePortsView(node: $nodes[index!], selection: self.selection)
+                    NodePortsView(node: nodes[index!], selection: self.selection)
                             .offset(x: node.position.x, y: node.position.y + node.size.height / 2 + node.portAreaHeight / 2)
 
                     // .id(node)

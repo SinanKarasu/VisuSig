@@ -42,14 +42,6 @@
 		F798E981283D2B1600444FE3 /* DropdownSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = F798E980283D2B1600444FE3 /* DropdownSelector.swift */; };
 		F79E3EDE281B586600CD0520 /* PreferencesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F79E3EDD281B586600CD0520 /* PreferencesView.swift */; };
 		F79E3EE0281B594B00CD0520 /* MyHelpCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = F79E3EDF281B594B00CD0520 /* MyHelpCommands.swift */; };
-		F79E3EE8281BA1A400CD0520 /* MyPreferenceKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = F79E3EE2281BA1A400CD0520 /* MyPreferenceKey.swift */; };
-		F79E3EE9281BA1A400CD0520 /* MyViewType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F79E3EE3281BA1A400CD0520 /* MyViewType.swift */; };
-		F79E3EEA281BA1A400CD0520 /* MyPreferenceData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F79E3EE4281BA1A400CD0520 /* MyPreferenceData.swift */; };
-		F79E3EEB281BA1A400CD0520 /* MyContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F79E3EE5281BA1A400CD0520 /* MyContentView.swift */; };
-		F79E3EEC281BA1A400CD0520 /* MiniMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = F79E3EE6281BA1A400CD0520 /* MiniMap.swift */; };
-		F79E3EED281BA1A400CD0520 /* MyFormField.swift in Sources */ = {isa = PBXBuildFile; fileRef = F79E3EE7281BA1A400CD0520 /* MyFormField.swift */; };
-		F7A2914A28C26CB10087F38F /* UtilityFuncs.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7A2914928C26CB10087F38F /* UtilityFuncs.swift */; };
-		F7A2914C28C26CC20087F38F /* ChassisAudioEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7A2914B28C26CC20087F38F /* ChassisAudioEngine.swift */; };
 		F7A2CCB82890D54E00FEBB72 /* MultiPlayEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7A2CCB72890D54E00FEBB72 /* MultiPlayEngine.swift */; };
 		F7A2CCBA2890D5AF00FEBB72 /* AV+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7A2CCB92890D5AF00FEBB72 /* AV+Extensions.swift */; };
 		F7A37BE127F23529007D4AEB /* people.json in Resources */ = {isa = PBXBuildFile; fileRef = F7A37BE027F23529007D4AEB /* people.json */; };
@@ -90,9 +82,6 @@
 		F7DD1AF2289CB02200E48D97 /* AudioUnitType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7DD1AF1289CB02200E48D97 /* AudioUnitType.swift */; };
 		F7DD1AFC289DF33A00E48D97 /* EffectsMenuSplitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7DD1AFB289DF33A00E48D97 /* EffectsMenuSplitView.swift */; };
 		F7EE4446283D2D3B00ACE932 /* DropDownMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7EE4445283D2D3B00ACE932 /* DropDownMenu.swift */; };
-		F7EE444A283D36FC00ACE932 /* CascadeUnitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7EE4449283D36FC00ACE932 /* CascadeUnitView.swift */; };
-		F7EE444E283EFC6400ACE932 /* VerticalUnitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7EE444D283EFC6400ACE932 /* VerticalUnitView.swift */; };
-		F7EE4450283F010600ACE932 /* HorizontalUnitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7EE444F283F010600ACE932 /* HorizontalUnitView.swift */; };
 		F7F4597E27B34E6400B64772 /* WireEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7F4597D27B34E6400B64772 /* WireEditView.swift */; };
 		F7F9433F27AF924300DD9A50 /* GridCompleteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7F9433E27AF924300DD9A50 /* GridCompleteView.swift */; };
 		F7FA953227B0635800140F5D /* PortView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7FA953127B0635800140F5D /* PortView.swift */; };
@@ -134,14 +123,6 @@
 		F798E980283D2B1600444FE3 /* DropdownSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropdownSelector.swift; sourceTree = "<group>"; };
 		F79E3EDD281B586600CD0520 /* PreferencesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesView.swift; sourceTree = "<group>"; };
 		F79E3EDF281B594B00CD0520 /* MyHelpCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyHelpCommands.swift; sourceTree = "<group>"; };
-		F79E3EE2281BA1A400CD0520 /* MyPreferenceKey.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyPreferenceKey.swift; sourceTree = "<group>"; };
-		F79E3EE3281BA1A400CD0520 /* MyViewType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyViewType.swift; sourceTree = "<group>"; };
-		F79E3EE4281BA1A400CD0520 /* MyPreferenceData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyPreferenceData.swift; sourceTree = "<group>"; };
-		F79E3EE5281BA1A400CD0520 /* MyContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyContentView.swift; sourceTree = "<group>"; };
-		F79E3EE6281BA1A400CD0520 /* MiniMap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MiniMap.swift; sourceTree = "<group>"; };
-		F79E3EE7281BA1A400CD0520 /* MyFormField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyFormField.swift; sourceTree = "<group>"; };
-		F7A2914928C26CB10087F38F /* UtilityFuncs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UtilityFuncs.swift; sourceTree = "<group>"; };
-		F7A2914B28C26CC20087F38F /* ChassisAudioEngine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChassisAudioEngine.swift; sourceTree = "<group>"; };
 		F7A2CCB72890D54E00FEBB72 /* MultiPlayEngine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultiPlayEngine.swift; sourceTree = "<group>"; };
 		F7A2CCB92890D5AF00FEBB72 /* AV+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AV+Extensions.swift"; sourceTree = "<group>"; };
 		F7A37BE027F23529007D4AEB /* people.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = people.json; sourceTree = "<group>"; };
@@ -184,9 +165,6 @@
 		F7DD1AF1289CB02200E48D97 /* AudioUnitType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioUnitType.swift; sourceTree = "<group>"; };
 		F7DD1AFB289DF33A00E48D97 /* EffectsMenuSplitView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EffectsMenuSplitView.swift; sourceTree = "<group>"; };
 		F7EE4445283D2D3B00ACE932 /* DropDownMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropDownMenu.swift; sourceTree = "<group>"; };
-		F7EE4449283D36FC00ACE932 /* CascadeUnitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CascadeUnitView.swift; sourceTree = "<group>"; };
-		F7EE444D283EFC6400ACE932 /* VerticalUnitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerticalUnitView.swift; sourceTree = "<group>"; };
-		F7EE444F283F010600ACE932 /* HorizontalUnitView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HorizontalUnitView.swift; sourceTree = "<group>"; };
 		F7F4597D27B34E6400B64772 /* WireEditView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WireEditView.swift; sourceTree = "<group>"; };
 		F7F9433E27AF924300DD9A50 /* GridCompleteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridCompleteView.swift; sourceTree = "<group>"; };
 		F7FA953127B0635800140F5D /* PortView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PortView.swift; sourceTree = "<group>"; };
@@ -203,15 +181,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		F703871F283809230055C939 /* Chassis */ = {
-			isa = PBXGroup;
-			children = (
-				F7A2914928C26CB10087F38F /* UtilityFuncs.swift */,
-				F7A2914B28C26CC20087F38F /* ChassisAudioEngine.swift */,
-			);
-			path = Chassis;
-			sourceTree = "<group>";
-		};
 		F73DDC0A283576EC00DABC2F /* Additions */ = {
 			isa = PBXGroup;
 			children = (
@@ -322,19 +291,6 @@
 			path = MenusTop;
 			sourceTree = "<group>";
 		};
-		F79E3EE1281BA18900CD0520 /* EditWindows */ = {
-			isa = PBXGroup;
-			children = (
-				F79E3EE6281BA1A400CD0520 /* MiniMap.swift */,
-				F79E3EE5281BA1A400CD0520 /* MyContentView.swift */,
-				F79E3EE7281BA1A400CD0520 /* MyFormField.swift */,
-				F79E3EE4281BA1A400CD0520 /* MyPreferenceData.swift */,
-				F79E3EE2281BA1A400CD0520 /* MyPreferenceKey.swift */,
-				F79E3EE3281BA1A400CD0520 /* MyViewType.swift */,
-			);
-			path = EditWindows;
-			sourceTree = "<group>";
-		};
 		F7C6ADF7289F63120045E740 /* EffectsToolView */ = {
 			isa = PBXGroup;
 			children = (
@@ -366,9 +322,7 @@
 				F7E1D689287F14D5000C8CE2 /* ViewModifiers */,
 				F73DDC0A283576EC00DABC2F /* Additions */,
 				F7C809C9279B299400982843 /* Assets.xcassets */,
-				F703871F283809230055C939 /* Chassis */,
 				F7C809C7279B299200982843 /* ContentView.swift */,
-				F79E3EE1281BA18900CD0520 /* EditWindows */,
 				F75CC4B7281EED4E00692CE5 /* Host */,
 				F75CC4C7281EEED700692CE5 /* Media */,
 				F7EE444C283D8F4E00ACE932 /* Menus */,
@@ -463,7 +417,6 @@
 		F7CE745F27BD64DF00BBF6A2 /* MenusTools */ = {
 			isa = PBXGroup;
 			children = (
-				F7EE4448283D36E600ACE932 /* Companion */,
 				F75FF89128394EBF00BC5AC1 /* ToolMenuView.swift */,
 				F75FF89728395F4B00BC5AC1 /* ToolMenu2View.swift */,
 				F75FF8D42839EF1A00BC5AC1 /* TopAUManagedMenuView.swift */,
@@ -500,16 +453,6 @@
 				F7EE4445283D2D3B00ACE932 /* DropDownMenu.swift */,
 			);
 			path = DropDown1;
-			sourceTree = "<group>";
-		};
-		F7EE4448283D36E600ACE932 /* Companion */ = {
-			isa = PBXGroup;
-			children = (
-				F7EE4449283D36FC00ACE932 /* CascadeUnitView.swift */,
-				F7EE444D283EFC6400ACE932 /* VerticalUnitView.swift */,
-				F7EE444F283F010600ACE932 /* HorizontalUnitView.swift */,
-			);
-			path = Companion;
 			sourceTree = "<group>";
 		};
 		F7EE444B283D7D6400ACE932 /* Flyout */ = {
@@ -625,18 +568,15 @@
 				F7CE746327BD64DF00BBF6A2 /* FlyoutMenuMainView.swift in Sources */,
 				F73DDC12283577BF00DABC2F /* Log.swift in Sources */,
 				F7C809F7279B4FCB00982843 /* SurfaceView.swift in Sources */,
-				F7EE444A283D36FC00ACE932 /* CascadeUnitView.swift in Sources */,
 				F7C809E7279B4F2500982843 /* Mesh.swift in Sources */,
 				F75FF8D52839EF1A00BC5AC1 /* TopAUManagedMenuView.swift in Sources */,
 				F7C809EB279B4F2500982843 /* NodeBase.swift in Sources */,
 				F7C80A17279BBF3700982843 /* PortBase.swift in Sources */,
 				F797EA93288A26E60092F811 /* PortalState.swift in Sources */,
 				F7C809C8279B299200982843 /* ContentView.swift in Sources */,
-				F79E3EEB281BA1A400CD0520 /* MyContentView.swift in Sources */,
 				F75CC4BB281EED8B00692CE5 /* AudioUnitComponents.swift in Sources */,
 				F7300E842825B9DF00E41206 /* AUComponentView.swift in Sources */,
 				F7C80A08279B51C800982843 /* Storage.swift in Sources */,
-				F79E3EE9281BA1A400CD0520 /* MyViewType.swift in Sources */,
 				F7C809DA279B2A8800982843 /* HoverAwareDemo2View.swift in Sources */,
 				F75FF89828395F4B00BC5AC1 /* ToolMenu2View.swift in Sources */,
 				F7C80A15279B71E700982843 /* MouseLocationView.swift in Sources */,
@@ -644,18 +584,13 @@
 				F7A2CCB82890D54E00FEBB72 /* MultiPlayEngine.swift in Sources */,
 				F75CC4B1281D8AEB00692CE5 /* InstrumentPlayer.swift in Sources */,
 				F7F9433F27AF924300DD9A50 /* GridCompleteView.swift in Sources */,
-				F79E3EE8281BA1A400CD0520 /* MyPreferenceKey.swift in Sources */,
 				F7C809D8279B2A6E00982843 /* HoverAwareDemo1View.swift in Sources */,
-				F79E3EEC281BA1A400CD0520 /* MiniMap.swift in Sources */,
 				F7A2CCBA2890D5AF00FEBB72 /* AV+Extensions.swift in Sources */,
-				F79E3EED281BA1A400CD0520 /* MyFormField.swift in Sources */,
 				F73DDC0C2835770300DABC2F /* Utilities+Extensions.swift in Sources */,
 				F7C809C6279B299200982843 /* VisuSigApp.swift in Sources */,
 				F7FA953227B0635800140F5D /* PortView.swift in Sources */,
 				F75C5276282855D2008DBD23 /* MasterMenuView.swift in Sources */,
 				F7C80A1F279BBFA800982843 /* CubicBezierData.swift in Sources */,
-				F7EE444E283EFC6400ACE932 /* VerticalUnitView.swift in Sources */,
-				F7A2914C28C26CC20087F38F /* ChassisAudioEngine.swift in Sources */,
 				F781CF0C2821D7B600ADBF6E /* SiKAudioMixer.swift in Sources */,
 				F798E97B283C620A00444FE3 /* TopComponentMenuView.swift in Sources */,
 				F75FF89228394EBF00BC5AC1 /* ToolMenuView.swift in Sources */,
@@ -669,7 +604,6 @@
 				F72D0DDB27B9A35C00516B4A /* LayeredWire.swift in Sources */,
 				F7CE746727BD693900BBF6A2 /* SelectionHandlerView.swift in Sources */,
 				F748568028184D6D0038D7B7 /* QGrid.swift in Sources */,
-				F7EE4450283F010600ACE932 /* HorizontalUnitView.swift in Sources */,
 				F75CC4B6281DA74E00692CE5 /* Component.swift in Sources */,
 				F7C809D6279B29D200982843 /* HoverAwareView.swift in Sources */,
 				F7C809EA279B4F2500982843 /* EdgeBase.swift in Sources */,
@@ -698,8 +632,6 @@
 				F75CC4AD281D8A8400692CE5 /* AudioUnitManager.swift in Sources */,
 				F779564A287C91A3007E569B /* EdgeProxy.swift in Sources */,
 				F75CC4C4281EEE4D00692CE5 /* ViewExtensions.swift in Sources */,
-				F7A2914A28C26CB10087F38F /* UtilityFuncs.swift in Sources */,
-				F79E3EEA281BA1A400CD0520 /* MyPreferenceData.swift in Sources */,
 				F702D98A28DB667F0094BA12 /* Extension+Color.swift in Sources */,
 				F75CC4BD281EEDD100692CE5 /* SiKPlayerView.swift in Sources */,
 				F798E8C5283B232900444FE3 /* EffectsToolsView.swift in Sources */,

@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct NodePortsView: View {
-    @Binding var node: NodeBase
+    var node: NodeBase
     @ObservedObject var selection: SelectionHandler
 
 

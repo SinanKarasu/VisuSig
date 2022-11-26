@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct NodeView: View {
-    @Binding var node: NodeBase
+    @ObservedObject var node: NodeBase
     @ObservedObject var selection: SelectionHandler
     
     var selected: Bool {
@@ -33,6 +33,7 @@ struct NodeView: View {
                     .onTapGesture { // This one causes delay
                         self.selection.selectNode(node)
                     }
+                    .id(node)
                 if selected {
                     flyoutMenu()
                         .offset(x: node.size.width / 2, y: -node.size.height / 2)
