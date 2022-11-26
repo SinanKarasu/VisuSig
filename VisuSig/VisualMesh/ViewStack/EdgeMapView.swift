@@ -7,7 +7,7 @@ struct EdgeMapView: View {
     var body: some View {
         GeometryReader { proxy in
             ZStack {
-                ForEach(self.edges) { edge in
+                ForEach(self.edges, id: \.self) { edge in
                     WireEditView(edgeProxy: EdgeProxy(edge: edge), selection: selection, showPoints: true)
                         .offset(proxy.size / 2.0)
                 }

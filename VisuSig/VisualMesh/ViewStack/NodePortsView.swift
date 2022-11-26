@@ -17,7 +17,7 @@ struct NodePortsView: View {
                     .frame(width: node.size.width, height: node.portAreaHeight)
 
                 HStack(spacing: 0) {
-                    ForEach(node.ports) { port in
+                    ForEach(node.ports, id: \.self) { port in
                         PortView(port: port, selection: selection )
                             .id(port)
                     }
