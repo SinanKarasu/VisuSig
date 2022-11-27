@@ -42,7 +42,12 @@ struct NodeView: View {
                     flyoutMenu()
                         .offset(x: node.size.width / 2, y: -node.size.height / 2)
                 }
+                NodePortsView(node: node, selection: self.selection)
+                    .offset(x: 0, y: node.size.height / 2 + node.portAreaHeight / 2)
+                
             }
+            .offset(x: node.position.x, y: node.position.y)
+
             .frame(width: node.size.width, height: node.size.height, alignment: .center)
             .coordinateSpace(name: node.id.uuidString)
             Text(String(describing: node.position))

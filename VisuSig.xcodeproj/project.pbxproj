@@ -27,7 +27,6 @@
 		F75CC4CA281EEED700692CE5 /* Synth.aif in Resources */ = {isa = PBXBuildFile; fileRef = F75CC4C8281EEED700692CE5 /* Synth.aif */; };
 		F75CC4CB281EEED700692CE5 /* LongTeaTime.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F75CC4C9281EEED700692CE5 /* LongTeaTime.mp3 */; };
 		F75CC4CE281F542D00692CE5 /* AUManagedUnit.swift in Sources */ = {isa = PBXBuildFile; fileRef = F75CC4CD281F542D00692CE5 /* AUManagedUnit.swift */; };
-		F75FF89228394EBF00BC5AC1 /* ToolMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F75FF89128394EBF00BC5AC1 /* ToolMenuView.swift */; };
 		F75FF89528394EE500BC5AC1 /* Items.swift in Sources */ = {isa = PBXBuildFile; fileRef = F75FF89328394EE500BC5AC1 /* Items.swift */; };
 		F75FF89828395F4B00BC5AC1 /* ToolMenu2View.swift in Sources */ = {isa = PBXBuildFile; fileRef = F75FF89728395F4B00BC5AC1 /* ToolMenu2View.swift */; };
 		F75FF8D32839A28B00BC5AC1 /* ContextMenuProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = F75FF8D22839A28B00BC5AC1 /* ContextMenuProtocol.swift */; };
@@ -108,7 +107,6 @@
 		F75CC4C8281EEED700692CE5 /* Synth.aif */ = {isa = PBXFileReference; lastKnownFileType = file; path = Synth.aif; sourceTree = "<group>"; };
 		F75CC4C9281EEED700692CE5 /* LongTeaTime.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = LongTeaTime.mp3; sourceTree = "<group>"; };
 		F75CC4CD281F542D00692CE5 /* AUManagedUnit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AUManagedUnit.swift; sourceTree = "<group>"; };
-		F75FF89128394EBF00BC5AC1 /* ToolMenuView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToolMenuView.swift; sourceTree = "<group>"; };
 		F75FF89328394EE500BC5AC1 /* Items.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Items.swift; sourceTree = "<group>"; };
 		F75FF89728395F4B00BC5AC1 /* ToolMenu2View.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToolMenu2View.swift; sourceTree = "<group>"; };
 		F75FF8D22839A28B00BC5AC1 /* ContextMenuProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContextMenuProtocol.swift; sourceTree = "<group>"; };
@@ -417,7 +415,6 @@
 		F7CE745F27BD64DF00BBF6A2 /* MenusTools */ = {
 			isa = PBXGroup;
 			children = (
-				F75FF89128394EBF00BC5AC1 /* ToolMenuView.swift */,
 				F75FF89728395F4B00BC5AC1 /* ToolMenu2View.swift */,
 				F75FF8D42839EF1A00BC5AC1 /* TopAUManagedMenuView.swift */,
 				F798E97A283C620A00444FE3 /* TopComponentMenuView.swift */,
@@ -593,7 +590,6 @@
 				F7C80A1F279BBFA800982843 /* CubicBezierData.swift in Sources */,
 				F781CF0C2821D7B600ADBF6E /* SiKAudioMixer.swift in Sources */,
 				F798E97B283C620A00444FE3 /* TopComponentMenuView.swift in Sources */,
-				F75FF89228394EBF00BC5AC1 /* ToolMenuView.swift in Sources */,
 				F7C809E9279B4F2500982843 /* SelectionHandler.swift in Sources */,
 				F7C809FD279B50CB00982843 /* EdgeMapView.swift in Sources */,
 				F7CE746227BD64DF00BBF6A2 /* MenuOptions.swift in Sources */,
