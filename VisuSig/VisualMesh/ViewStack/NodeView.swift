@@ -50,8 +50,6 @@ struct NodeView: View {
 
             .frame(width: node.size.width, height: node.size.height, alignment: .center)
             .coordinateSpace(name: node.id.uuidString)
-            Text(String(describing: node.position))
-
         }
     }
     
