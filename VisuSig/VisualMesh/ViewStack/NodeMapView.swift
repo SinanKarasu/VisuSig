@@ -26,9 +26,7 @@ struct NodeMapView: View {
                             self.selection.selectNode(node, add: add)
                         }
                     NodePortsView(node: nodes[index!], selection: self.selection)
-                            .offset(x: node.position.x, y: node.position.y + node.size.height / 2 + node.portAreaHeight / 2)
-
-                    // .id(node)
+                            .offset(x: nodes[index!].position.x, y: nodes[index!].position.y + node.size.height / 2 + node.portAreaHeight / 2)
                     }
             }
         }
