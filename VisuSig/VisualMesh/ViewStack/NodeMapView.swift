@@ -11,7 +11,7 @@ struct NodeMapView: View {
                 // let _ = print("nodeMapView\(selection.whereAt)")
                 // VStack(spacing: 0) {
                 ZStack {
-                    NodeView(node: nodes[index!], selection: self.selection)
+                    NodeView(node: node, selection: self.selection)
                         .onTapGesture {
                             // TODO: sik add the options to TapGesture
                             var add = false
