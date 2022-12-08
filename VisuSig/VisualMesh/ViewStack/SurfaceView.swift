@@ -207,6 +207,7 @@ extension SurfaceView {
         } else if portalState.isWiring {
             selection.draggingLocation = value.location
         } else {
+            selection.draggingLocation = value.location
             processNodeTranslation(value.translation, snapToGrid: mesh.snapToGrid)
         }
     }

@@ -2,7 +2,7 @@ import SwiftUI
 
 struct EdgeMapView: View {
     @ObservedObject var selection: SelectionHandler
-    @Binding var edges: [EdgeBase]
+    var edges: [EdgeBase]
 
     var body: some View {
         GeometryReader { proxy in

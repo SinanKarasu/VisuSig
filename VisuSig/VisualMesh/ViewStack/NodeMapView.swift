@@ -2,12 +2,12 @@ import SwiftUI
 
 struct NodeMapView: View {
     @ObservedObject var selection: SelectionHandler
-    @Binding var nodes: [NodeBase]
+    var nodes: [NodeBase]
     
     var body: some View {
         ZStack {
             ForEach(self.nodes, id: \.visualID) { node in
-                let index = nodes.firstIndex(of: node)
+                //let index = nodes.firstIndex(of: node)
                 // let _ = print("nodeMapView\(selection.whereAt)")
                 // VStack(spacing: 0) {
                 ZStack {
