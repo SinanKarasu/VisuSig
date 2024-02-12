@@ -32,7 +32,7 @@ class ComponentViewController: AUViewController, Identifiable {
 
     let id = UUID()
 
-    var viewSize = CGSize(width: 800, height: 600)
+    var viewSize = CGSize(width: 1600, height: 1200) //sik this is the size of component
     var subView: NSView?
 
     init(subView: NSView? = nil) {
