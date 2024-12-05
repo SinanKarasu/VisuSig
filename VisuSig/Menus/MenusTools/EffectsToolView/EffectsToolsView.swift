@@ -11,7 +11,7 @@ import SwiftUI
 // sik separate
 private struct SheetView: View {
     @Binding var isVisible: Bool
-    @ObservedObject fileprivate var myLayout: MyLayout
+	@Bindable var myLayout: MyLayout
 
     var body: some View {
         VStack {
@@ -72,12 +72,13 @@ private struct QConstants {
     static let hPaddingMaxToGeometryRatio: CGFloat = 0.3 // 30%
 }
 
-private class MyLayout: ObservableObject {
-    @Published var columns: CGFloat = 4.0
-    @Published var vSpacing: CGFloat = 10.0
-    @Published var hSpacing: CGFloat = 10.0
-    @Published var vPadding: CGFloat = 0.0
-    @Published var hPadding: CGFloat = 10.0
+@Observable
+private class MyLayout {
+    var columns: CGFloat = 4.0
+    var vSpacing: CGFloat = 10.0
+    var hSpacing: CGFloat = 10.0
+    var vPadding: CGFloat = 0.0
+    var hPadding: CGFloat = 10.0
 
     func vSpacingMax(_ geometry: GeometryProxy) -> CGFloat {
         return geometry.size.height * QConstants.vSpacingMaxToGeometryRatio
@@ -101,7 +102,7 @@ struct EffectsToolsView: View {
 
     @State private var sheetIsShowing = false
 
-    @StateObject fileprivate var myLayout = MyLayout()
+    @State fileprivate var myLayout = MyLayout()
 
     var body: some View {
         VStack {

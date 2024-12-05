@@ -11,7 +11,7 @@ struct PortalPositionView: View {
 //    @Binding var portalPosition: CGPoint
 //    @Binding var dragOffset: CGSize
 //    @Binding var zoomScale: CGFloat
-    @ObservedObject var portalState: PortalState
+    var portalState: PortalState
 
     @Binding var whereAt: CGPoint
     @Binding var frame: CGRect
