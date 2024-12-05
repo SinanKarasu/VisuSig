@@ -10,6 +10,7 @@ import SwiftUI
 struct AUComponentView: View {
     @ObservedObject var auManagedUnit: AUManagedUnit
     var audioUnitComponents: AudioUnitComponents
+	@State var result : Result<AUManagedUnit?, any Error>? = nil
     // change this to be the persistent one.
     init(auManagedUnit: AUManagedUnit, audioUnitComponents: AudioUnitComponents ) {
         self.auManagedUnit = auManagedUnit
@@ -30,12 +31,18 @@ struct AUComponentView: View {
 
                 Rectangle().fill(Color.green).opacity(0.2)
                     .overlay(
-                        makeView(size: reader.size)
-                            .onAppear {
-                                audioUnitComponents.connectComponent(auManagedUnit: auManagedUnit) { result in
-                                    print("Got result:\(result)")
-                                }
-                            }
+						VStack {
+							makeView(size: reader.size)
+								.onAppear {
+									audioUnitComponents.connectComponent(auManagedUnit: auManagedUnit) { result in
+										print("Got result:\(result)")
+										self.result = result
+									}
+								}
+							if let result = result {
+								Text("Got result:\(result)")
+							}
+						}
                     )
             }
         }
