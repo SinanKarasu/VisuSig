@@ -45,10 +45,11 @@ struct MasterMenuView: View {
                             Text("Instrument").tag(AudioUnitType.instrument)
                         }
                         .pickerStyle(.segmented)
-                        .onChange(of: audioUnitType) { _ in
-                            //            self.loaded = false
-                            //            self.startRunning()
-                        }
+
+//                        .onChange(of: audioUnitType) { _ in  //sik this is deprecated. Do we even need it with @Observable?
+//                            //            self.loaded = false
+//                            //            self.startRunning()
+//                        }
 
                         switch audioUnitType {
                         case .effect:
