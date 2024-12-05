@@ -1,7 +1,8 @@
 import Foundation
 import CoreGraphics
 
-class Mesh: ObservableObject {
+@Observable
+class Mesh {
     let snapToGrid = false
     static var meshes = [Mesh]()
     static func deleteEdge(edge: EdgeBase) {
@@ -12,8 +13,8 @@ class Mesh: ObservableObject {
     }
     let meshGranularity: CGFloat = 30.0
 
-    @Published var nodes = [NodeBase]()
-    @Published var editingText: String
+    var nodes = [NodeBase]()
+    var editingText: String
 
 
     init() {
@@ -36,12 +37,7 @@ class Mesh: ObservableObject {
     func removeEdge(edge: EdgeBase) {
         edges.removeAll { $0.id == edge.id }
     }
-    var edges = [EdgeBase]() {
-        didSet {
-            // rebuildLinks()
-            objectWillChange.send()
-        }
-    }
+    var edges = [EdgeBase]()
 
 
     func nodeWithID(_ nodeID: UUID) -> NodeBase? {

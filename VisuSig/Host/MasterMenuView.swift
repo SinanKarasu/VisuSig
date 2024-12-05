@@ -19,7 +19,7 @@ struct MasterMenuView: View {
     @State var audioUnitComponents = AudioUnitComponents()
     @State private  var audioUnitType = AudioUnitType.effect
 
-    @StateObject var mesh = Mesh.sampleMesh()
+    @State var mesh = Mesh.sampleMesh()
 
     let mode = 2
 

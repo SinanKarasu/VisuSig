@@ -3,7 +3,7 @@ import SwiftUI
 let meshCoordinateSpace = "meshCoordinateSpace"
 
 struct SurfaceView: View, ContextMenuProtocol {
-    @StateObject var mesh: Mesh
+    var mesh: Mesh
     @StateObject var selection = SelectionHandler()
     @StateObject var portalState = PortalState()
 
