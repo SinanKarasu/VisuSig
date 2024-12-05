@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct NodeView: View {
-    @ObservedObject var node: NodeBase
+	var node: NodeBase
     @ObservedObject var selection: SelectionHandler
     
     var selected: Bool {

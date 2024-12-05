@@ -1,16 +1,13 @@
 import SwiftUI
 import AVFoundation
 
-class NodeBase: Identifiable, ObservableObject {
+@Observable
+class NodeBase: Identifiable {
     let id = UUID()
-    @Published var text: String = "Sick Root"
-    @Published var position: CGPoint = .zero
+    var text: String = "Sick Root"
+    var position: CGPoint = .zero
 
-    @Published var ports = [PortBase]() {
-        willSet {
-            objectWillChange.send()
-        }
-    }
+    var ports = [PortBase]()
 
     var payload: AUManagedUnit?
 

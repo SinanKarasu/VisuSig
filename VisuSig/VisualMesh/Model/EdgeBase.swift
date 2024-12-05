@@ -1,12 +1,13 @@
 import Foundation
 import CoreGraphics
 
-class EdgeBase: Identifiable, ObservableObject {
+@Observable
+class EdgeBase: Identifiable {
     var id = UUID()
-    @Published var startPort: PortBase
-    @Published var endPort: PortBase
+	var startPort: PortBase
+    var endPort: PortBase
 
-    @Published var data: CubicBezierData?
+    var data: CubicBezierData?
 
     init(start: PortBase, end: PortBase, data: CubicBezierData? = nil) {
         self.startPort = start
