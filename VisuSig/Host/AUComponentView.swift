@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct AUComponentView: View {
-    @ObservedObject var auManagedUnit: AUManagedUnit
+    var auManagedUnit: AUManagedUnit
     var audioUnitComponents: AudioUnitComponents
 	@State var result : Result<AUManagedUnit?, any Error>? = nil
     // change this to be the persistent one.

@@ -14,7 +14,8 @@ import AppKit
 
 
 // Manages the interaction with the AudioToolbox and AVFoundation frameworks.
-class AudioUnitManager: ObservableObject {
+@Observable
+class AudioUnitManager {
     // Filter out these AUs. They don't make sense for this demo.
     var filterClosure: (AVAudioUnitComponent) -> Bool = {
         let blacklist = [String]() // ["AUNewPitch", "AURoundTripAAC", "AUNetSend"]
@@ -32,7 +33,7 @@ class AudioUnitManager: ObservableObject {
     var auManagedUnit: AUManagedUnit?
 
     /// The playback engine used to play audio.
-    @Published var playEngine = SimplePlayEngine()
+    var playEngine = SimplePlayEngine()
 
     private var options = AudioComponentInstantiationOptions.loadOutOfProcess
 

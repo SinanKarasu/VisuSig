@@ -13,7 +13,7 @@ import os
 let logger = Logger()
 
 @Observable
-class AudioUnitComponents: ObservableObject {
+class AudioUnitComponents {
     private var options = AudioComponentInstantiationOptions.loadOutOfProcess
 
     var audioUnitComponents = [Component]()

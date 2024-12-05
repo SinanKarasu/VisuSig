@@ -10,7 +10,8 @@ import CoreAudioKit
 import AVFoundation
 import SwiftUI
 
-class AUManagedUnit: ObservableObject, Identifiable, Hashable {
+//@Observable
+class AUManagedUnit: Identifiable, Hashable {
     static func == (lhs: AUManagedUnit, rhs: AUManagedUnit) -> Bool {
         lhs.id == rhs.id
     }

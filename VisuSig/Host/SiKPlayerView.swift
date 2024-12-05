@@ -24,7 +24,7 @@ import SwiftUI
 
 struct SiKPlayerView: View {
     @State var playing = false
-    @ObservedObject var audioUnitManager: AudioUnitManager
+    var audioUnitManager: AudioUnitManager
     var body: some View {
         Button(action: {
             DispatchQueue.main.async {
