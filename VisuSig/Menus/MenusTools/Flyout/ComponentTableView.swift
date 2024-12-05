@@ -60,7 +60,7 @@ struct ComponentTableView: View {
         .init(\.nameAndMFG, order: SortOrder.forward)
     ]
 
-    @ObservedObject var audioUnitComponents: AudioUnitComponents
+    var audioUnitComponents: AudioUnitComponents
     @ObservedObject var selectionHandler: SelectionHandler
 
     var selectedUnit: String {
@@ -94,7 +94,7 @@ struct ComponentTableView: View {
                 }
             }
 
-            Text("Entries:\($audioUnitComponents.audioUnitComponents.count)")
+            Text("Entries:\(audioUnitComponents.audioUnitComponents.count)")
 
             Table(audioUnitComponents.audioUnitComponents, selection: $selection) {
                 TableColumn("Name") { Text($0.name) } // .width(min: 35, ideal: 35, max:   60)
@@ -150,7 +150,7 @@ struct ComponentTableView: View {
 
 // struct ComponentTableView_Previews: PreviewProvider {
 //    @State static var selectedIndex: Int = 1
-//    @StateObject static var audioUnitComponents = AudioUnitComponents()
+//    @State static var audioUnitComponents = AudioUnitComponents()
 //
 //    static var previews: some View {
 //        ComponentTableView(audioUnitComponents: audioUnitComponents, selectionHandler: SelectionHandler())

@@ -12,6 +12,7 @@ import os
 
 let logger = Logger()
 
+@Observable
 class AudioUnitComponents: ObservableObject {
     private var options = AudioComponentInstantiationOptions.loadOutOfProcess
 
@@ -19,8 +20,8 @@ class AudioUnitComponents: ObservableObject {
     var instrumentComponents = [Component]()
 
     var audioUnitManager = AudioUnitManager()
-    @Published var auManagedEffectUnits = [AUManagedUnit?]()
-    @Published var auManagedInstruments = [AUManagedUnit?]()
+    var auManagedEffectUnits = [AUManagedUnit?]()
+    var auManagedInstruments = [AUManagedUnit?]()
 
     var effectsInitialized = false
     var instsInitialized = false

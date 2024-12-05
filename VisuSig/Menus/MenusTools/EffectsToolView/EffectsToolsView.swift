@@ -97,7 +97,7 @@ private class MyLayout: ObservableObject {
 }
 
 struct EffectsToolsView: View {
-    @ObservedObject var audioUnitComponents: AudioUnitComponents
+    var audioUnitComponents: AudioUnitComponents
 
     @State private var sheetIsShowing = false
 

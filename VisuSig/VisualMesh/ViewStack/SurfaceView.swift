@@ -11,7 +11,7 @@ struct SurfaceView: View, ContextMenuProtocol {
 
     @State private var shapeIndex = -1
 
-    @ObservedObject var audioUnitComponents: AudioUnitComponents
+    var audioUnitComponents: AudioUnitComponents
 
     var body: some View {
         return VStack {

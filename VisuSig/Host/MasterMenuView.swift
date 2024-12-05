@@ -16,7 +16,7 @@ struct MyBorder: View {
 }
 
 struct MasterMenuView: View {
-    @StateObject var audioUnitComponents = AudioUnitComponents()
+    @State var audioUnitComponents = AudioUnitComponents()
     @State private  var audioUnitType = AudioUnitType.effect
 
     @StateObject var mesh = Mesh.sampleMesh()

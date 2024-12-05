@@ -9,7 +9,7 @@ import SwiftUI
 
 struct EffectsMenuSplitView: View {
     private  let audioUnitType = AudioUnitType.effect
-    @ObservedObject var audioUnitComponents: AudioUnitComponents
+    var audioUnitComponents: AudioUnitComponents
     @State var columnVisibility: NavigationSplitViewVisibility = .all
     @State private var selectedUnit: Int?
 

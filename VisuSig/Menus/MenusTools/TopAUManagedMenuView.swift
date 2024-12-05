@@ -12,7 +12,7 @@ struct TopAUManagedMenuView: View {
     @State var refresh = false
 
     private  let audioUnitType = AudioUnitType.effect
-    @ObservedObject var audioUnitComponents: AudioUnitComponents
+    var audioUnitComponents: AudioUnitComponents
 
     @State var loaded = false
 

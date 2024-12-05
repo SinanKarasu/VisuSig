@@ -8,7 +8,7 @@ import SwiftUI
 
 struct InstrumentsMenuSplitView: View {
     private  let audioUnitType = AudioUnitType.instrument
-    @ObservedObject var audioUnitComponents: AudioUnitComponents
+	var audioUnitComponents: AudioUnitComponents
     @State var columnVisibility: NavigationSplitViewVisibility = .all
     @State private var selectedIndex: Int?
 
