@@ -6,20 +6,21 @@ struct DragInfo {
     var originalPosition: CGPoint
 }
 
-class SelectionHandler: ObservableObject {
-    @Published var draggingNodes = [DragInfo]()
-    @Published private(set) var selectedNodeIDs = [UUID]()
-    @Published private(set) var selectedPortIDs = [UUID]()
-    @Published var whereAt: CGPoint = .zero
-    @Published var draggingLocation = CGPoint.zero
-    @Published var startLocation = CGPoint.zero
+@Observable
+class SelectionHandler {
+    var draggingNodes = [DragInfo]()
+    private(set) var selectedNodeIDs = [UUID]()
+    private(set) var selectedPortIDs = [UUID]()
+    var whereAt: CGPoint = .zero
+    var draggingLocation = CGPoint.zero
+    var startLocation = CGPoint.zero
     var firstWirePort: PortBase?
     var secondWirePort: PortBase?
-    @Published var editingText: String = ""
+    var editingText: String = ""
 
 
     // Modal Views
-    @Published var showShapes = false
+    var showShapes = false
 
 
     func unSelectNodes() {

@@ -61,7 +61,7 @@ struct ComponentTableView: View {
     ]
 
     var audioUnitComponents: AudioUnitComponents
-    @ObservedObject var selectionHandler: SelectionHandler
+    var selectionHandler: SelectionHandler
 
     var selectedUnit: String {
         guard let selection = selection else {

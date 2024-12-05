@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct NodeMapView: View {
-    @ObservedObject var selection: SelectionHandler
+    var selection: SelectionHandler
     var nodes: [NodeBase]
     
     var body: some View {

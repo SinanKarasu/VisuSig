@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct SelectionHandlerView: View {
-    @ObservedObject var selection: SelectionHandler
+    var selection: SelectionHandler
     var body: some View {
         HStack {
             Text("Selection:")

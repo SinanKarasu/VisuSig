@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct EdgeMapView: View {
-    @ObservedObject var selection: SelectionHandler
+    var selection: SelectionHandler
     var edges: [EdgeBase]
 
     var body: some View {

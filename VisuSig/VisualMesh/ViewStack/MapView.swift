@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct MapView: View {
-    @ObservedObject var selection: SelectionHandler
+    var selection: SelectionHandler
 	var mesh: Mesh
 
     var body: some View {

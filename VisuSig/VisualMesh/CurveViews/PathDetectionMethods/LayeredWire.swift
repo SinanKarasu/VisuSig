@@ -10,7 +10,7 @@ import SwiftUI
 
 struct LayeredWire: View {
     @ObservedObject var cubicBezierData: CubicBezierData
-    @ObservedObject var selection: SelectionHandler
+    var selection: SelectionHandler
     @State private var pt = CGPoint(x: 50, y: 30)
 
     let primaryColor = Color.blue

@@ -2,7 +2,7 @@ import SwiftUI
 
 struct NodePortsView: View {
     var node: NodeBase
-    @ObservedObject var selection: SelectionHandler
+    var selection: SelectionHandler
 
 
     var selected: Bool {

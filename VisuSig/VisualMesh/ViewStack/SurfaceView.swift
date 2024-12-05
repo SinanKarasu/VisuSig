@@ -4,7 +4,7 @@ let meshCoordinateSpace = "meshCoordinateSpace"
 
 struct SurfaceView: View, ContextMenuProtocol {
     var mesh: Mesh
-    @StateObject var selection = SelectionHandler()
+    @State var selection = SelectionHandler()
     @StateObject var portalState = PortalState()
 
     @GestureState private var gestureState: CGPoint = .zero

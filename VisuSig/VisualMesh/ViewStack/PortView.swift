@@ -9,7 +9,7 @@ import SwiftUI
 
 struct PortView: View {
     var port: PortBase
-    @ObservedObject var selection: SelectionHandler
+    var selection: SelectionHandler
 
     @State var overImg = false
     var portInfo: some View {
