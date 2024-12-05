@@ -7,7 +7,8 @@
 
 import SwiftUI
 
-class CubicBezierData: ObservableObject, Hashable {
+@Observable
+class CubicBezierData: Hashable {
     static func == (lhs: CubicBezierData, rhs: CubicBezierData) -> Bool {
         lhs.id == rhs.id
     }
@@ -17,12 +18,12 @@ class CubicBezierData: ObservableObject, Hashable {
     }
 
     let id = UUID()
-    @Published var from: PortBase
-    @Published var to: PortBase
-    @Published var cp1: CGPoint = .zero
-    @Published var cp2: CGPoint = .zero
-    @Published var color = Color.red
-    @Published var edge: EdgeBase
+    var from: PortBase
+    var to: PortBase
+    var cp1: CGPoint = .zero
+    var cp2: CGPoint = .zero
+    var color = Color.red
+    var edge: EdgeBase
 
 
 //    init(from: PortBase, to: PortBase, cp1: CGPoint, cp2: CGPoint) {

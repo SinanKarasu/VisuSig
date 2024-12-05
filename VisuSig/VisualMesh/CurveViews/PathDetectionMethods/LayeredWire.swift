@@ -9,7 +9,7 @@ import SwiftUI
 
 
 struct LayeredWire: View {
-    @ObservedObject var cubicBezierData: CubicBezierData
+    @Bindable var cubicBezierData: CubicBezierData
     var selection: SelectionHandler
     @State private var pt = CGPoint(x: 50, y: 30)
 
