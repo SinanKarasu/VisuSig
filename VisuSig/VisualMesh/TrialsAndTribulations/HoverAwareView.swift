@@ -43,7 +43,7 @@ public struct HoverAwareView: View {
 }
 
 private extension HoverAwareView {
-    final class Representable: NSViewRepresentable {
+    struct Representable: NSViewRepresentable {
         let onHover: (Bool) -> Void
 
         init(onHover: @escaping (Bool) -> Void) {
@@ -81,10 +81,10 @@ private extension HoverAwareView {
             let options: NSTrackingArea.Options = [
                 .mouseEnteredAndExited,
                 .activeInActiveApp,
-                .assumeInside,
+                .assumeInside
             ]
 
-            let trackingArea: NSTrackingArea = NSTrackingArea(rect: bounds, options: options, owner: self, userInfo: nil)
+            let trackingArea = NSTrackingArea(rect: bounds, options: options, owner: self, userInfo: nil)
             addTrackingArea(trackingArea)
         }
 

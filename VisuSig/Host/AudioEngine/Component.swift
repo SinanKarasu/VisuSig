@@ -5,16 +5,13 @@
 //  Created by Sinan Karasu on 4/30/22.
 //
 
+import SwiftUI
 import AVFoundation
 
-// An enum used to prevent exposing the Core Audio component description's componentType to the UI layer.
-enum AudioUnitType: Int, CaseIterable, Identifiable {
-    case effect
-    case instrument
-    var id: Int {self.rawValue}
+extension AudioUnitType: Identifiable {
+    var id: RawValue { rawValue }
 }
 
-// An enum used to prevent exposing the Core Audio AudioComponentInstantiationOptions to the UI layer.
 enum InstantiationType: Int {
     case inProcess
     case outOfProcess
@@ -41,7 +38,6 @@ extension Notification.Name {
     static let userPresetsChanged = Notification.Name("userPresetsChanged")
 }
 
-// A simple wrapper type to prevent exposing the Core Audio AUAudioUnitPreset in the UI layer.
 public struct Preset {
     init(name: String) {
         let preset = AUAudioUnitPreset()
@@ -53,28 +49,81 @@ public struct Preset {
         audioUnitPreset = preset
     }
     let audioUnitPreset: AUAudioUnitPreset
-    public var number: Int { return audioUnitPreset.number }
-    public var name: String { return audioUnitPreset.name }
+    public var number: Int { audioUnitPreset.number }
+    public var name: String { audioUnitPreset.name }
 }
 
-public struct Component {
-    
+public struct Component: Identifiable {
+    public var id = UUID()
+
+    let options = AudioComponentInstantiationOptions.loadOutOfProcess
     let audioUnitType: AudioUnitType
     let avAudioUnitComponent: AVAudioUnitComponent?
-    
+
     init(_ component: AVAudioUnitComponent?, type: AudioUnitType) {
         audioUnitType = type
         avAudioUnitComponent = component
     }
-    
+
     public var name: String {
         guard let component = avAudioUnitComponent else {
             return audioUnitType == .effect ? "(No Effect)" : "(No Instrument)"
         }
-        return "\(component.name) (\(component.manufacturerName))"
+        return component.name
     }
-    
+
+    public var mfg: String {
+        avAudioUnitComponent?.manufacturerName ?? "(No mfg)"
+    }
+
     public var hasCustomView: Bool {
-        return avAudioUnitComponent?.hasCustomView ?? false
+        avAudioUnitComponent?.hasCustomView ?? false
+    }
+}
+
+extension Component {
+    var icon: Image {
+        if let x = avAudioUnitComponent?.icon {
+            return Image(nsImage: x)
+        }
+        return Image(systemName: "waveform.and.mic")
+    }
+
+    var componentIcon: some View {
+        ZStack {
+            Text(nameAndMFG)
+                .foregroundColor(.white)
+                .font(.system(size: 12))
+        }
+    }
+
+    public var nameAndMFG: String { "\(name) (\(mfg))" }
+}
+
+extension Component: Hashable {
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+}
+
+extension Component {
+    func instantiateComponent(completion: @escaping (Result<AUManagedUnit?, Error>) -> Void) {
+        guard let avAudioUnitComponent = avAudioUnitComponent else {
+            completion(.success(nil))
+            return
+        }
+        let description = avAudioUnitComponent.audioComponentDescription
+        AVAudioUnit.instantiate(with: description, options: options) { avAudioUnit, error in
+            guard error == nil else {
+                DispatchQueue.main.async { completion(.failure(error!)) }
+                return
+            }
+            DispatchQueue.main.async {
+                let nsImage = AudioComponentCopyIcon(avAudioUnitComponent.audioComponent)
+                let unit = AUManagedUnit(protoType: self, audioUnit: avAudioUnit,
+                                        audioUnitType: self.audioUnitType, icon: nsImage)
+                completion(.success(unit))
+            }
+        }
     }
 }

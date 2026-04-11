@@ -8,36 +8,8 @@
 import SwiftUI
 
 struct ContentView: View {
-    
-    private struct DummyOutput : KeyboardOutput {
-        func append(_ string: String) {
-            
-        }
-        
-
-        func append(_ character: Character) { }
-        func delete() {
-            print("delete")
-        }
-        func clear() {
-            print("clear")
-        }
-    }
-
     var body: some View {
-        VStack {
-            //TopCompMenuView(audioUnitComponents: audioUnitComponents)
-            //ToolMenu2View()
-            MasterMenuView()
-            PeopleView()
-            //MasterContentView()
-            //KeyboardView(output: DummyOutput())
-        //}
-        
-        //        HStack {
-        //            HoverAwareDemo1View()
-        //            HoverAwareDemo2View()
-        }
+        MasterMenuView()
     }
 }
 

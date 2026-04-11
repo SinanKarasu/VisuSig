@@ -1,17 +1,13 @@
-
-
 import SwiftUI
 
 struct MapView: View {
-
-    @ObservedObject var selection: SelectionHandler
-    @ObservedObject var mesh: Mesh
+    var selection: SelectionHandler
+	var mesh: Mesh
 
     var body: some View {
         ZStack {
-            NodeMapView(selection: selection, nodes: $mesh.nodes)
-            EdgeMapView(selection: selection, edges: $mesh.edges)
+            NodeMapView(selection: selection, nodes: mesh.nodes)
+            EdgeMapView(selection: selection, edges: mesh.edges)
         }
     }
 }
-

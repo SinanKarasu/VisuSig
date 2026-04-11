@@ -16,10 +16,9 @@ extension CGPoint {
 }
 
 extension CGPoint {
-
     func alignCenterInParent(_ parent: CGSize) -> CGPoint {
-        let x = parent.width/2 + self.x
-        let y = parent.height/2 + self.y
+        let x = parent.width / 2 + self.x
+        let y = parent.height / 2 + self.y
         return CGPoint(x: x, y: y)
     }
 
@@ -31,7 +30,7 @@ extension CGPoint {
 
 extension CGSize {
     func scaledDownTo(_ factor: CGFloat) -> CGSize {
-        return CGSize(width: width/factor, height: height/factor)
+        return CGSize(width: width / factor, height: height / factor)
     }
 
     var length: CGFloat {
@@ -41,10 +40,9 @@ extension CGSize {
     var inverted: CGSize {
         return CGSize(width: -width, height: -height)
     }
-
 }
 
-//extension CGPoint {
+// extension CGPoint {
 //
 //    func transformedAndScaledNode( parent: CGSize, portalPosition: CGPoint, zoomScale: CGFloat) -> CGPoint {
 //        self
@@ -61,4 +59,4 @@ extension CGSize {
 //        .translatedBy(x: portalPosition.x, y: portalPosition.y)
 //    }
 
-//}
+// }

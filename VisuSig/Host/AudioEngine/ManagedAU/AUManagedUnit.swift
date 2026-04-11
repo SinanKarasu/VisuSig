@@ -6,178 +6,137 @@
 //
 
 import CoreAudioKit
-
 import AVFoundation
+import SwiftUI
 
+class AUManagedUnit: Identifiable, Hashable {
 
-class AUManagedUnit: ObservableObject, Identifiable, Hashable {
-    static func == (lhs: AUManagedUnit, rhs: AUManagedUnit) -> Bool {
-        lhs.id == rhs.id
-    }
-    
-    
+    static func == (lhs: AUManagedUnit, rhs: AUManagedUnit) -> Bool { lhs.id == rhs.id }
+    func hash(into hasher: inout Hasher) { hasher.combine(id) }
+
     let id = UUID()
+    var protoType: Component?
     var observer: NSKeyValueObservation?
-    //let name = "Sinan"
     var userPresetChangeType: UserPresetsChangeType = .undefined
-    
+
     private var currentViewConfigurationIndex = 1
-    
+
     let componentViewController = ComponentViewController()
-    var icon: NSImage? = nil
-    
-    var nsViewController: NSViewController? = nil
-    let audiioUnitType: AudioUnitType
+    var iconOld: NSImage?
+    var nsViewController: NSViewController?
+
+    let audioUnitType: AudioUnitType
+
+    // MARK: - Identity
+
+    public var name: String {
+        guard let component = protoType else {
+            return audioUnitType == .effect ? "(No Effect)" : "(No Instrument)"
+        }
+        return "\(component.name) (\(component.avAudioUnitComponent?.manufacturerName ?? "Unknown"))"
+    }
+
+    public var hasCustomView: Bool {
+        protoType?.hasCustomView ?? false
+    }
+
+    // MARK: - Init
+
+    init(protoType: Component?, audioUnit: AVAudioUnit?, audioUnitType: AudioUnitType, icon: NSImage?) {
+        self.protoType = protoType
+        self.avAudioUnit = audioUnit
+        self.audioUnitType = audioUnitType
+        self.iconOld = icon
+    }
+
+    // MARK: - AU View Controller
+
+    func loadAudioUnitViewController(completion: @escaping (NSViewController?) -> Void) {
+        guard let audioUnit = audioUnit else { completion(nil); return }
+        audioUnit.requestViewController { viewController in
+            DispatchQueue.main.async { completion(viewController) }
+        }
+    }
+
     func setController(controller: NSViewController?) {
         if nsViewController == nil {
             nsViewController = controller
         }
-        // OK, it seems presentUserInterface actually means presentUserInterface
         componentViewController.presentUserInterface(nsViewController?.view)
-
-    }
-    
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(id)
     }
 
-//    var audioUnit: AUAudioUnit? {
-//        didSet {
-//            // A new audio unit was selected. Reset our internal state.
-//            observer = nil
-//            userPresetChangeType = .undefined
-//
-//            // If the selected audio unit doesn't support user presets, return.
-//            guard audioUnit?.supportsUserPresets ?? false else { return }
-//
-//            // Start observing the selected audio unit's "userPresets" property.
-//            observer = audioUnit?.observe(\.userPresets) { _, _ in
-//                DispatchQueue.main.async {
-//                    var changeType = self.userPresetChangeType
-//                    // If the change wasn't triggered by a user save or delete, it changed
-//                    // due to an external add or remove from the presets folder.
-//                    if ![.save, .delete].contains(changeType) {
-//                        changeType = .external
-//                    }
-//
-//                    // Post a notification to any registered listeners.
-//                    let change = UserPresetsChange(type: changeType, userPresets: self.userPresets)
-//                    NotificationCenter.default.post(name: .userPresetsChanged, object: change)
-//
-//                    // Reset property to its default value
-//                    self.userPresetChangeType = .undefined
-//                }
-//            }
-//        }
-//    }
-    
-    var audioUnit: AUAudioUnit? {
-        get {
-            avAudioUnit?.auAudioUnit
-        }
-    }
-    
+    // MARK: - Audio Unit
+
+    var audioUnit: AUAudioUnit? { avAudioUnit?.auAudioUnit }
+
     var avAudioUnit: AVAudioUnit? {
         didSet {
-            // A new audio unit was selected. Reset our internal state.
             observer = nil
             userPresetChangeType = .undefined
-            
-            // If the selected audio unit doesn't support user presets, return.
+
             guard audioUnit?.supportsUserPresets ?? false else { return }
-            
-            // Start observing the selected audio unit's "userPresets" property.
+
             observer = audioUnit?.observe(\.userPresets) { _, _ in
                 DispatchQueue.main.async {
                     var changeType = self.userPresetChangeType
-                    // If the change wasn't triggered by a user save or delete, it changed
-                    // due to an external add or remove from the presets folder.
                     if ![.save, .delete].contains(changeType) {
                         changeType = .external
                     }
-                    
-                    // Post a notification to any registered listeners.
                     let change = UserPresetsChange(type: changeType, userPresets: self.userPresets)
                     NotificationCenter.default.post(name: .userPresetsChanged, object: change)
-                    
-                    // Reset property to its default value
                     self.userPresetChangeType = .undefined
                 }
             }
         }
     }
-    
-    init(audioUnit: AVAudioUnit?, audioUnitType: AudioUnitType, icon: NSImage?) {
-        self.avAudioUnit = audioUnit
-        self.audiioUnitType = audioUnitType
-        self.icon = icon
-    }
-    /// Determines if the selected AU provides more than one user interface.
+
+    // MARK: - View configuration
+
     var providesAlterativeViews: Bool {
-        guard let audioUnit = audioUnit else { return false }
-        let supportedConfigurations = audioUnit.supportedViewConfigurations(viewConfigurations)
-        return supportedConfigurations.count > 1
+        guard let audioUnit else { return false }
+        return audioUnit.supportedViewConfigurations(viewConfigurations).count > 1
     }
-    
-    /// Determines if the selected AU provides provides user interface.
+
     var providesUserInterface: Bool {
-        return audioUnit?.providesUserInterface ?? false
+        audioUnit?.providesUserInterface ?? false
     }
-    
-    /// Toggles the current view mode (compact or expanded)
+
     func toggleViewMode() {
-        guard let audioUnit = audioUnit else { return }
+        guard let audioUnit else { return }
         currentViewConfigurationIndex = currentViewConfigurationIndex == 0 ? 1 : 0
         audioUnit.select(viewConfigurations[currentViewConfigurationIndex])
     }
-    
+
+    private var viewConfigurations: [AUAudioUnitViewConfiguration] = {
+        let compact  = AUAudioUnitViewConfiguration(width: 400, height: 100, hostHasController: false)
+        let expanded = AUAudioUnitViewConfiguration(width: 800, height: 500, hostHasController: false)
+        return [compact, expanded]
+    }()
+
+    // MARK: - Presets
+
     public var factoryPresets: [Preset] {
-        guard let presets = audioUnit?.factoryPresets else { return [] }
-        return presets.map { Preset(preset: $0) }
+        (audioUnit?.factoryPresets ?? []).map { Preset(preset: $0) }
     }
-    
-    /// Get or set the audio unit's current preset.
-    public var currentPreset: Preset? {
-        get {
-            guard let preset = audioUnit?.currentPreset else { return nil }
-            return Preset(preset: preset)
-        }
-        set {
-            audioUnit?.currentPreset = newValue?.audioUnitPreset
-        }
-    }
-    
-    // MARK: Preset Management
-    /// Gets the audio unit's factory presets.
-    
-    // MARK: User Presets
-    
-    /// Gets the audio unit's user presets.
+
     public var userPresets: [Preset] {
-        guard let presets = audioUnit?.userPresets else { return [] }
-        return presets.map { Preset(preset: $0) }.reversed()
+        (audioUnit?.userPresets ?? []).map { Preset(preset: $0) }.reversed()
     }
-    
+
+    public var currentPreset: Preset? {
+        get { audioUnit?.currentPreset.map { Preset(preset: $0) } }
+        set { audioUnit?.currentPreset = newValue?.audioUnitPreset }
+    }
+
+    var supportsUserPresets: Bool { audioUnit?.supportsUserPresets ?? false }
+
     public func savePreset(_ preset: Preset) throws {
         userPresetChangeType = .save
         try audioUnit?.saveUserPreset(preset.audioUnitPreset)
     }
-    
+
     public func deletePreset(_ preset: Preset) throws {
         userPresetChangeType = .delete
         try audioUnit?.deleteUserPreset(preset.audioUnitPreset)
     }
-    
-    var supportsUserPresets: Bool {
-        return audioUnit?.supportsUserPresets ?? false
-    }
-    
-    
-    /// View configurations supported by the host app
-    private var viewConfigurations: [AUAudioUnitViewConfiguration] = {
-        let compact = AUAudioUnitViewConfiguration(width: 400, height: 100, hostHasController: false)
-        let expanded = AUAudioUnitViewConfiguration(width: 800, height: 500, hostHasController: false)
-        return [compact, expanded]
-    }()
-    
 }

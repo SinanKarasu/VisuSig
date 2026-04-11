@@ -7,38 +7,38 @@
 
 import SwiftUI
 
-struct MasterMenuView: View {
-    
-    @StateObject var audioUnitComponents = AudioUnitComponents()
-    @State private  var audioUnitType = AudioUnitType.effect
-    @State var loaded: Bool = false
-    
-    
-    
+struct MyBorder: View {
+    let color: Color
     var body: some View {
-        VStack {
-            SiKPlayerView(audioUnitManager: audioUnitComponents.audioUnitManager)
-            Picker("Module Type:", selection: $audioUnitType) {
-                Text("Effect").tag(AudioUnitType.effect)
-                Text("Instrument").tag(AudioUnitType.instrument)
-            }
-            
-            .pickerStyle(.segmented)
-            .onChange(of: audioUnitType) { tag in
-                //            self.loaded = false
-                //            self.startRunning()
-            }
-            //HStack {
-            TopCompMenuView(audioUnitComponents: audioUnitComponents)
+        Rectangle()
+            .stroke(color, lineWidth: 5)
+    }
+}
 
-            switch audioUnitType {
-            case .effect:
-                EffectsMenuView(audioUnitComponents: audioUnitComponents)
-            case .instrument:
-                InstrumentsMenuView(audioUnitComponents: audioUnitComponents)
+struct MasterMenuView: View {
+    @State var audioUnitComponents = AudioUnitComponents()
+
+    /// The visual mesh IS the AudioGraph — one object drives both the node canvas and the audio engine.
+    @State var audioGraph: AudioGraph = Mesh.sampleMesh() as! AudioGraph
+
+    var body: some View {
+        GeometryReader { _ in
+            VStack(spacing: 0) {
+
+                // ── Transport bar ──────────────────────────────────────
+                SiKPlayerView(audioGraph: audioGraph)
+                    .frame(height: 60)
+                    .background(Color.black.opacity(0.85))
+
+                // ── Node graph canvas ──────────────────────────────────
+                SurfaceView(mesh: audioGraph, audioUnitComponents: audioUnitComponents)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+
+                // ── AU preview panel (for auditioning individual effects) ──
+                Divider()
+                EffectsMenuSplitView(audioUnitComponents: audioUnitComponents)
+                    .frame(height: 280)
             }
-            //}
-            //Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
         }
     }
 }

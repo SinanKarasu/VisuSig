@@ -8,13 +8,12 @@
 import Foundation
 import SwiftUI
 
-final class MouseLocationView: NSViewRepresentable {
+struct MouseLocationView: NSViewRepresentable {
     let onMove: (NSPoint, CGRect) -> Void
     init(onMove: @escaping (NSPoint, CGRect) -> Void) {
         self.onMove = onMove
     }
     final class MouseLocationNSView: NSView {
-
         var oldMousePosition: NSPoint = .zero
         var oldFrameOrigin: NSPoint = .zero
         let onMove: (NSPoint, CGRect) -> Void
@@ -57,24 +56,20 @@ final class MouseLocationView: NSViewRepresentable {
         override func mouseMoved(with event: NSEvent) {
             self.oldMousePosition = self.convert(event.locationInWindow, from: nil)
             onMove(oldMousePosition, self.bounds)
-
-
         }
 
-        var trackingArea : NSTrackingArea?
+        var trackingArea: NSTrackingArea?
 
         override func updateTrackingAreas() {
             if trackingArea != nil {
                 self.removeTrackingArea(trackingArea!)
             }
-            let options : NSTrackingArea.Options =
+            let options: NSTrackingArea.Options =
             [.mouseEnteredAndExited, .mouseMoved, .activeInKeyWindow]
             trackingArea = NSTrackingArea(rect: self.bounds, options: options,
                                           owner: self, userInfo: nil)
             self.addTrackingArea(trackingArea!)
         }
-
-
     }
 
     func makeNSView(context: NSViewRepresentableContext<MouseLocationView>) -> MouseLocationNSView {

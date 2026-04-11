@@ -7,7 +7,8 @@
 
 import SwiftUI
 
-class CubicBezierData: ObservableObject, Hashable {
+@Observable
+class CubicBezierData: Hashable {
     static func == (lhs: CubicBezierData, rhs: CubicBezierData) -> Bool {
         lhs.id == rhs.id
     }
@@ -15,51 +16,43 @@ class CubicBezierData: ObservableObject, Hashable {
     func hash(into hasher: inout Hasher) {
         hasher.combine(id)
     }
-    
+
     let id = UUID()
-    @Published var from: PortBase
-    @Published var to: PortBase
-    @Published var cp1: CGPoint = .zero
-    @Published var cp2: CGPoint = .zero
-    @Published var color = Color.red
-    @Published var edge: EdgeBase
+    var from: PortBase
+    var to: PortBase
+    var color = Color.cyan
+    var edge: EdgeBase
 
+    // MARK: - Dynamic control points
 
+    /// Control points are computed on-the-fly from the current port positions,
+    /// so wires update correctly when nodes are dragged.
+    var cp1: CGPoint {
+        let p1 = from.position
+        let p2 = to.position
+        let dy = abs(p2.y - p1.y)
+        let bend = max(dy * 0.55, 60.0)
+        // Exit downward from the output port, enter upward at the input port
+        return CGPoint(x: p1.x, y: p1.y + bend)
+    }
 
-//    init(from: PortBase, to: PortBase, cp1: CGPoint, cp2: CGPoint) {
-//        self.from = from
-//        self.to = to
-//        self.cp1 = cp1
-//        self.cp2 = cp2
-//    }
+    var cp2: CGPoint {
+        let p1 = from.position
+        let p2 = to.position
+        let dy = abs(p2.y - p1.y)
+        let bend = max(dy * 0.55, 60.0)
+        return CGPoint(x: p2.x, y: p2.y - bend)
+    }
 
-//    convenience init(from: PortBase, to: PortBase) {
-//        let bias = 4.0
-//        let cp1 = CGPoint(x: (to.position.x-from.x)/bias+from.position.x, y: to.position.y)
-//        let cp2 = CGPoint(x: to.position.x , y: (to.position.y-from.position.y)/bias+from.position.y)
-//
-//        self.init(from: from, to: to, cp1: cp1, cp2: cp2)
-//
-//    }
+    // MARK: - Init
 
     init(edge: EdgeBase) {
         self.edge = edge
         self.from = edge.startPort
         self.to = edge.endPort
-        reCalc()
-       // self.init(from: from, to: to, cp1: cp1, cp2: cp2)
-    }
-    
-    func reCalc() {
-        let bias = 4.0
-        self.cp1 = CGPoint(x: (self.to.x-self.from.x)/bias+self.from.x, y: to.y)
-        self.cp2 = CGPoint(x: self.to.x , y: (to.y-self.from.y)/bias+self.from.y)
     }
 
     convenience init(edgeProxy: EdgeProxy) {
-
         self.init(edge: edgeProxy.edge)
-
     }
-
 }

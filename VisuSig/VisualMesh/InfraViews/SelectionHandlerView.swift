@@ -8,12 +8,12 @@
 import SwiftUI
 
 struct SelectionHandlerView: View {
-    @ObservedObject var selection: SelectionHandler
+    var selection: SelectionHandler
     var body: some View {
         HStack {
             Text("Selection:")
-            Text(String(format:"dragging start, end = s:%04.0f,%04.0f\te:%04.0f, %04.0f",
-                        arguments:[selection.startLocation.x, selection.startLocation.y, selection.draggingLocation.x, selection.draggingLocation.y])
+            Text(String(format: "dragging start, end = s:%04.0f,%04.0f\te:%04.0f, %04.0f",
+                        arguments: [selection.startLocation.x, selection.startLocation.y, selection.draggingLocation.x, selection.draggingLocation.y])
             )
             .font(Font.system(.body, design: .monospaced))
             .foregroundColor(.orange)

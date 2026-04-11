@@ -1,26 +1,22 @@
-
-
 import SwiftUI
 
 struct EdgeMapView: View {
-
-    @ObservedObject var selection: SelectionHandler
-    @Binding var edges: [EdgeBase]
+    var selection: SelectionHandler
+    var edges: [EdgeBase]
 
     var body: some View {
         GeometryReader { proxy in
             ZStack {
-                ForEach(self.edges) { edge in
+                ForEach(self.edges, id: \.self) { edge in
                     WireEditView(edgeProxy: EdgeProxy(edge: edge), selection: selection, showPoints: true)
-                        .offset(proxy.size/2.0)
-                 }
+                        .offset(proxy.size / 2.0)
+                }
             }
         }
     }
-
 }
 
-//struct EdgeMapView_Previews: PreviewProvider {
+// struct EdgeMapView_Previews: PreviewProvider {
 //
 //    static let proxy1 = EdgeProxy(id: UUID(),
 //                                  start: .zero,
@@ -34,4 +30,4 @@ struct EdgeMapView: View {
 //    static var previews: some View {
 //        EdgeMapView(selection: SelectionHandler(), edges: $edges)
 //    }
-//}
+// }

@@ -16,16 +16,16 @@ struct VisuSigApp: App {
         .commands {
             // Add customize toolbar menu items
             ToolbarCommands()
-            
+
             // Add text editing menu items
             TextEditingCommands()
 
             // Addition to the built-in help menu
             MyHelpCommands()
-        
+
             // A custom Find menu
             MyFindCommands()
-            
+
             // A custom Build menu
             MyBuildCommands()
         }
