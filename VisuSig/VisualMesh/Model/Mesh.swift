@@ -103,33 +103,6 @@ extension Mesh {
         }
     }
 
-    func roundToTens(x: Double) -> Int {
-        10 * Int(round(x / 10.0))
-    }
-}
-
-extension Mesh {
-    @discardableResult
-    func addDemoChild(_ parent: NodeBase, at point: CGPoint? = nil) -> NodeBase {
-        let target = point ?? parent.position
-        let child = NodeBase(text: "child", position: target, payload: nil)
-        addNode(child)
-        if let parentPort = parent.ports.first, let childPort = child.ports.first {
-            connect(parentPort, to: childPort)
-        }
-        return child
-    }
-}
-
-extension Mesh {
-    func locateParent(_ node: NodeBase) -> PortBase? {
-        let parentEdges = edges.filter { $0.endPort.node.id == node.id }
-        if let edge = parentEdges.first,
-           let parentPort = portWithID(edge.startPort.node.id) {
-            return parentPort
-        }
-        return nil
-    }
 }
 
 extension Mesh {
