@@ -9,78 +9,216 @@ import Foundation
 import AVFoundation
 import AudioToolbox
 
-
+/// AudioGraph extends Mesh so the visual node graph IS the audio routing graph.
+/// When the user connects ports visually, AVAudioEngine connections are rebuilt automatically.
+@Observable
 class AudioGraph: Mesh {
+
+    // MARK: - Audio engine
+
     let engine = AVAudioEngine()
-    private var _playerLoopBuffer: AVAudioPCMBuffer!
+    let player = AVAudioPlayerNode()
 
-    func makeEngineConnections(edges: [EdgeBase]) {
-        /*  The engine will construct a singleton main mixer and connect it to the outputNode on demand,
-         when this property is first accessed. You can then connect additional nodes to the mixer.
-         
-         By default, the mixer's output format (sample rate and channel count) will track the format
-         of the output node. You may however make the connection explicitly with a different format. */
+    private(set) var audioFile: AVAudioFile?
+    private(set) var audioFileName: String = "Synth.aif"
+    private(set) var isPlaying = false
 
-        // get the engine's optional singleton main mixer node
-        let mainMixer = engine.mainMixerNode
+    private let stateQueue = DispatchQueue(label: "com.visusig.audioGraphState")
 
-        /*  Nodes have input and output buses (AVAudioNodeBus). Use connect:to:fromBus:toBus:format: to
-         establish connections betweeen nodes. Connections are always one-to-one, never one-to-many or
-         many-to-one.
-         
-         Note that any pre-existing connection(s) involving the source's output bus or the
-         destination's input bus will be broken.
-         
-         @method connect:to:fromBus:toBus:format:
-         @param node1 the source node
-         @param node2 the destination node
-         @param bus1 the output bus on the source node
-         @param bus2 the input bus on the destination node
-         @param format if non-null, the format of the source node's output bus is set to this
-         format. In all cases, the format of the destination node's input bus is set to
-         match that of the source node's output bus. */
+    // MARK: - Init
 
-        let stereoFormat = AVAudioFormat(standardFormatWithSampleRate: 44100, channels: 2)
-        let playerFormat = _playerLoopBuffer.format
-
-
-        // establish a connection between nodes
-        for edge in edges {
-//            // connect the player to the reverb
-//            // use the buffer format for the connection format as they must match
-            engine.connect(edge.startPort.avAudioUnit!, to: edge.endPort.avAudioUnit!, format: playerFormat)
-//
-//            // connect the reverb effect to mixer input bus 0
-//            // use the buffer format for the connection format as they must match
-//            engine.connect(_reverb, to: mainMixer, fromBus: 0, toBus: 0, format: playerFormat)
-//
-//            // connect the distortion effect to mixer input bus 2
-//            engine.connect(_distortion, to: mainMixer, fromBus: 0, toBus: 2, format: stereoFormat)
-        }
-//        // fan out the sampler to mixer input 1 and distortion effect
-//        let destinationNodes = [
-//            AVAudioConnectionPoint(node: engine.mainMixerNode, bus: 1),
-//            AVAudioConnectionPoint(node: distortion, bus: 0)
-//        ]
-//        _engine.connect(_sampler, to: destinationNodes, fromBus: 0, format: stereoFormat)
+    override init() {
+        super.init()
+        engine.attach(player)
+        loadBundleFile()
     }
 
-//    func myBuffer() {
-//
-//        // make a silent stereo buffer
-//        var chLayout: AVAudioChannelLayout? = AVAudioChannelLayout(layoutTag:kAudioChannelLayoutTag_Stereo)
-//        var chFormat: AVAudioFormat! = AVAudioFormat(
-//            commonFormat: AVAudioCommonFormat.pcmFormatFloat32,
-//            sampleRate:44100.0,
-//            channels: AVAudioChannelCount(2),
-//            interleaved: false
-//        )
-//        var avAudioPCMBuffer: AVAudioPCMBuffer! = AVAudioPCMBuffer(pcmFormat: chFormat, frameCapacity: 1024)
-//
-//        avAudioPCMBuffer.frameLength = avAudioPCMBuffer.frameCapacity;
-//        for ch in 0..<chFormat.channelCount {
-//
-//        }
-//    }
+    // MARK: - File loading
 
+    /// Load the default bundled audio file.
+    func loadBundleFile() {
+        if let url = Bundle.main.url(forResource: "Synth", withExtension: "aif") {
+            loadAudioFile(url: url)
+            audioFileName = "Synth.aif"
+        }
+    }
+
+    /// Load a user-chosen audio file.
+    func loadAudioFile(url: URL) {
+        let wasPlaying = isPlaying
+        if wasPlaying { stopPlayingInternal() }
+        do {
+            audioFile = try AVAudioFile(forReading: url)
+            audioFileName = url.lastPathComponent
+            rebuildConnections()
+            if wasPlaying { startPlayingInternal() }
+        } catch {
+            print("AudioGraph: failed to load \(url.lastPathComponent): \(error)")
+        }
+    }
+
+    // MARK: - Mesh overrides (trigger audio rebuild on graph changes)
+
+    override func connect(_ parent: PortBase, to child: PortBase) {
+        super.connect(parent, to: child)
+        rebuildConnections()
+    }
+
+    override func removeEdge(edge: EdgeBase) {
+        super.removeEdge(edge: edge)
+        rebuildConnections()
+    }
+
+    override func deleteNodes(_ nodesToDelete: [NodeBase]) {
+        // Detach AV units before removing their nodes
+        for node in nodesToDelete {
+            if let avUnit = node.payload?.avAudioUnit, avUnit.engine != nil {
+                engine.detach(avUnit)
+            }
+        }
+        super.deleteNodes(nodesToDelete)
+        rebuildConnections()
+    }
+
+    // MARK: - Playback
+
+    func togglePlay() -> Bool {
+        if isPlaying { stopPlayingInternal() } else { startPlayingInternal() }
+        return isPlaying
+    }
+
+    func startPlayingInternal() {
+        guard !isPlaying else { return }
+
+        // Connect mainMixer → hardware output
+        let hwFormat = engine.outputNode.outputFormat(forBus: 0)
+        engine.connect(engine.mainMixerNode, to: engine.outputNode, format: hwFormat)
+
+        engine.prepare()
+        do {
+            try engine.start()
+            scheduleFileLoop()
+            player.play()
+            isPlaying = true
+        } catch {
+            print("AudioGraph: engine start failed: \(error)")
+        }
+    }
+
+    func stopPlayingInternal() {
+        guard isPlaying else { return }
+        player.stop()
+        engine.stop()
+        isPlaying = false
+    }
+
+    // MARK: - File loop scheduling
+
+    private func scheduleFileLoop() {
+        guard let file = audioFile else { return }
+        player.scheduleFile(file, at: nil) { [weak self] in
+            guard let self, self.isPlaying else { return }
+            self.scheduleFileLoop()
+        }
+    }
+
+    // MARK: - Connection rebuilding
+
+    /// Tears down all AU connections and rebuilds them from the visual edge graph.
+    func rebuildConnections() {
+        let wasPlaying = isPlaying
+        if wasPlaying { stopPlayingInternal() }
+
+        // Step 1: Disconnect the player's output so we can re-route it.
+        engine.disconnectNodeOutput(player)
+
+        // Step 2: Detach all currently-attached effect units.
+        for node in nodes {
+            if let avUnit = node.payload?.avAudioUnit, avUnit.engine != nil {
+                engine.detach(avUnit)   // also severs that node's connections
+            }
+        }
+
+        // Step 3: Re-attach every effect node that is in the current mesh.
+        for node in nodes where node.nodeRole == .effect {
+            if let avUnit = node.payload?.avAudioUnit {
+                engine.attach(avUnit)
+            }
+        }
+
+        // Step 4: Determine audio format from the loaded file (or use a safe default).
+        let format: AVAudioFormat
+        if let file = audioFile {
+            format = file.processingFormat
+        } else {
+            format = AVAudioFormat(standardFormatWithSampleRate: 44100, channels: 2)!
+        }
+
+        // Step 5: Walk the visual graph and build AVAudioEngine connections.
+        let chain = buildAudioChain()
+        let hasValidChain = chain.count >= 2
+        if hasValidChain {
+            for i in 0 ..< chain.count - 1 {
+                guard let fromAV = avAudioNodeFor(chain[i]),
+                      let toAV   = avAudioNodeFor(chain[i + 1]) else { continue }
+                engine.connect(fromAV, to: toAV, format: format)
+            }
+        }
+        // If no complete source→output chain exists, leave the player disconnected.
+        // This means audio stops (correctly) when a wire is removed.
+
+        // Step 6: Always connect mainMixer → hardware output.
+        let hwFormat = engine.outputNode.outputFormat(forBus: 0)
+        engine.connect(engine.mainMixerNode, to: engine.outputNode, format: hwFormat)
+
+        engine.prepare()
+        // Only restart playback if a complete chain was established.
+        if wasPlaying && hasValidChain { startPlayingInternal() }
+    }
+
+    // MARK: - Chain building
+
+    /// Walks the visual edges starting from the source node to build an ordered list:
+    ///   [sourceNode, effect1, effect2, ..., outputNode]
+    private func buildAudioChain() -> [NodeBase] {
+        guard let sourceNode = nodes.first(where: { $0.nodeRole == .source }) else { return [] }
+
+        var chain: [NodeBase] = [sourceNode]
+        var current = sourceNode
+        var visited = Set<UUID>()
+        visited.insert(current.id)
+
+        while true {
+            // Find an edge leaving an output port of the current node
+            guard let edge = edges.first(where: {
+                $0.startPort.node.id == current.id && $0.startPort.portType == .output
+            }) else { break }
+
+            let next = edge.endPort.node
+            guard !visited.contains(next.id) else { break }
+
+            visited.insert(next.id)
+            chain.append(next)
+            if next.nodeRole == .output { break }
+            current = next
+        }
+
+        // Valid only if it starts at source AND ends at output
+        guard chain.first?.nodeRole == .source,
+              chain.last?.nodeRole == .output,
+              chain.count >= 2 else { return [] }
+
+        return chain
+    }
+
+    // MARK: - Node → AVAudioNode mapping
+
+    private func avAudioNodeFor(_ node: NodeBase) -> AVAudioNode? {
+        switch node.nodeRole {
+        case .source:  return player
+        case .output:  return engine.mainMixerNode
+        case .effect:  return node.payload?.avAudioUnit
+        case .generic: return nil
+        }
+    }
 }

@@ -2,23 +2,23 @@ import Foundation
 import CoreGraphics
 
 extension Mesh {
+    /// Creates the initial AudioGraph with a Source node and an Output node
+    /// arranged vertically so the user can immediately wire them up or
+    /// drop effects in between.
     static func sampleMesh() -> Mesh {
-        let mesh = AudioGraph()
-        let kök = NodeBase(text: "kök", payload: nil)
-        mesh.addNode(kök)
-        mesh.updateNodeText(kök, string: "Root AVAudioNode")
-        [
-//            (0, 200,  "shelter"),
-            (240, 400,   "food")
-//            (240,200,  "education")
-        ].forEach({ angle, radius, name in
-            let center: CGPoint = .zero
-            let point = CGPoint(x: center.x + CGFloat(radius) * cos(angle.radians),
-                                y: center.y + CGFloat(radius) * sin(angle.radians))
-            let node = mesh.addDemoChild(kök, at: point)
-            mesh.updateNodeText(node, string: name)
-        })
-        return mesh
+        let graph = AudioGraph()
+
+        // --- Source node (audio file player) ---
+        let source = NodeBase(text: "Audio Source", position: CGPoint(x: 0, y: -220), payload: nil, role: .source)
+        source.addPort(port: PortBase(node: source, name: "Out", portType: .output))
+        graph.nodes.append(source)   // bypass addNode to avoid auto-port addition
+
+        // --- Output node (hardware output) ---
+        let output = NodeBase(text: "Output", position: CGPoint(x: 0, y: 220), payload: nil, role: .output)
+        output.addPort(port: PortBase(node: output, name: "In", portType: .input))
+        graph.nodes.append(output)
+
+        return graph
     }
 }
 

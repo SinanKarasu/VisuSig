@@ -111,8 +111,18 @@ struct SurfaceView: View, ContextMenuProtocol {
 
     func addNewNode(mesh: Mesh, whereAt: CGPoint, containerSize: CGSize, portalPosition: CGPoint, zoomScale: CGFloat, payload: AUManagedUnit?) {
         let p = mesh.meshCoordinates(whereAt: whereAt, containerSize: containerSize, portalPosition: portalPosition, zoomScale: zoomScale)
-        let node = NodeBase(text: "child x:\(p.x) y:\(p.y)", position: p, payload: payload)
-        mesh.addNode(node)
+
+        if let payload = payload {
+            // Create a proper effect node with typed input/output ports
+            let node = NodeBase(text: payload.name, position: p, payload: payload, role: .effect)
+            node.addPort(port: PortBase(node: node, name: "In",  portType: .input))
+            node.addPort(port: PortBase(node: node, name: "Out", portType: .output))
+            mesh.addNode(node)   // won't add a default port since ports already exist
+        } else {
+            // Generic placeholder node
+            let node = NodeBase(text: "Node", position: p, payload: nil, role: .generic)
+            mesh.addNode(node)
+        }
     }
 
     func pointerCallback(_ point: NSPoint, bounds: CGRect) {

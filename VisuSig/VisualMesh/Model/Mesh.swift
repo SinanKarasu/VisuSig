@@ -15,53 +15,71 @@ class Mesh {
 
     var nodes = [NodeBase]()
     var editingText: String
-
+    var edges = [EdgeBase]()
 
     init() {
         editingText = ""
         Mesh.meshes.append(self)
     }
 
-//    deinit() {
-//        Mesh.meshes.remove(self)
-//    }
-
     init(storage: MeshStorageProxy) {
         editingText = ""
         nodes = storage.nodes
         edges = storage.edges
         Mesh.meshes.append(self)
-        // rebuildLinks()
     }
+
+    // MARK: - Overrideable graph-mutation methods
+    // These must be in the class body (not extensions) so subclasses can override them.
 
     func removeEdge(edge: EdgeBase) {
         edges.removeAll { $0.id == edge.id }
     }
-    var edges = [EdgeBase]()
 
+    func addNode(_ node: NodeBase) {
+        nodes.append(node)
+        // Only add a generic port when the node has no ports pre-configured.
+        // Typed nodes (source, effect, output) set their ports before calling addNode.
+        if node.ports.isEmpty {
+            node.addPort(port: PortBase(node: node, name: "Port", portType: .output))
+        }
+    }
+
+    func connect(_ parent: PortBase, to child: PortBase) {
+        let newedge = EdgeBase(start: parent, end: child)
+        let exists = edges.contains(where: { newedge == $0 })
+        guard !exists else { return }
+        edges.append(newedge)
+    }
+
+    func deleteNodes(_ nodesToDelete: [NodeBase]) {
+        for node in nodesToDelete {
+            if let idx = nodes.firstIndex(where: { $0 == node }) {
+                nodes.remove(at: idx)
+                edges = edges.filter { $0.endPort.node != node && $0.startPort.node != node }
+            }
+        }
+    }
+
+    // MARK: - Lookups
 
     func nodeWithID(_ nodeID: UUID) -> NodeBase? {
-        return nodes.filter({ $0.id == nodeID }).first
+        nodes.first { $0.id == nodeID }
     }
 
     func edgeWithID(_ edgeID: UUID) -> EdgeBase? {
-        return edges.filter({ $0.id == edgeID }).first
+        edges.first { $0.id == edgeID }
     }
 
-
     func portWithID(_ portID: UUID) -> PortBase? {
-        var retVal: PortBase?
-        nodes.forEach { node in
-            let aPort = node.ports.filter({ $0.id == portID }).first
-            if  aPort != nil {
-                retVal = aPort
-                return
-            }
+        for node in nodes {
+            if let port = node.ports.first(where: { $0.id == portID }) { return port }
         }
-        return retVal
+        return nil
     }
 }
 
+// MARK: - Non-overrideable helpers (extensions are fine here)
 
 extension Mesh {
     func updateNodeText(_ srcNode: NodeBase, string: String) {
@@ -70,86 +88,49 @@ extension Mesh {
 
     func positionNode(_ node: NodeBase, position: CGPoint) {
         node.position = position
-        // rebuildLinks()
     }
 
     func processNodeTranslation(_ translation: CGSize, nodes: [DragInfo], snapToGrid: Bool = false) {
-        nodes.forEach({ draginfo in
+        nodes.forEach { draginfo in
             if let node = nodeWithID(draginfo.id) {
-                var nextPosition = draginfo.originalPosition.translatedBy(x: translation.width, y: translation.height)
+                var next = draginfo.originalPosition.translatedBy(x: translation.width, y: translation.height)
                 if snapToGrid {
-                    // let granularity: CGFloat = 10.0
-                    nextPosition.x = (nextPosition.x / meshGranularity).rounded(.toNearestOrEven) * meshGranularity
-                    nextPosition.y = (nextPosition.y / meshGranularity).rounded(.toNearestOrEven) * meshGranularity
+                    next.x = (next.x / meshGranularity).rounded(.toNearestOrEven) * meshGranularity
+                    next.y = (next.y / meshGranularity).rounded(.toNearestOrEven) * meshGranularity
                 }
-                positionNode(node, position: nextPosition)
+                positionNode(node, position: next)
             }
-        })
+        }
     }
 
     func roundToTens(x: Double) -> Int {
-        return 10 * Int(round(x / 10.0))
+        10 * Int(round(x / 10.0))
     }
 }
 
 extension Mesh {
-    func addNode(_ node: NodeBase) {
-        nodes.append(node)
-        node.addPort(port: PortBase(node: node, name: "DefaultPort"))
-    }
-
-    func connect(_ parent: PortBase, to child: PortBase) {
-        let newedge = EdgeBase(start: parent, end: child)
-        let exists = edges.contains(where: { edge in
-            return newedge == edge
-        })
-
-        guard exists == false else {
-            return
-        }
-
-        edges.append(newedge)
-    }
-}
-
-extension Mesh {
-    @discardableResult func addDemoChild(_ parent: NodeBase, at point: CGPoint? = nil, defaultPort: Bool = true) -> NodeBase {
+    @discardableResult
+    func addDemoChild(_ parent: NodeBase, at point: CGPoint? = nil) -> NodeBase {
         let target = point ?? parent.position
         let child = NodeBase(text: "child", position: target, payload: nil)
         addNode(child)
-        connect(parent.ports[0], to: child.ports[0])
-        // rebuildLinks()
+        if let parentPort = parent.ports.first, let childPort = child.ports.first {
+            connect(parentPort, to: childPort)
+        }
         return child
     }
-
-
-    func deleteNodes(_ nodesToDelete: [NodeBase]) {
-        for node in nodesToDelete {
-            if let delete = nodes.firstIndex(where: { $0 == node }) {
-                nodes.remove(at: delete)
-                let remainingEdges = edges.filter({ $0.endPort.node != node && $0.startPort.node != node })
-                edges = remainingEdges
-            }
-        }
-    }
-
-//    func deleteNodes(_ nodesToDelete: [AVAudioNode]) {
-//        deleteNodes(nodesToDelete.map({ $0.id }))
-//    }
-
 }
 
 extension Mesh {
     func locateParent(_ node: NodeBase) -> PortBase? {
-        let parentedges = edges.filter({ $0.endPort.node.id == node.id })
-        if let parentedge = parentedges.first,
-           let parentnode = portWithID(parentedge.startPort.node.id) {
-            return parentnode
+        let parentEdges = edges.filter { $0.endPort.node.id == node.id }
+        if let edge = parentEdges.first,
+           let parentPort = portWithID(edge.startPort.node.id) {
+            return parentPort
         }
         return nil
     }
 }
-
 
 extension Mesh {
     func meshCoordinates(whereAt: CGPoint, containerSize: CGSize, portalPosition: CGPoint, zoomScale: CGFloat) -> CGPoint {

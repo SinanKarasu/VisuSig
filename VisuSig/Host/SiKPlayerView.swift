@@ -1,45 +1,75 @@
 //
 //  SiKPlayerView.swift
-//  SiKAUv3HostRedo
-//
-//  Created by Sinan Karasu on 1/26/22.
+//  VisuSig
 //
 
 import SwiftUI
-
-
-// var episode: Episode
-// @State private var playState: PlayState = .paused
-//
-// var body: some View {
-//    VStack {
-//        Text(episode.title)
-//        Text(episode.showTitle)
-//        PlayButton(playState: $playState)
-//    }
-//    .onChange(of: playState) { [playState] newState in
-//        model.playStateDidChange(from: playState, to: newState)
-//    }
-// }
+import UniformTypeIdentifiers
 
 struct SiKPlayerView: View {
-    @State var playing = false
-    var audioUnitManager: AudioUnitManager
-    var body: some View {
-        Button(action: {
-            DispatchQueue.main.async {
-                self.playing = self.audioUnitManager.togglePlayback()
-            }
-        }) {
-            Image(systemName: self.playing == false ? "play" : "pause")
-                .imageScale(.large)
-                .frame(width: 64, height: 64)
-        }
-    }
-}
+    var audioGraph: AudioGraph
 
-struct SiKPlayerView_Previews: PreviewProvider {
-    static var previews: some View {
-        SiKPlayerView( audioUnitManager: AudioUnitManager())
+    var body: some View {
+        HStack(spacing: 16) {
+            // ── Play / Pause ──────────────────────────────────────────
+            Button {
+                _ = audioGraph.togglePlay()
+            } label: {
+                Image(systemName: audioGraph.isPlaying ? "pause.circle.fill" : "play.circle.fill")
+                    .resizable()
+                    .frame(width: 36, height: 36)
+                    .foregroundStyle(audioGraph.isPlaying ? Color.yellow : Color.green)
+            }
+            .buttonStyle(.plain)
+            .help(audioGraph.isPlaying ? "Pause" : "Play")
+
+            // ── File info ─────────────────────────────────────────────
+            VStack(alignment: .leading, spacing: 2) {
+                Text(audioGraph.audioFileName)
+                    .font(.system(size: 12, weight: .medium))
+                    .foregroundStyle(.white)
+                    .lineLimit(1)
+                    .truncationMode(.middle)
+                Text(audioGraph.isPlaying ? "Playing" : "Stopped")
+                    .font(.system(size: 10))
+                    .foregroundStyle(audioGraph.isPlaying ? Color.green : Color.gray)
+            }
+
+            Spacer()
+
+            // ── Load audio file ───────────────────────────────────────
+            Button {
+                openFilePicker()
+            } label: {
+                Label("Load Audio…", systemImage: "folder.badge.plus")
+                    .font(.system(size: 12))
+            }
+            .buttonStyle(.bordered)
+            .help("Load an audio file into the Source node")
+        }
+        .padding(.horizontal, 16)
+        .frame(maxWidth: .infinity)
+    }
+
+    // MARK: - File picker
+
+    private func openFilePicker() {
+        let panel = NSOpenPanel()
+        panel.title = "Choose an Audio File"
+        panel.allowedContentTypes = [
+            UTType.audio,
+            UTType(filenameExtension: "aif") ?? .audio,
+            UTType(filenameExtension: "aiff") ?? .audio,
+            UTType(filenameExtension: "wav") ?? .audio,
+            UTType(filenameExtension: "mp3") ?? .audio,
+            UTType(filenameExtension: "m4a") ?? .audio,
+            UTType(filenameExtension: "caf") ?? .audio,
+        ]
+        panel.allowsMultipleSelection = false
+        panel.canChooseDirectories = false
+
+        if panel.runModal() == .OK, let url = panel.url {
+            audioGraph.loadAudioFile(url: url)
+        }
     }
 }

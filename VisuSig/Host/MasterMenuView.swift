@@ -17,52 +17,27 @@ struct MyBorder: View {
 
 struct MasterMenuView: View {
     @State var audioUnitComponents = AudioUnitComponents()
-    @State private  var audioUnitType = AudioUnitType.effect
 
-    @State var mesh = Mesh.sampleMesh()
-
-    let mode = 2
+    /// The visual mesh IS the AudioGraph — one object drives both the node canvas and the audio engine.
+    @State var audioGraph: AudioGraph = Mesh.sampleMesh() as! AudioGraph
 
     var body: some View {
-        HStack {
-            if mode == 1 {
-                EmptyView() // MasterContentView() // This is the thre panel navigation
-            } else {
-                GeometryReader { _ in
-                    VStack {
-                        SiKPlayerView(audioUnitManager: audioUnitComponents.audioUnitManager)
-                            .addBorder(.yellow)
-                        // HStack {
-                        // TopAUManagedMenuView(audioUnitComponents: audioUnitComponents) // probably delete this
-                        // TopComponentMenuView(audioUnitComponents: audioUnitComponents)
-                        SurfaceView(mesh: mesh, audioUnitComponents: audioUnitComponents)
-                            .addBorder(.orange)
-                        // EffectsToolsView()
-                        // EffectsToolsView(audioUnitComponents: audioUnitComponents)
+        GeometryReader { _ in
+            VStack(spacing: 0) {
 
-                        Picker("Module Type:", selection: $audioUnitType) {
-                            Text("Effect").tag(AudioUnitType.effect)
-                            Text("Instrument").tag(AudioUnitType.instrument)
-                        }
-                        .pickerStyle(.segmented)
+                // ── Transport bar ──────────────────────────────────────
+                SiKPlayerView(audioGraph: audioGraph)
+                    .frame(height: 60)
+                    .background(Color.black.opacity(0.85))
 
-//                        .onChange(of: audioUnitType) { _ in  //sik this is deprecated. Do we even need it with @Observable?
-//                            //            self.loaded = false
-//                            //            self.startRunning()
-//                        }
+                // ── Node graph canvas ──────────────────────────────────
+                SurfaceView(mesh: audioGraph, audioUnitComponents: audioUnitComponents)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
 
-                        switch audioUnitType {
-                        case .effect:
-                            EffectsMenuSplitView(audioUnitComponents: audioUnitComponents)
-                                .addBorder(.blue)
-                        case .instrument:
-                            InstrumentsMenuSplitView(audioUnitComponents: audioUnitComponents)
-                                .addBorder(.green)
-                        }
-                        // }
-                        // Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
-                    }
-                }
+                // ── AU preview panel (for auditioning individual effects) ──
+                Divider()
+                EffectsMenuSplitView(audioUnitComponents: audioUnitComponents)
+                    .frame(height: 280)
             }
         }
     }
