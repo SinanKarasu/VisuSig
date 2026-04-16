@@ -14,67 +14,46 @@ let logger = Logger()
 
 @Observable
 class AudioUnitComponents {
-    private var options = AudioComponentInstantiationOptions.loadOutOfProcess
-
     var audioUnitComponents = [Component]()
-    var instrumentComponents = [Component]()
 
     var audioUnitManager = AudioUnitManager()
     var auManagedEffectUnits = [AUManagedUnit?]()
-    var auManagedInstruments = [AUManagedUnit?]()
 
     private var effectsInitialized = false
-    private var instsInitialized = false
+    private(set) var previewAudioFileName = "No audio loaded"
+    var hasPreviewAudioFile: Bool { audioUnitManager.hasLoadedPlaybackFile }
 
     init() {
         startRunning()
     }
 
-    func initializeEffects(instantiate: Bool = true) {
+    func initializeEffects() {
         guard !effectsInitialized else { return }
         effectsInitialized = true
         DispatchQueue.main.async {
-            self.loadAudioUnits(ofType: .effect, instantiate: instantiate)
+            self.loadAudioUnits(ofType: .effect)
         }
     }
 
-    func initializeInstruments(instantiate: Bool = true) {
-        guard !instsInitialized else { return }
-        instsInitialized = true
-        DispatchQueue.main.async {
-            self.loadAudioUnits(ofType: .instrument, instantiate: instantiate)
-        }
-    }
-
-    func loadAudioUnits(ofType type: AudioUnitType, instantiate: Bool = true) {
+    func loadAudioUnits(ofType type: AudioUnitType) {
         audioUnitManager.loadAudioUnits(ofType: type) { audioUnits in
-            switch type {
-            case .effect:    self.audioUnitComponents = audioUnits
-            case .instrument: self.instrumentComponents = audioUnits
-            }
+            self.audioUnitComponents = audioUnits
             DispatchQueue.global(qos: .default).async {
-                self.instantiateAllComponents(ofType: type)
+                self.instantiateAllComponents()
             }
         }
     }
 
-    func instantiateAllComponents(ofType type: AudioUnitType) {
+    func instantiateAllComponents() {
         var auManaged = [AUManagedUnit?]()
-        let components: [Component]
-        switch type {
-        case .effect:    components = audioUnitComponents
-        case .instrument: components = instrumentComponents
-        }
+        let components = audioUnitComponents
         for index in 0 ..< components.count {
             DispatchQueue.main.async {
                 components[index].instantiateComponent { result in
                     switch result {
                     case .success(let au):
                         auManaged.append(au)
-                        switch type {
-                        case .effect:    self.auManagedEffectUnits = auManaged
-                        case .instrument: self.auManagedInstruments = auManaged
-                        }
+                        self.auManagedEffectUnits = auManaged
                     case .failure(let error):
                         logger.log("Unable to instantiate audio unit: \(String(describing: error))")
                     }
@@ -85,6 +64,11 @@ class AudioUnitComponents {
 
     private func startRunning() {
         initializeEffects()
+    }
+
+    func setPreviewAudioFile(url: URL) {
+        previewAudioFileName = url.lastPathComponent
+        audioUnitManager.loadPlaybackFile(url: url)
     }
 
     func connectComponent(auManagedUnit: AUManagedUnit?, completion: @escaping (Result<AUManagedUnit?, Error>) -> Void) {

@@ -8,24 +8,18 @@ import SwiftUI
 
 
 struct EffectsMenuSplitView: View {
-    private  let audioUnitType = AudioUnitType.effect
     var audioUnitComponents: AudioUnitComponents
     @State var columnVisibility: NavigationSplitViewVisibility = .all
     @State private var selectedUnit: Int?
-
-
-    var audioUnitManager: AudioUnitManager {
-        audioUnitComponents.audioUnitManager
-    }
-
-    let audioUnitTypes: [AudioUnitType] = [ .effect, .instrument]
     var body: some View {
         return GeometryReader { _ in
             VStack {
                 VStack {
-                    Text("EffectsMenuView")
+                    Text("Effects")
                     Text("Effects Count: \(audioUnitComponents.audioUnitComponents.count)")
                     Text("Managed Count: \(audioUnitComponents.auManagedEffectUnits.count)")
+                    Text(audioUnitComponents.hasPreviewAudioFile ? "Preview source: \(audioUnitComponents.previewAudioFileName)" : "Load audio above to audition effects")
+                        .foregroundStyle(audioUnitComponents.hasPreviewAudioFile ? Color.secondary : Color.orange)
                 }
                 ZStack {
                     RoundedRectangle(cornerRadius: 10, style: .continuous)
@@ -80,10 +74,6 @@ struct EffectsMenuSplitView: View {
 
 //    func startRunning() {
 //        audioUnitComponents.initializeEffects()
-//        //        if !audioUnitComponents.effectsInitialized{
-//        //            audioUnitComponents.effectsInitialized = true
-//        //            audioUnitComponents.loadAudioUnits(ofType: audioUnitType)
-//        //        }
 //    }
 
 }

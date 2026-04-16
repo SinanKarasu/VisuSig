@@ -10,8 +10,7 @@ import SwiftUI
 struct AUComponentView: View {
     var auManagedUnit: AUManagedUnit
     var audioUnitComponents: AudioUnitComponents
-	@State var result : Result<AUManagedUnit?, any Error>? = nil
-    // change this to be the persistent one.
+
     init(auManagedUnit: AUManagedUnit, audioUnitComponents: AudioUnitComponents ) {
         self.auManagedUnit = auManagedUnit
         self.audioUnitComponents = audioUnitComponents
@@ -36,12 +35,8 @@ struct AUComponentView: View {
 								.onAppear {
 									audioUnitComponents.connectComponent(auManagedUnit: auManagedUnit) { result in
 										print("Got result:\(result)")
-										self.result = result
 									}
 								}
-							if let result = result {
-								Text("Got result:\(result)")
-							}
 						}
                     )
             }

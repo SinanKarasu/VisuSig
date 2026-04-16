@@ -26,39 +26,12 @@ class AudioUnitManager {
         return allowed
     }
 
-    // var observer: NSKeyValueObservation?
-    var userPresetChangeType: UserPresetsChangeType = .undefined
-
     /// The user-selected audio unit.
     var auManagedUnit: AUManagedUnit?
 
     /// The playback engine used to play audio.
     var playEngine = SimplePlayEngine()
-
-    private var options = AudioComponentInstantiationOptions.loadOutOfProcess
-
-    /// Determines how the audio unit is instantiated.
-    var instantiationType = InstantiationType.outOfProcess {
-        didSet {
-            options = instantiationType == .inProcess ? .loadInProcess : .loadOutOfProcess
-        }
-    }
-
-
-    // MARK: View Configuration
-
-    var preferredWidth: CGFloat {
-        return viewConfigurations[currentViewConfigurationIndex].width
-    }
-
-    private var currentViewConfigurationIndex = 1
-
-    /// View configurations supported by the host app
-    private var viewConfigurations: [AUAudioUnitViewConfiguration] = {
-        let compact = AUAudioUnitViewConfiguration(width: 400, height: 100, hostHasController: false)
-        let expanded = AUAudioUnitViewConfiguration(width: 800, height: 500, hostHasController: false)
-        return [compact, expanded]
-    }()
+    var hasLoadedPlaybackFile: Bool { playEngine.hasLoadedFile }
 }
 
 
@@ -103,6 +76,10 @@ extension AudioUnitManager {
 
 extension AudioUnitManager {
     // MARK: Audio Transport
+
+    func loadPlaybackFile(url: URL) {
+        playEngine.loadAudioFile(url)
+    }
 
     @discardableResult
     func togglePlayback() -> Bool {

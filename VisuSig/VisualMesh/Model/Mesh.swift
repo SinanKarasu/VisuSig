@@ -46,7 +46,23 @@ class Mesh {
     }
 
     func connect(_ parent: PortBase, to child: PortBase) {
-        let newedge = EdgeBase(start: parent, end: child)
+        guard parent != child else { return }
+
+        let startPort: PortBase
+        let endPort: PortBase
+
+        switch (parent.portType, child.portType) {
+        case (.output, .input):
+            startPort = parent
+            endPort = child
+        case (.input, .output):
+            startPort = child
+            endPort = parent
+        default:
+            return
+        }
+
+        let newedge = EdgeBase(start: startPort, end: endPort)
         let exists = edges.contains(where: { newedge == $0 })
         guard !exists else { return }
         edges.append(newedge)

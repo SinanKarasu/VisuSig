@@ -7,14 +7,6 @@
 
 import SwiftUI
 
-struct MyBorder: View {
-    let color: Color
-    var body: some View {
-        Rectangle()
-            .stroke(color, lineWidth: 5)
-    }
-}
-
 struct MasterMenuView: View {
     @State var audioUnitComponents = AudioUnitComponents()
 
@@ -26,7 +18,9 @@ struct MasterMenuView: View {
             VStack(spacing: 0) {
 
                 // ── Transport bar ──────────────────────────────────────
-                SiKPlayerView(audioGraph: audioGraph)
+                SiKPlayerView(audioGraph: audioGraph) { url in
+                    audioUnitComponents.setPreviewAudioFile(url: url)
+                }
                     .frame(height: 60)
                     .background(Color.black.opacity(0.85))
 
@@ -38,6 +32,11 @@ struct MasterMenuView: View {
                 Divider()
                 EffectsMenuSplitView(audioUnitComponents: audioUnitComponents)
                     .frame(height: 280)
+            }
+            .onAppear {
+                if let url = audioGraph.audioFileURL {
+                    audioUnitComponents.setPreviewAudioFile(url: url)
+                }
             }
         }
     }

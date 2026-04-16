@@ -31,7 +31,7 @@ AudioGraph (AVAudioEngine host)
 
 ## Requirements
 
-- macOS 14 Sonoma or later
+- macOS 15 Sequoia or later
 - Xcode 15 or later
 - Apple Silicon or Intel Mac
 
@@ -40,9 +40,10 @@ AudioGraph (AVAudioEngine host)
 1. Clone the repo
 2. Open `VisuSig.xcodeproj` in Xcode
 3. Select the *VisuSig* scheme and run on *My Mac*
-4. Drop an AU effect from the browser on the left onto the canvas
-5. Wire: **Source Out → Effect In → Effect Out → Output In**
-6. Hit Play
+4. Click **Load Audio...** and choose an audio file
+5. Drop an AU effect from the browser on the left onto the canvas
+6. Wire: **Source Out → Effect In → Effect Out → Output In**
+7. Hit Play
 
 ## Roadmap
 

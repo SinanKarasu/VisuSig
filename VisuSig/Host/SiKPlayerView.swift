@@ -8,6 +8,7 @@ import UniformTypeIdentifiers
 
 struct SiKPlayerView: View {
     var audioGraph: AudioGraph
+    var onAudioFileLoaded: (URL) -> Void = { _ in }
 
     var body: some View {
         HStack(spacing: 16) {
@@ -21,18 +22,19 @@ struct SiKPlayerView: View {
                     .foregroundStyle(audioGraph.isPlaying ? Color.yellow : Color.green)
             }
             .buttonStyle(.plain)
-            .help(audioGraph.isPlaying ? "Pause" : "Play")
+            .disabled(!audioGraph.canTogglePlayback)
+            .help(playbackHelpText)
 
             // ── File info ─────────────────────────────────────────────
             VStack(alignment: .leading, spacing: 2) {
                 Text(audioGraph.audioFileName)
                     .font(.system(size: 12, weight: .medium))
-                    .foregroundStyle(.white)
+                    .foregroundStyle(audioGraph.hasLoadedAudioFile ? Color.white : Color.secondary)
                     .lineLimit(1)
                     .truncationMode(.middle)
-                Text(audioGraph.isPlaying ? "Playing" : "Stopped")
+                Text(statusText)
                     .font(.system(size: 10))
-                    .foregroundStyle(audioGraph.isPlaying ? Color.green : Color.gray)
+                    .foregroundStyle(statusColor)
             }
 
             Spacer()
@@ -49,6 +51,36 @@ struct SiKPlayerView: View {
         }
         .padding(.horizontal, 16)
         .frame(maxWidth: .infinity)
+    }
+
+    private var statusText: String {
+        if audioGraph.isPlaying {
+            return "Playing"
+        }
+        if !audioGraph.hasLoadedAudioFile {
+            return "Load a file to begin"
+        }
+        return audioGraph.hasPlayableRoute ? "Ready" : "Wire Audio Source to Output"
+    }
+
+    private var statusColor: Color {
+        if audioGraph.isPlaying {
+            return .green
+        }
+        return (audioGraph.hasLoadedAudioFile && audioGraph.hasPlayableRoute) ? .gray : .orange
+    }
+
+    private var playbackHelpText: String {
+        if audioGraph.isPlaying {
+            return "Pause"
+        }
+        if !audioGraph.hasLoadedAudioFile {
+            return "Load an audio file first"
+        }
+        if !audioGraph.hasPlayableRoute {
+            return "Wire Audio Source to Output first"
+        }
+        return "Play"
     }
 
     // MARK: - File picker
@@ -69,7 +101,9 @@ struct SiKPlayerView: View {
         panel.canChooseDirectories = false
 
         if panel.runModal() == .OK, let url = panel.url {
-            audioGraph.loadAudioFile(url: url)
+            if audioGraph.loadAudioFile(url: url) {
+                onAudioFileLoaded(url)
+            }
         }
     }
 }

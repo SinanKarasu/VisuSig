@@ -12,16 +12,6 @@ extension AudioUnitType: Identifiable {
     var id: RawValue { rawValue }
 }
 
-enum InstantiationType: Int {
-    case inProcess
-    case outOfProcess
-}
-
-enum PresetType: Int {
-    case factory
-    case user
-}
-
 enum UserPresetsChangeType: Int {
     case save
     case delete

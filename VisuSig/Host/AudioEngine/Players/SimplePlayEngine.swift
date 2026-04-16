@@ -24,12 +24,11 @@ public class SimplePlayEngine {
 
     // File to play.
     private var file: AVAudioFile?
+    public private(set) var fileName = "No audio loaded"
+    public var hasLoadedFile: Bool { file != nil }
 
     // Whether we are playing.
     private var isPlaying = false
-
-    // This block will be called every render cycle and will receive MIDI events
-    private let midiOutBlock: AUMIDIOutputEventBlock = { _, _, _, _ in return noErr }
 
     private var componentType: OSType {
         return activeAVAudioUnit?.audioComponentDescription.componentType ?? kAudioUnitType_Effect
@@ -49,22 +48,26 @@ public class SimplePlayEngine {
 
     public init() {
         engine.attach(player)
-
-        guard let fileURL = Bundle.main.url(forResource: "Synth", withExtension: "aif") else {
-            fatalError("\"Synth.aif\" file not found.")
-        }
-        setPlayerFile(fileURL)
-
-        engine.prepare()
     }
 
-    private func setPlayerFile(_ fileURL: URL) {
+    public func loadAudioFile(_ fileURL: URL) {
+        let wasPlaying = isPlaying
+        if wasPlaying {
+            stopPlaying()
+        }
         do {
             let file = try AVAudioFile(forReading: fileURL)
             self.file = file
-            engine.connect(player, to: engine.mainMixerNode, format: file.processingFormat)
+            fileName = fileURL.lastPathComponent
+            resetAudioLoop()
         } catch {
-            fatalError("Could not create AVAudioFile instance. error: \(error).")
+            file = nil
+            fileName = "No audio loaded"
+            print("SimplePlayEngine: failed to load \(fileURL.lastPathComponent): \(error)")
+        }
+
+        if wasPlaying && hasLoadedFile {
+            startPlaying()
         }
     }
 
@@ -93,6 +96,7 @@ public class SimplePlayEngine {
 
     private func startPlayingInternal() {
         // assumptions: we are protected by stateChangeQueue. we are not playing.
+        guard hasLoadedFile || isInstrument else { return }
 
         if isEffect {
             // Schedule buffers on the player.
@@ -108,7 +112,8 @@ public class SimplePlayEngine {
             try engine.start()
         } catch {
             isPlaying = false
-            fatalError("Could not start engine. error: \(error).")
+            print("SimplePlayEngine: could not start engine: \(error)")
+            return
         }
 
         if isEffect {
@@ -133,9 +138,7 @@ public class SimplePlayEngine {
     }
 
     private func scheduleEffectLoop() {
-        guard let file = file else {
-            fatalError("`file` must not be nil in \(#function).")
-        }
+        guard let file else { return }
 
         player.scheduleFile(file, at: nil) {
             self.stateChangeQueue.async {
@@ -147,11 +150,10 @@ public class SimplePlayEngine {
     }
 
     private func resetAudioLoop() {
-        if isEffect {
-            // Connect player -> mixer.
-            guard let format = file?.processingFormat else { fatalError("No AVAudioFile defined (processing format unavailable).") }
-            engine.connect(player, to: engine.mainMixerNode, format: format)
-        }
+        guard isEffect else { return }
+        let format = file?.processingFormat ?? engine.outputNode.outputFormat(forBus: 0)
+        engine.disconnectNodeOutput(player)
+        engine.connect(player, to: engine.mainMixerNode, format: format)
     }
 
     public func reset() {
@@ -212,12 +214,6 @@ public class SimplePlayEngine {
             return
         }
 
-        let auAudioUnit = avAudioUnit.auAudioUnit
-
-        if !auAudioUnit.midiOutputNames.isEmpty {
-            auAudioUnit.midiOutputEventBlock = midiOutBlock
-        }
-
         // Attach the AVAudioUnit the the graph.
         engine.attach(avAudioUnit)
 
@@ -226,10 +222,9 @@ public class SimplePlayEngine {
             engine.disconnectNodeInput(engine.mainMixerNode)
 
             // Connect the player -> effect -> mixer.
-            if let format = file?.processingFormat {
-                engine.connect(player, to: avAudioUnit, format: format)
-                engine.connect(avAudioUnit, to: engine.mainMixerNode, format: format)
-            }
+            let format = file?.processingFormat ?? hardwareFormat
+            engine.connect(player, to: avAudioUnit, format: format)
+            engine.connect(avAudioUnit, to: engine.mainMixerNode, format: format)
         } else {
             let stereoFormat = AVAudioFormat(standardFormatWithSampleRate: hardwareFormat.sampleRate, channels: 2)
             engine.connect(avAudioUnit, to: engine.mainMixerNode, format: stereoFormat)

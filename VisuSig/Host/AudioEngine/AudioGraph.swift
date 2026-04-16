@@ -20,40 +20,37 @@ class AudioGraph: Mesh {
     let player = AVAudioPlayerNode()
 
     private(set) var audioFile: AVAudioFile?
-    private(set) var audioFileName: String = "Synth.aif"
+    private(set) var audioFileURL: URL?
+    private(set) var audioFileName: String = "No audio loaded"
     private(set) var isPlaying = false
-
-    private let stateQueue = DispatchQueue(label: "com.visusig.audioGraphState")
+    var hasLoadedAudioFile: Bool { audioFile != nil }
+    private(set) var hasPlayableRoute = false
+    var canTogglePlayback: Bool { isPlaying || (hasLoadedAudioFile && hasPlayableRoute) }
 
     // MARK: - Init
 
     override init() {
         super.init()
         engine.attach(player)
-        loadBundleFile()
     }
 
     // MARK: - File loading
 
-    /// Load the default bundled audio file.
-    func loadBundleFile() {
-        if let url = Bundle.main.url(forResource: "Synth", withExtension: "aif") {
-            loadAudioFile(url: url)
-            audioFileName = "Synth.aif"
-        }
-    }
-
     /// Load a user-chosen audio file.
-    func loadAudioFile(url: URL) {
+    @discardableResult
+    func loadAudioFile(url: URL) -> Bool {
         let wasPlaying = isPlaying
         if wasPlaying { stopPlayingInternal() }
         do {
             audioFile = try AVAudioFile(forReading: url)
+            audioFileURL = url
             audioFileName = url.lastPathComponent
             rebuildConnections()
             if wasPlaying { startPlayingInternal() }
+            return true
         } catch {
             print("AudioGraph: failed to load \(url.lastPathComponent): \(error)")
+            return false
         }
     }
 
@@ -88,7 +85,7 @@ class AudioGraph: Mesh {
     }
 
     func startPlayingInternal() {
-        guard !isPlaying else { return }
+        guard !isPlaying, let audioFile, hasPlayableRoute else { return }
 
         // Connect mainMixer → hardware output
         let hwFormat = engine.outputNode.outputFormat(forBus: 0)
@@ -97,7 +94,7 @@ class AudioGraph: Mesh {
         engine.prepare()
         do {
             try engine.start()
-            scheduleFileLoop()
+            scheduleFileLoop(file: audioFile)
             player.play()
             isPlaying = true
         } catch {
@@ -114,11 +111,10 @@ class AudioGraph: Mesh {
 
     // MARK: - File loop scheduling
 
-    private func scheduleFileLoop() {
-        guard let file = audioFile else { return }
+    private func scheduleFileLoop(file: AVAudioFile) {
         player.scheduleFile(file, at: nil) { [weak self] in
             guard let self, self.isPlaying else { return }
-            self.scheduleFileLoop()
+            self.scheduleFileLoop(file: file)
         }
     }
 
@@ -157,6 +153,7 @@ class AudioGraph: Mesh {
         // Step 5: Walk the visual graph and build AVAudioEngine connections.
         let chain = buildAudioChain()
         let hasValidChain = chain.count >= 2
+        hasPlayableRoute = hasValidChain
         if hasValidChain {
             for i in 0 ..< chain.count - 1 {
                 guard let fromAV = avAudioNodeFor(chain[i]),
@@ -189,12 +186,7 @@ class AudioGraph: Mesh {
         visited.insert(current.id)
 
         while true {
-            // Find an edge leaving an output port of the current node
-            guard let edge = edges.first(where: {
-                $0.startPort.node.id == current.id && $0.startPort.portType == .output
-            }) else { break }
-
-            let next = edge.endPort.node
+            guard let next = nextNode(after: current) else { break }
             guard !visited.contains(next.id) else { break }
 
             visited.insert(next.id)
@@ -209,6 +201,27 @@ class AudioGraph: Mesh {
               chain.count >= 2 else { return [] }
 
         return chain
+    }
+
+    private func nextNode(after current: NodeBase) -> NodeBase? {
+        for edge in edges {
+            guard let connection = normalizedConnection(for: edge) else { continue }
+            if connection.from.node.id == current.id {
+                return connection.to.node
+            }
+        }
+        return nil
+    }
+
+    private func normalizedConnection(for edge: EdgeBase) -> (from: PortBase, to: PortBase)? {
+        switch (edge.startPort.portType, edge.endPort.portType) {
+        case (.output, .input):
+            return (edge.startPort, edge.endPort)
+        case (.input, .output):
+            return (edge.endPort, edge.startPort)
+        default:
+            return nil
+        }
     }
 
     // MARK: - Node → AVAudioNode mapping
