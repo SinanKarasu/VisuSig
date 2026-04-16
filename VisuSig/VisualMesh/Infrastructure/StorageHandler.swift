@@ -2,7 +2,7 @@ import AppKit
 
 /// Encapsulates file ops for the mesh data
 class StorageHandler {
-    static func StorageHandler.getDocumentsDirectory() -> URL {
+    static func getDocumentsDirectory() -> URL {
         FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
     }
 
