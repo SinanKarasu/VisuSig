@@ -16,6 +16,7 @@ class Mesh {
     var nodes = [NodeBase]()
     var editingText: String
     var edges = [EdgeBase]()
+    let payloadRuntimes = PayloadRuntimeStore()
 
     init() {
         editingText = ""
@@ -73,6 +74,9 @@ class Mesh {
             if let idx = nodes.firstIndex(where: { $0 == node }) {
                 nodes.remove(at: idx)
                 edges = edges.filter { $0.endPort.node != node && $0.startPort.node != node }
+                if let payloadID = node.payload?.id {
+                    payloadRuntimes.removeRuntime(for: payloadID)
+                }
             }
         }
     }
@@ -92,6 +96,18 @@ class Mesh {
             if let port = node.ports.first(where: { $0.id == portID }) { return port }
         }
         return nil
+    }
+
+    // MARK: - Payload runtime adapters
+
+    func registerRuntime<Runtime: AnyObject>(_ runtime: Runtime, for payload: Payload) {
+        payloadRuntimes.register(runtime, for: payload.id)
+    }
+
+    func runtime<Runtime: AnyObject>(for node: NodeBase,
+                                     as type: Runtime.Type = Runtime.self) -> Runtime? {
+        guard let payloadID = node.payload?.id else { return nil }
+        return payloadRuntimes.runtime(for: payloadID, as: type)
     }
 }
 

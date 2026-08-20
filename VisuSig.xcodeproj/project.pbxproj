@@ -3,15 +3,22 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 55;
+	objectVersion = 60;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A10000010000000000000001 /* Payload.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000020000000000000001 /* Payload.swift */; };
+		A10000010000000000000002 /* AtlasStatementPayload.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000020000000000000002 /* AtlasStatementPayload.swift */; };
+		A10000010000000000000003 /* PayloadWorkbenchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000020000000000000003 /* PayloadWorkbenchView.swift */; };
+		A10000010000000000000004 /* PluginWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000020000000000000004 /* PluginWindowController.swift */; };
 		F702D98A28DB667F0094BA12 /* Extension+Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = F702D98928DB667F0094BA12 /* Extension+Color.swift */; };
+		F70D8E2A30376A900031CC3C /* ATEProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = F70D8E2930376A900031CC3C /* ATEProtocols.swift */; };
+		F70D8E2D303771030031CC3C /* VisualMesh in Frameworks */ = {isa = PBXBuildFile; productRef = F70D8E2C303771030031CC3C /* VisualMesh */; };
+		F70D8E2F303771030031CC3C /* VisualMeshExamples in Frameworks */ = {isa = PBXBuildFile; productRef = F70D8E2E303771030031CC3C /* VisualMeshExamples */; };
+		F70D8E313037716B0031CC3C /* EdgeInstrumentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F70D8E303037716B0031CC3C /* EdgeInstrumentView.swift */; };
 		F72D0DDB27B9A35C00516B4A /* LayeredWire.swift in Sources */ = {isa = PBXBuildFile; fileRef = F72D0DDA27B9A35C00516B4A /* LayeredWire.swift */; };
 		F7300E842825B9DF00E41206 /* AUComponentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7300E832825B9DF00E41206 /* AUComponentView.swift */; };
 		F73DDC0C2835770300DABC2F /* Utilities+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F73DDC0B2835770300DABC2F /* Utilities+Extensions.swift */; };
-		F73DDC12283577BF00DABC2F /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = F73DDC11283577BF00DABC2F /* Log.swift */; };
 		F74856752817030B0038D7B7 /* NodePortsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F74856742817030B0038D7B7 /* NodePortsView.swift */; };
 		F748568028184D6D0038D7B7 /* QGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = F748567B28184D6D0038D7B7 /* QGrid.swift */; };
 		F75C5276282855D2008DBD23 /* MasterMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F75C5275282855D2008DBD23 /* MasterMenuView.swift */; };
@@ -79,11 +86,16 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		A10000020000000000000001 /* Payload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Payload.swift; sourceTree = "<group>"; };
+		A10000020000000000000002 /* AtlasStatementPayload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtlasStatementPayload.swift; sourceTree = "<group>"; };
+		A10000020000000000000003 /* PayloadWorkbenchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayloadWorkbenchView.swift; sourceTree = "<group>"; };
+		A10000020000000000000004 /* PluginWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PluginWindowController.swift; sourceTree = "<group>"; };
 		F702D98928DB667F0094BA12 /* Extension+Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+Color.swift"; sourceTree = "<group>"; };
+		F70D8E2930376A900031CC3C /* ATEProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ATEProtocols.swift; sourceTree = "<group>"; };
+		F70D8E303037716B0031CC3C /* EdgeInstrumentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EdgeInstrumentView.swift; sourceTree = "<group>"; };
 		F72D0DDA27B9A35C00516B4A /* LayeredWire.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayeredWire.swift; sourceTree = "<group>"; };
 		F7300E832825B9DF00E41206 /* AUComponentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AUComponentView.swift; sourceTree = "<group>"; };
 		F73DDC0B2835770300DABC2F /* Utilities+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Utilities+Extensions.swift"; sourceTree = "<group>"; };
-		F73DDC11283577BF00DABC2F /* Log.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
 		F74856742817030B0038D7B7 /* NodePortsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NodePortsView.swift; sourceTree = "<group>"; };
 		F748567B28184D6D0038D7B7 /* QGrid.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QGrid.swift; sourceTree = "<group>"; };
 		F75C5275282855D2008DBD23 /* MasterMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterMenuView.swift; sourceTree = "<group>"; };
@@ -157,17 +169,36 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F70D8E2F303771030031CC3C /* VisualMeshExamples in Frameworks */,
+				F70D8E2D303771030031CC3C /* VisualMesh in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A10000030000000000000001 /* Payload */ = {
+			isa = PBXGroup;
+			children = (
+				A10000020000000000000001 /* Payload.swift */,
+				A10000020000000000000002 /* AtlasStatementPayload.swift */,
+				A10000020000000000000003 /* PayloadWorkbenchView.swift */,
+			);
+			path = Payload;
+			sourceTree = "<group>";
+		};
+		A10000030000000000000002 /* PluginWindow */ = {
+			isa = PBXGroup;
+			children = (
+				A10000020000000000000004 /* PluginWindowController.swift */,
+			);
+			path = PluginWindow;
+			sourceTree = "<group>";
+		};
 		F73DDC0A283576EC00DABC2F /* Additions */ = {
 			isa = PBXGroup;
 			children = (
 				F73DDC0B2835770300DABC2F /* Utilities+Extensions.swift */,
-				F73DDC11283577BF00DABC2F /* Log.swift */,
 				F702D98928DB667F0094BA12 /* Extension+Color.swift */,
 			);
 			path = Additions;
@@ -191,6 +222,7 @@
 				F75CC4C0281EEE0500692CE5 /* ComponentViewController.swift */,
 				F7DD1AFB289DF33A00E48D97 /* EffectsMenuSplitView.swift */,
 				F75C5275282855D2008DBD23 /* MasterMenuView.swift */,
+				A10000030000000000000002 /* PluginWindow */,
 				F75CC4BC281EEDD100692CE5 /* SiKPlayerView.swift */,
 				F79E3EDB281B4B1300CD0520 /* AudioEngine */,
 				F75CC4C2281EEE3900692CE5 /* Extensions */,
@@ -293,6 +325,7 @@
 				F7C809C7279B299200982843 /* ContentView.swift */,
 				F75CC4B7281EED4E00692CE5 /* Host */,
 				F7EE444C283D8F4E00ACE932 /* Menus */,
+				A10000030000000000000001 /* Payload */,
 				F7A37BE027F23529007D4AEB /* people.json */,
 				F7C809CB279B299400982843 /* Preview Content */,
 				F79E3EDA281B4A0400CD0520 /* VisualMesh */,
@@ -332,6 +365,7 @@
 				F7C809E2279B4F2500982843 /* SelectionHandler.swift */,
 				F7C80A07279B51C800982843 /* Storage.swift */,
 				F7795649287C91A3007E569B /* EdgeProxy.swift */,
+				F70D8E2930376A900031CC3C /* ATEProtocols.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -356,6 +390,7 @@
 				F7FA953127B0635800140F5D /* PortView.swift */,
 				F7C809F6279B4FCB00982843 /* SurfaceView.swift */,
 				F797EA92288A26E60092F811 /* PortalState.swift */,
+				F70D8E303037716B0031CC3C /* EdgeInstrumentView.swift */,
 			);
 			path = ViewStack;
 			sourceTree = "<group>";
@@ -492,6 +527,9 @@
 				Base,
 			);
 			mainGroup = F7C809B9279B299200982843;
+			packageReferences = (
+				F70D8E2B303771030031CC3C /* XCLocalSwiftPackageReference "Packages/VisualMesh" */,
+			);
 			productRefGroup = F7C809C3279B299200982843 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -519,9 +557,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A10000010000000000000001 /* Payload.swift in Sources */,
+				A10000010000000000000002 /* AtlasStatementPayload.swift in Sources */,
+				A10000010000000000000003 /* PayloadWorkbenchView.swift in Sources */,
+				A10000010000000000000004 /* PluginWindowController.swift in Sources */,
 				F7DD1AF2289CB02200E48D97 /* AudioUnitType.swift in Sources */,
 				F7CE746327BD64DF00BBF6A2 /* FlyoutMenuMainView.swift in Sources */,
-				F73DDC12283577BF00DABC2F /* Log.swift in Sources */,
 				F7C809F7279B4FCB00982843 /* SurfaceView.swift in Sources */,
 				F7C809E7279B4F2500982843 /* Mesh.swift in Sources */,
 				F7C809EB279B4F2500982843 /* NodeBase.swift in Sources */,
@@ -529,6 +570,7 @@
 				F797EA93288A26E60092F811 /* PortalState.swift in Sources */,
 				F7C809C8279B299200982843 /* ContentView.swift in Sources */,
 				F75CC4BB281EED8B00692CE5 /* AudioUnitComponents.swift in Sources */,
+				F70D8E313037716B0031CC3C /* EdgeInstrumentView.swift in Sources */,
 				F7300E842825B9DF00E41206 /* AUComponentView.swift in Sources */,
 				F7C80A08279B51C800982843 /* Storage.swift in Sources */,
 				F7C809DA279B2A8800982843 /* HoverAwareDemo2View.swift in Sources */,
@@ -538,6 +580,7 @@
 				F75CC4B1281D8AEB00692CE5 /* InstrumentPlayer.swift in Sources */,
 				F7F9433F27AF924300DD9A50 /* GridCompleteView.swift in Sources */,
 				F7C809D8279B2A6E00982843 /* HoverAwareDemo1View.swift in Sources */,
+				F70D8E2A30376A900031CC3C /* ATEProtocols.swift in Sources */,
 				F73DDC0C2835770300DABC2F /* Utilities+Extensions.swift in Sources */,
 				F7C809C6279B299200982843 /* VisuSigApp.swift in Sources */,
 				F7FA953227B0635800140F5D /* PortView.swift in Sources */,
@@ -794,6 +837,24 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		F70D8E2B303771030031CC3C /* XCLocalSwiftPackageReference "Packages/VisualMesh" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Packages/VisualMesh;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		F70D8E2C303771030031CC3C /* VisualMesh */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = VisualMesh;
+		};
+		F70D8E2E303771030031CC3C /* VisualMeshExamples */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = VisualMeshExamples;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = F7C809BA279B299200982843 /* Project object */;
 }

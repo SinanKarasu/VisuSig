@@ -3,6 +3,7 @@ import SwiftUI
 struct NodeView: View {
     var node: NodeBase
     var selection: SelectionHandler
+    var mesh: Mesh
 
     var selected: Bool { selection.isNodeSelected(node) }
 
@@ -10,11 +11,15 @@ struct NodeView: View {
 
     var nodeGradient: LinearGradient {
         let colors: [Color]
-        switch node.nodeRole {
-        case .source:  colors = [Color(red: 0.18, green: 0.46, blue: 0.90), Color(red: 0.10, green: 0.30, blue: 0.70)]
-        case .effect:  colors = [Color(red: 0.55, green: 0.22, blue: 0.80), Color(red: 0.38, green: 0.12, blue: 0.60)]
-        case .output:  colors = [Color(red: 0.15, green: 0.65, blue: 0.40), Color(red: 0.08, green: 0.45, blue: 0.25)]
-        case .generic: colors = [Color(red: 0.35, green: 0.35, blue: 0.40), Color(red: 0.20, green: 0.20, blue: 0.25)]
+        if node.payload?.kind == .atlasStatement {
+            colors = [Color(red: 0.08, green: 0.55, blue: 0.62), Color(red: 0.04, green: 0.32, blue: 0.42)]
+        } else {
+            switch node.nodeRole {
+            case .source:  colors = [Color(red: 0.18, green: 0.46, blue: 0.90), Color(red: 0.10, green: 0.30, blue: 0.70)]
+            case .effect:  colors = [Color(red: 0.55, green: 0.22, blue: 0.80), Color(red: 0.38, green: 0.12, blue: 0.60)]
+            case .output:  colors = [Color(red: 0.15, green: 0.65, blue: 0.40), Color(red: 0.08, green: 0.45, blue: 0.25)]
+            case .generic: colors = [Color(red: 0.35, green: 0.35, blue: 0.40), Color(red: 0.20, green: 0.20, blue: 0.25)]
+            }
         }
         return LinearGradient(colors: colors, startPoint: .top, endPoint: .bottom)
     }
@@ -51,7 +56,7 @@ struct NodeView: View {
                 .frame(width: node.size.width, height: node.size.height)
                 .shadow(color: .black.opacity(0.4), radius: 6, x: 0, y: 3)
                 .contextMenu {
-                    if node.nodeRole == .effect {
+                    if mesh.runtime(for: node, as: AUManagedUnit.self) != nil {
                         Button("Open Plugin UI") {
                             openPluginGUI()
                         }
@@ -103,80 +108,6 @@ struct NodeView: View {
     // MARK: - Plugin GUI
 
     private func openPluginGUI() {
-        PluginWindowController.open(for: node)
-    }
-}
-
-// MARK: - Plugin Window Controller
-
-/// Opens a floating, non-modal NSWindow showing the native AU plugin GUI.
-/// Retains itself via the static `openWindows` set until the user closes the window.
-final class PluginWindowController: NSWindowController, NSWindowDelegate {
-
-    private static var openWindows: Set<PluginWindowController> = []
-
-    static func open(for node: NodeBase) {
-        guard let payload = node.payload else { return }
-
-        // Bring forward if already open for this node.
-        if let existing = openWindows.first(where: { $0.nodeID == node.id }) {
-            existing.showWindow(nil)
-            return
-        }
-
-        payload.loadAudioUnitViewController { vc in
-            payload.setController(controller: vc)
-            let controller = PluginWindowController(node: node, payload: payload)
-            controller.showWindow(nil)
-        }
-    }
-
-    private let nodeID: UUID
-
-    private init(node: NodeBase, payload: AUManagedUnit) {
-        self.nodeID = node.id
-
-        let hostingView = NSHostingView(
-            rootView: PluginGUIContent(payload: payload)
-        )
-        hostingView.sizingOptions = .preferredContentSize
-
-        let window = NSWindow(
-            contentRect: NSRect(x: 0, y: 0, width: 820, height: 540),
-            styleMask: [.titled, .closable, .miniaturizable, .resizable],
-            backing: .buffered,
-            defer: false
-        )
-        window.title = node.text
-        window.contentView = hostingView
-        window.center()
-        window.isReleasedWhenClosed = false
-
-        super.init(window: window)
-        window.delegate = self
-        Self.openWindows.insert(self)
-    }
-
-    required init?(coder: NSCoder) { fatalError("not used") }
-
-    func windowWillClose(_ notification: Notification) {
-        Self.openWindows.remove(self)
-    }
-}
-
-// MARK: - Plugin GUI Content
-
-private struct PluginGUIContent: View {
-    var payload: AUManagedUnit
-
-    var body: some View {
-        AUComponentControllerView(
-            componentViewController: payload.componentViewController,
-            size: CGSize(width: 800, height: 500)
-        )
-        .frame(
-            minWidth: 400,  idealWidth: 800,  maxWidth: .infinity,
-            minHeight: 200, idealHeight: 500, maxHeight: .infinity
-        )
+        PluginWindowController.open(for: node, in: mesh)
     }
 }

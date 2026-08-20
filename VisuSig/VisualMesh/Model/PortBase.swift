@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import AVFoundation
 
 enum Directions {
     case up
@@ -110,11 +109,5 @@ extension PortBase {
             .scaledFrom(zoomScale)
             .alignCenterInParent(parent)
             .translatedBy(x: portalPosition.x, y: portalPosition.y)
-    }
-}
-
-extension PortBase {
-    var avAudioUnit: AVAudioUnit? {
-        node.avAudioUnit
     }
 }

@@ -11,21 +11,25 @@ struct SurfaceView: View, ContextMenuProtocol {
 
     @State private var shapeIndex = -1
 
-    var audioUnitComponents: AudioUnitComponents
+    var audioUnitComponents: AudioUnitComponents?
+    var showsDiagnostics = true
+    var isReadOnly = false
 
     var body: some View {
         return VStack {
-            PortalPositionView(
-                portalState: portalState,
-                whereAt: $selection.whereAt,
-                frame: $portalState.frame
-            )
-            SelectionHandlerView(selection: selection)
-            TextField("Breathe…", text: self.$selection.editingText, onCommit: {
-                if let node = self.selection.onlySelectedNode(in: self.mesh) {
-                    self.mesh.updateNodeText(node, string: self.self.selection.editingText)
-                }
-            }).padding()
+            if showsDiagnostics {
+                PortalPositionView(
+                    portalState: portalState,
+                    whereAt: $selection.whereAt,
+                    frame: $portalState.frame
+                )
+                SelectionHandlerView(selection: selection)
+                TextField("Breathe…", text: self.$selection.editingText, onCommit: {
+                    if let node = self.selection.onlySelectedNode(in: self.mesh) {
+                        self.mesh.updateNodeText(node, string: self.self.selection.editingText)
+                    }
+                }).padding()
+            }
 
             GeometryReader { proxy in
                 ZStack {
@@ -75,54 +79,104 @@ struct SurfaceView: View, ContextMenuProtocol {
                     self.selection.unSelectNodes()
                 }
                 .contextMenu {
-                    Button(action: { self.selection.showShapes.toggle() }) {
-                        Label("Add Audio Effect Node", systemImage: "waveform.circle")
-                            .labelStyle(.titleAndIcon)
+                    if audioUnitComponents != nil {
+                        Button(action: { self.selection.showShapes.toggle() }) {
+                            Label("Add Audio Effect Node", systemImage: "waveform.circle")
+                                .labelStyle(.titleAndIcon)
+                        }
                     }
-                    Button(action: { print("Not Implemented") }) {
-                        Label("Add SW Effect Node", systemImage: "pianokeys.inverse")
+                    Button(action: {
+                        addGenericNode(mesh: mesh,
+                                       whereAt: selection.whereAt,
+                                       containerSize: proxy.size,
+                                       portalPosition: portalState.portalPosition,
+                                       zoomScale: portalState.zoomScale)
+                    }) {
+                        Label("Add Generic Payload Node", systemImage: "shippingbox")
                             .labelStyle(.titleAndIcon)
                     }
                 }
 
                 .sheet(isPresented: self.$selection.showShapes) {
-                    ComponentTableView( selectedIndex: $shapeIndex, audioUnitComponents: audioUnitComponents, selectionHandler: selection)
-                    // .frame(width: min(geometry.size.width - 100, 300))
-                        .frame(minWidth: 800, minHeight: 400)
-                        .onDisappear {
-                            // print("Gone:\($shapeIndex)")
-                            if self.shapeIndex >= 0 {
-                                let component = audioUnitComponents.audioUnitComponents[self.shapeIndex]
-                                component.instantiateComponent { result in
-                                    switch result {
-                                    case .success(let au):
-                                        addNewNode(mesh: mesh, whereAt: selection.whereAt, containerSize: proxy.size, portalPosition: portalState.portalPosition, zoomScale: portalState.zoomScale, payload: au)
-                                    case .failure(let error):
-                                        logger.log("Unable to select audio unit: \(String(describing: error))")
+                    if let audioUnitComponents {
+                        ComponentTableView(selectedIndex: $shapeIndex,
+                                           audioUnitComponents: audioUnitComponents,
+                                           selectionHandler: selection)
+                            .frame(minWidth: 800, minHeight: 400)
+                            .onDisappear {
+                                if self.shapeIndex >= 0,
+                                   self.shapeIndex < audioUnitComponents.audioUnitComponents.count {
+                                    let component = audioUnitComponents.audioUnitComponents[self.shapeIndex]
+                                    component.instantiateComponent { result in
+                                        switch result {
+                                        case .success(let audioUnit):
+                                            addNewAudioUnitNode(mesh: mesh,
+                                                                whereAt: selection.whereAt,
+                                                                containerSize: proxy.size,
+                                                                portalPosition: portalState.portalPosition,
+                                                                zoomScale: portalState.zoomScale,
+                                                                audioUnit: audioUnit)
+                                        case .failure(let error):
+                                            logger.log("Unable to select audio unit: \(String(describing: error))")
+                                        }
+                                        self.shapeIndex = -1
                                     }
-                                    self.shapeIndex = -1
                                 }
                             }
-                        }
+                    } else {
+                        Text("Audio Unit discovery is available in the Audio Units workspace.")
+                            .padding()
+                    }
                 }
+                .allowsHitTesting(!isReadOnly)
             }
         }
     }
 
-    func addNewNode(mesh: Mesh, whereAt: CGPoint, containerSize: CGSize, portalPosition: CGPoint, zoomScale: CGFloat, payload: AUManagedUnit?) {
+    func addNewAudioUnitNode(mesh: Mesh,
+                             whereAt: CGPoint,
+                             containerSize: CGSize,
+                             portalPosition: CGPoint,
+                             zoomScale: CGFloat,
+                             audioUnit: AUManagedUnit?) {
         let p = mesh.meshCoordinates(whereAt: whereAt, containerSize: containerSize, portalPosition: portalPosition, zoomScale: zoomScale)
 
-        if let payload = payload {
+        if let audioUnit {
             // Create a proper effect node with typed input/output ports
-            let node = NodeBase(text: payload.name, position: p, payload: payload, role: .effect)
+            let payload = Payload(
+                kind: .appleAudioUnit,
+                title: audioUnit.name,
+                fields: [
+                    PayloadField("manufacturer", value: audioUnit.protoType?.mfg ?? "Unknown"),
+                    PayloadField("audioUnitType", value: String(describing: audioUnit.audioUnitType.rawValue)),
+                ]
+            )
+            let node = NodeBase(text: audioUnit.name, position: p, payload: payload, role: .effect)
             node.addPort(port: PortBase(node: node, name: "In",  portType: .input))
             node.addPort(port: PortBase(node: node, name: "Out", portType: .output))
+            mesh.registerRuntime(audioUnit, for: payload)
             mesh.addNode(node)   // won't add a default port since ports already exist
         } else {
-            // Generic placeholder node
-            let node = NodeBase(text: "Node", position: p, payload: nil, role: .generic)
-            mesh.addNode(node)
+            addGenericNode(mesh: mesh,
+                           whereAt: whereAt,
+                           containerSize: containerSize,
+                           portalPosition: portalPosition,
+                           zoomScale: zoomScale)
         }
+    }
+
+    func addGenericNode(mesh: Mesh,
+                        whereAt: CGPoint,
+                        containerSize: CGSize,
+                        portalPosition: CGPoint,
+                        zoomScale: CGFloat) {
+        let p = mesh.meshCoordinates(whereAt: whereAt,
+                                     containerSize: containerSize,
+                                     portalPosition: portalPosition,
+                                     zoomScale: zoomScale)
+        let payload = Payload(title: "Payload")
+        let node = NodeBase(text: payload.title, position: p, payload: payload, role: .generic)
+        mesh.addNode(node)
     }
 
     func pointerCallback(_ point: NSPoint, bounds: CGRect) {

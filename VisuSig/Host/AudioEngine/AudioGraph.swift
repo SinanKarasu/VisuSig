@@ -26,6 +26,7 @@ class AudioGraph: Mesh {
     var hasLoadedAudioFile: Bool { audioFile != nil }
     private(set) var hasPlayableRoute = false
     var canTogglePlayback: Bool { isPlaying || (hasLoadedAudioFile && hasPlayableRoute) }
+    private var telemetryTapNodes: [AVAudioNode] = []
 
     // MARK: - Init
 
@@ -69,7 +70,7 @@ class AudioGraph: Mesh {
     override func deleteNodes(_ nodesToDelete: [NodeBase]) {
         // Detach AV units before removing their nodes
         for node in nodesToDelete {
-            if let avUnit = node.payload?.avAudioUnit, avUnit.engine != nil {
+            if let avUnit = managedAudioUnit(for: node)?.avAudioUnit, avUnit.engine != nil {
                 engine.detach(avUnit)
             }
         }
@@ -125,19 +126,20 @@ class AudioGraph: Mesh {
         let wasPlaying = isPlaying
         if wasPlaying { stopPlayingInternal() }
 
-        // Step 1: Disconnect the player's output so we can re-route it.
+        // Step 1: Remove telemetry taps and disconnect the player's output so we can re-route it.
+        removeTelemetryTaps()
         engine.disconnectNodeOutput(player)
 
         // Step 2: Detach all currently-attached effect units.
         for node in nodes {
-            if let avUnit = node.payload?.avAudioUnit, avUnit.engine != nil {
+            if let avUnit = managedAudioUnit(for: node)?.avAudioUnit, avUnit.engine != nil {
                 engine.detach(avUnit)   // also severs that node's connections
             }
         }
 
         // Step 3: Re-attach every effect node that is in the current mesh.
         for node in nodes where node.nodeRole == .effect {
-            if let avUnit = node.payload?.avAudioUnit {
+            if let avUnit = managedAudioUnit(for: node)?.avAudioUnit {
                 engine.attach(avUnit)
             }
         }
@@ -168,9 +170,65 @@ class AudioGraph: Mesh {
         let hwFormat = engine.outputNode.outputFormat(forBus: 0)
         engine.connect(engine.mainMixerNode, to: engine.outputNode, format: hwFormat)
 
+        installTelemetryTaps(format: format)
         engine.prepare()
         // Only restart playback if a complete chain was established.
         if wasPlaying && hasValidChain { startPlayingInternal() }
+    }
+
+    // MARK: - Edge telemetry
+
+    private func installTelemetryTaps(format: AVAudioFormat) {
+        var edgesByNode: [ObjectIdentifier: (node: AVAudioNode, edges: [EdgeBase])] = [:]
+
+        for edge in edges {
+            guard let connection = normalizedConnection(for: edge),
+                  let audioNode = avAudioNodeFor(connection.from.node) else { continue }
+            let key = ObjectIdentifier(audioNode)
+            if edgesByNode[key] == nil {
+                edgesByNode[key] = (audioNode, [])
+            }
+            edgesByNode[key]?.edges.append(edge)
+        }
+
+        for entry in edgesByNode.values {
+            let observedEdges = entry.edges
+            entry.node.installTap(onBus: 0, bufferSize: 1_024, format: format) { buffer, _ in
+                guard let channel = buffer.floatChannelData?.pointee else { return }
+                let frameCount = Int(buffer.frameLength)
+                guard frameCount > 0 else { return }
+
+                var squaredSum: Float = 0
+                var zeroCrossings = 0
+                var previous = channel[0]
+                for index in 0 ..< frameCount {
+                    let sample = channel[index]
+                    squaredSum += sample * sample
+                    if (sample >= 0) != (previous >= 0) {
+                        zeroCrossings += 1
+                    }
+                    previous = sample
+                }
+
+                let rms = sqrt(Double(squaredSum) / Double(frameCount))
+                let frequency = Double(zeroCrossings) * buffer.format.sampleRate
+                    / (2 * Double(frameCount))
+
+                DispatchQueue.main.async {
+                    for edge in observedEdges {
+                        edge.publishTelemetry(voltage: rms, frequency: frequency)
+                    }
+                }
+            }
+            telemetryTapNodes.append(entry.node)
+        }
+    }
+
+    private func removeTelemetryTaps() {
+        for node in telemetryTapNodes {
+            node.removeTap(onBus: 0)
+        }
+        telemetryTapNodes.removeAll()
     }
 
     // MARK: - Chain building
@@ -230,8 +288,12 @@ class AudioGraph: Mesh {
         switch node.nodeRole {
         case .source:  return player
         case .output:  return engine.mainMixerNode
-        case .effect:  return node.payload?.avAudioUnit
+        case .effect:  return managedAudioUnit(for: node)?.avAudioUnit
         case .generic: return nil
         }
+    }
+
+    private func managedAudioUnit(for node: NodeBase) -> AUManagedUnit? {
+        runtime(for: node, as: AUManagedUnit.self)
     }
 }

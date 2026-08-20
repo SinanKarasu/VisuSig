@@ -19,8 +19,8 @@ final class PluginWindowController: NSWindowController, NSWindowDelegate {
     // ── Public factory ───────────────────────────────────────────────────
 
     /// Call this from NodeView to open (or bring forward) the plugin window.
-    static func open(for node: NodeBase) {
-        guard let payload = node.payload else { return }
+    static func open(for node: NodeBase, in mesh: Mesh) {
+        guard let payload = mesh.runtime(for: node, as: AUManagedUnit.self) else { return }
 
         // If a window for this node is already open, just bring it forward.
         if let existing = openWindows.first(where: { $0.nodeID == node.id }) {

@@ -9,12 +9,20 @@ extension Mesh {
         let graph = AudioGraph()
 
         // --- Source node (audio file player) ---
-        let source = NodeBase(text: "Audio Source", position: CGPoint(x: 0, y: -220), payload: nil, role: .source)
+        let sourcePayload = Payload(kind: .appleAudioEndpoint, title: "🎵 Audio Source")
+        let source = NodeBase(text: "Audio Source",
+                              position: CGPoint(x: 0, y: -220),
+                              payload: sourcePayload,
+                              role: .source)
         source.addPort(port: PortBase(node: source, name: "Out", portType: .output))
         graph.nodes.append(source)   // bypass addNode to avoid auto-port addition
 
         // --- Output node (hardware output) ---
-        let output = NodeBase(text: "Output", position: CGPoint(x: 0, y: 220), payload: nil, role: .output)
+        let outputPayload = Payload(kind: .appleAudioEndpoint, title: "🔊 Output")
+        let output = NodeBase(text: "Output",
+                              position: CGPoint(x: 0, y: 220),
+                              payload: outputPayload,
+                              role: .output)
         output.addPort(port: PortBase(node: output, name: "In", portType: .input))
         graph.nodes.append(output)
 

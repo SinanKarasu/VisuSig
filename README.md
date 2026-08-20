@@ -1,58 +1,121 @@
 # VisuSig
 
-An experiment in building a DAW (Digital Audio Workstation) using a **visual node graph** as its core paradigm.
+VisuSig is a payload-oriented visual workbench. A visual node carries durable,
+serializable domain content; a live host object is an optional adapter, not the
+meaning of the node.
 
-Instead of a traditional linear timeline, VisuSig lets you construct an audio processing chain by dropping Audio Unit (AU) plugins onto a canvas and connecting their ports with bezier wires. The visual graph *is* the audio graph — wiring two nodes together instantly routes audio through them in `AVAudioEngine`.
+The first payload workspace is an ATLAS authoring experiment:
 
-![Platform](https://img.shields.io/badge/platform-macOS-blue)
-![Swift](https://img.shields.io/badge/swift-5.9-orange)
-![License](https://img.shields.io/badge/license-MIT-green)
+| Statement # | Apply statement | Resource | Target |
+| --- | --- | --- | --- |
+| 100 | `APPLY, DC SIGNAL, VOLTAGE 5 V` | `DC-SUPPLY-3` | `HI R10-HI` |
 
-## Features
+The table is the authoring form. VisuSig derives two projections from it:
 
-- **AU Plugin Browser** — lists all installed Audio Unit effects on the system
-- **Node Canvas** — drag AU plugins onto the canvas; they appear as colour-coded nodes (blue = source, purple = effect, green = output)
-- **Bezier Wiring** — drag from an output port to an input port to route audio; delete a wire to break the connection
-- **Live Audio Routing** — `AVAudioEngine` is rebuilt automatically whenever the graph changes
-- **Native Plugin GUIs** — right-click any effect node → *Open Plugin UI* to open the AU's own interface in a floating, non-modal window
-- **Audio File Loading** — load any `.aif`, `.wav`, `.mp3`, `.m4a`, or `.caf` file into the Source node; loops continuously while playing
+1. numbered ATLAS source;
+2. a read-only execution-order graph.
 
-## Architecture
+The existing Apple Audio Unit host remains available as a second workspace. It
+now uses the same payload boundary instead of defining the graph model.
 
-The central insight is that `AudioGraph` subclasses `Mesh` (the visual graph model), overriding `connect`, `removeEdge`, and `deleteNodes` to rebuild the `AVAudioEngine` chain whenever the user changes the wiring. There is no separate "audio model" — the canvas *is* the audio routing table.
+## Why this boundary matters
 
+The old model stored an `AUManagedUnit` directly in every node. That made an
+Apple runtime object the graph's content model and pulled AVFoundation into the
+otherwise reusable visual layer.
+
+The revised model separates three concerns:
+
+```text
+Authoring form                       Durable visual model
+ATLAS statement rows  ----------->  Payload -> NodeBase -> Mesh
+         |                                      |
+         +----> ATLAS text                      +----> graph projection
+
+Optional runtime adapter
+Payload ID -> PayloadRuntimeStore -> AUManagedUnit -> AudioGraph/AVAudioEngine
 ```
-AudioGraph (AVAudioEngine host)
-  └── Mesh (visual node/edge model)
-        ├── NodeBase  (canvas node + NodeRole: source | effect | output)
-        ├── PortBase  (typed port: input | output)
-        └── EdgeBase  (visual wire → AVAudioEngine connection)
+
+- `Payload` is Codable and consists of an open kind, a title, and textual
+  fields. New domains do not require another case in VisualMesh.
+- `NodeBase` stores `Payload?` and has no AVFoundation dependency.
+- `PayloadRuntimeStore` holds ephemeral, framework-specific host objects by
+  payload identity. Runtime objects are never serialized.
+- `AudioGraph` asks its `Mesh` for an `AUManagedUnit` only at the audio adapter
+  boundary.
+
+This keeps VisuSig usable for ATLAS, a future Resource Manager inspection
+surface, and other payloads without pretending they are audio plugins.
+
+## ATLAS first cut
+
+`AtlasStatementRow` deliberately preserves the four proposed columns. The
+emitter validates statement numbers, the `APPLY` verb, required resources and
+targets, duplicate numbers, and produces source such as:
+
+```atlas
+ 000001 BEGIN, ATLAS PROGRAM 'VISUSIG-PAYLOAD' $
+ 000010 COMMENCE, MAIN PROCEDURE $
+ 000100 APPLY, DC SIGNAL USING 'DC-SUPPLY-3', VOLTAGE 5 V, CNX HI R10-HI $
+ 999999 TERMINATE, ATLAS PROGRAM 'VISUSIG-PAYLOAD' $
 ```
 
-## Requirements
+This emitter is a proof of the authoring transformation, not a second ATLAS
+compiler. It supports this narrow `APPLY` row shape. Grammar parsing, semantic
+lowering to `TestIR`, resource matching, routing, and execution belong in
+AtlasConcept and TPS WorkShop.
 
-- macOS 15 Sequoia or later
-- Xcode 15 or later
-- Apple Silicon or Intel Mac
+In particular, the graph shown beside the table is a projection. Moving or
+editing its nodes must not silently create a second program representation.
 
-## Getting Started
+## Audio Unit workspace
 
-1. Clone the repo
-2. Open `VisuSig.xcodeproj` in Xcode
-3. Select the *VisuSig* scheme and run on *My Mac*
-4. Click **Load Audio...** and choose an audio file
-5. Drop an AU effect from the browser on the left onto the canvas
-6. Wire: **Source Out → Effect In → Effect Out → Output In**
-7. Hit Play
+The original experiment remains intact as an adapter example:
 
-## Roadmap
+- browse installed Audio Unit effects;
+- connect typed source, effect, and output nodes;
+- rebuild an `AVAudioEngine` route when wiring changes;
+- open native plugin interfaces;
+- load and loop common audio file formats.
 
-- [ ] iPadOS port (touch-first wiring, AUv3 support)
-- [ ] visionOS port (spatial node canvas)
-- [ ] Instrument nodes (MIDI input → AU instrument → effects chain)
-- [ ] Save / restore graph state
-- [ ] Multiple audio sources and parallel chains
-- [ ] Parameter automation via node handles
+Audio nodes carry a serializable descriptor payload. Their live
+`AUManagedUnit` instances reside in the runtime store.
+
+## Build and checks
+
+Requirements: macOS 15 or later and Xcode.
+
+```sh
+xcodebuild -project VisuSig.xcodeproj \
+  -scheme VisuSig \
+  -configuration Debug \
+  -destination 'platform=macOS' \
+  build CODE_SIGNING_ALLOWED=NO
+
+xcrun swiftc \
+  VisuSig/Payload/Payload.swift \
+  VisuSig/Payload/AtlasStatementPayload.swift \
+  Tests/PayloadModelChecks.swift \
+  -o /tmp/VisuSigPayloadChecks
+/tmp/VisuSigPayloadChecks
+```
+
+## Next seam to build
+
+The useful integration is not more ATLAS text generation. It is an interchange
+boundary from the table row to AtlasConcept:
+
+1. expand the authoring record beyond `APPLY` without storing opaque ATLAS
+   fragments as the semantic model;
+2. lower the record to the same typed intent used by AtlasConcept's `TestIR`;
+3. ask the Resource Manager for candidate capabilities and preserve rejection
+   reasons;
+4. project selected resources, bound ports, proposed routes, ownership, and
+   release into inspectable VisuSig payloads;
+5. add JSON/CSV import and export only after that record has a stable schema.
+
+That path makes VisuSig an explanatory surface for TPS WorkShop rather than a
+competing implementation of the ATLAS or TEDL standards.
 
 ## License
 

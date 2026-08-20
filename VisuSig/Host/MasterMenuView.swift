@@ -8,10 +8,54 @@
 import SwiftUI
 
 struct MasterMenuView: View {
-    @State var audioUnitComponents = AudioUnitComponents()
+    enum Workspace: String, CaseIterable, Identifiable {
+        case payload = "Payload"
+        case audioUnits = "Audio Units"
 
-    /// The visual mesh IS the AudioGraph — one object drives both the node canvas and the audio engine.
-    @State var audioGraph: AudioGraph = Mesh.sampleMesh() as! AudioGraph
+        var id: Self { self }
+    }
+
+    @State private var workspace: Workspace = .payload
+
+    var body: some View {
+        VStack(spacing: 0) {
+            HStack {
+                Text("VisuSig")
+                    .font(.headline)
+                Picker("Workspace", selection: $workspace) {
+                    ForEach(Workspace.allCases) { workspace in
+                        Text(workspace.rawValue).tag(workspace)
+                    }
+                }
+                .pickerStyle(.segmented)
+                .frame(width: 280)
+                Spacer()
+                Text(workspace == .payload
+                     ? "Payloads are durable; runtimes are adapters."
+                     : "Apple Audio Units through the Payload adapter.")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
+            .padding(.horizontal, 12)
+            .frame(height: 44)
+            .background(.bar)
+
+            switch workspace {
+            case .payload:
+                PayloadWorkbenchView()
+            case .audioUnits:
+                AudioUnitWorkspaceView()
+            }
+        }
+        .frame(minWidth: 1100, minHeight: 720)
+    }
+}
+
+struct AudioUnitWorkspaceView: View {
+    @State private var audioUnitComponents = AudioUnitComponents()
+
+    /// AudioGraph remains an adapter over the domain-neutral visual mesh.
+    @State private var audioGraph: AudioGraph = Mesh.sampleMesh() as! AudioGraph
 
     var body: some View {
         GeometryReader { _ in

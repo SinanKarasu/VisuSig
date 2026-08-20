@@ -44,7 +44,31 @@ struct LayeredWire: View {
                     )
                     .contentShape(wirePath)
                     .contextMenu {
-                        Button("Delete Wire") {
+                        Button("Attach Oscilloscope", systemImage: "waveform.path.ecg") {
+                            cubicBezierData.edge.attach(VirtualOscilloscope())
+                        }
+                        .disabled(cubicBezierData.edge.signalPayload.instruments.contains {
+                            $0 is VirtualOscilloscope
+                        })
+
+                        Button("Attach Spectrum Analyzer", systemImage: "chart.bar.xaxis") {
+                            cubicBezierData.edge.attach(VirtualSpectrumAnalyzer())
+                        }
+                        .disabled(cubicBezierData.edge.signalPayload.instruments.contains {
+                            $0 is VirtualSpectrumAnalyzer
+                        })
+
+                        if !cubicBezierData.edge.signalPayload.instruments.isEmpty {
+                            Divider()
+                            ForEach(cubicBezierData.edge.signalPayload.instruments, id: \.id) { instrument in
+                                Button("Detach \(instrument.instrumentName)") {
+                                    cubicBezierData.edge.detachInstrument(id: instrument.id)
+                                }
+                            }
+                        }
+
+                        Divider()
+                        Button("Delete Wire", role: .destructive) {
                             Mesh.deleteEdge(edge: cubicBezierData.edge)
                         }
                     }

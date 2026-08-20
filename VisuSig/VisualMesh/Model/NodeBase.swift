@@ -1,5 +1,4 @@
 import SwiftUI
-import AVFoundation
 
 enum NodeRole: String, Codable {
     case source   // Audio file player — feeds the chain
@@ -14,10 +13,13 @@ class NodeBase: Identifiable {
     var text: String = "Node"
     var position: CGPoint = .zero
     var ports = [PortBase]()
-    var payload: AUManagedUnit?
+    var payload: Payload?
     var nodeRole: NodeRole = .generic
 
-    init(text: String = "", position: CGPoint = .zero, payload: AUManagedUnit?, role: NodeRole = .generic) {
+    init(text: String = "",
+         position: CGPoint = .zero,
+         payload: Payload? = nil,
+         role: NodeRole = .generic) {
         self.position = position
         self.text = text
         self.payload = payload
@@ -28,6 +30,7 @@ class NodeBase: Identifiable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         text = try container.decode(String.self, forKey: .text)
         position = try container.decode(CGPoint.self, forKey: .position)
+        payload = try? container.decode(Payload.self, forKey: .payload)
         nodeRole = (try? container.decode(NodeRole.self, forKey: .nodeRole)) ?? .generic
     }
 
@@ -51,6 +54,7 @@ extension NodeBase: Codable {
         case id
         case position
         case text
+        case payload
         case nodeRole
     }
 
@@ -58,6 +62,7 @@ extension NodeBase: Codable {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(text, forKey: .text)
         try container.encode(position, forKey: .position)
+        try container.encodeIfPresent(payload, forKey: .payload)
         try container.encode(nodeRole, forKey: .nodeRole)
     }
 }
@@ -109,32 +114,38 @@ extension NodeBase {
                 .lineLimit(2)
                 .multilineTextAlignment(.center)
             if nodeRole == .generic {
-                Text(String(format: "%.0f, %.0f", position.x, position.y))
+                Text(payloadSummary ?? String(format: "%.0f, %.0f", position.x, position.y))
                     .font(.system(size: 9))
                     .foregroundColor(.white.opacity(0.7))
+                    .lineLimit(1)
             }
         }
         .padding(.horizontal, 8)
     }
 
     private var displayName: String {
+        if let payload {
+            return payload.title
+        }
         switch nodeRole {
         case .source: return "🎵 " + (text.isEmpty ? "Audio Source" : text)
         case .output: return "🔊 Output"
-        case .effect: return payload?.name ?? text
+        case .effect: return text
         case .generic: return text.isEmpty ? "Node" : text
         }
     }
-}
 
-// MARK: - AVAudio helpers
-
-extension NodeBase {
-    var avAudioUnit: AVAudioUnit? {
-        payload?.avAudioUnit
+    private var payloadSummary: String? {
+        guard let payload else { return nil }
+        if payload.kind == .atlasStatement {
+            let resource = payload[field: "resource"] ?? "?"
+            let target = payload[field: "target"] ?? "?"
+            return "\(resource) → \(target)"
+        }
+        return payload.kind.rawValue
     }
 
     var visualID: String {
-        return id.uuidString + "\(text.hashValue)\(nodeRole.rawValue)"
+        id.uuidString + "\(text.hashValue)\(nodeRole.rawValue)\(payload?.id.uuidString ?? "")"
     }
 }

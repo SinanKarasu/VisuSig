@@ -6,7 +6,7 @@ struct MapView: View {
 
     var body: some View {
         ZStack {
-            NodeMapView(selection: selection, nodes: mesh.nodes)
+            NodeMapView(selection: selection, mesh: mesh)
             EdgeMapView(selection: selection, edges: mesh.edges)
         }
     }
