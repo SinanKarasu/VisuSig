@@ -528,7 +528,7 @@
 			);
 			mainGroup = F7C809B9279B299200982843;
 			packageReferences = (
-				F70D8E2B303771030031CC3C /* XCLocalSwiftPackageReference "Packages/VisualMesh" */,
+				F70D8E2B303771030031CC3C /* XCLocalSwiftPackageReference "../../Packages/VisualMesh" */,
 			);
 			productRefGroup = F7C809C3279B299200982843 /* Products */;
 			projectDirPath = "";
@@ -839,9 +839,9 @@
 /* End XCConfigurationList section */
 
 /* Begin XCLocalSwiftPackageReference section */
-		F70D8E2B303771030031CC3C /* XCLocalSwiftPackageReference "Packages/VisualMesh" */ = {
+		F70D8E2B303771030031CC3C /* XCLocalSwiftPackageReference "../../Packages/VisualMesh" */ = {
 			isa = XCLocalSwiftPackageReference;
-			relativePath = Packages/VisualMesh;
+			relativePath = ../../Packages/VisualMesh;
 		};
 /* End XCLocalSwiftPackageReference section */
 

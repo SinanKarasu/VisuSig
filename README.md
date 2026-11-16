@@ -18,6 +18,29 @@ The table is the authoring form. VisuSig derives two projections from it:
 The existing Apple Audio Unit host remains available as a second workspace. It
 now uses the same payload boundary instead of defining the graph model.
 
+## Hierarchical VisualMesh
+
+The authoritative VisualMesh package lives at
+`/Volumes/GitHubDeveloper/Packages/VisualMesh`. VisuSig and AtlasConcept both
+consume that package; VisuSig no longer carries a private package copy.
+
+The Hierarchy workspace adds reusable subgraph definitions without putting a
+second `Mesh` inside a node payload. A definition owns its internal graph,
+declared interface ports, and boundary-to-interior net mappings. An instance is
+a lightweight graph node with its own designator and port identities that
+references the definition.
+
+The working example reconstructs `RESSIP9` from the historical WITS `tc3.sf`:
+the nine resistors are stored once, while U100 and U101 are independently
+wired instances. Expanding either box renders the shared definition and the
+original `CONNECT:` boundary map. Additional instances can be created from the
+definition library and combined through their boundary ports.
+
+This mirrors the useful distinctions in WITS PACKs, TEDL device models and
+configured devices, and IEEE 1671 description/instance documents with ATML
+interfaces and network lists. See [Docs/HIERARCHY.md](Docs/HIERARCHY.md) for
+the complete mapping and invariants.
+
 ## Why this boundary matters
 
 The old model stored an `AUManagedUnit` directly in every node. That made an
@@ -98,6 +121,8 @@ xcrun swiftc \
   Tests/PayloadModelChecks.swift \
   -o /tmp/VisuSigPayloadChecks
 /tmp/VisuSigPayloadChecks
+
+swift test --package-path ../../Packages/VisualMesh
 ```
 
 ## Next seam to build
