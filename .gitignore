@@ -1,2 +1,7 @@
 .build/
 .swiftpm/
+
+# Xcode per-user state (scheme order, breakpoints, window layout)
+xcuserdata/
+*.xcuserstate
+.DS_Store
