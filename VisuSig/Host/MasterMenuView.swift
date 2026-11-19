@@ -8,6 +8,7 @@
 import SwiftUI
 import VisualMesh
 import VisualMeshExamples
+import VisualMeshUI
 
 struct MasterMenuView: View {
     enum Workspace: String, CaseIterable, Identifiable {
@@ -453,33 +454,147 @@ private struct HierarchyWorkbenchView: View {
 struct AudioUnitWorkspaceView: View {
     @State private var audioUnitComponents = AudioUnitComponents()
 
-    /// AudioGraph remains an adapter over the domain-neutral visual mesh.
-    @State private var audioGraph: AudioGraph = Mesh.sampleMesh() as! AudioGraph
+    /// AudioGraph is an adapter over the domain-neutral VisualMesh graph.
+    @State private var audioGraph = AudioGraph.makeDefault()
+    @State private var canvasState = MeshCanvasState()
+
+    @State private var isChoosingEffect = false
+    @State private var chosenEffectIndex = -1
+    @State private var effectInsertPoint: CGPoint = .zero
+    @State private var connectionError: String?
 
     var body: some View {
-        GeometryReader { _ in
-            VStack(spacing: 0) {
+        VStack(spacing: 0) {
 
-                // ── Transport bar ──────────────────────────────────────
-                SiKPlayerView(audioGraph: audioGraph) { url in
-                    audioUnitComponents.setPreviewAudioFile(url: url)
-                }
-                    .frame(height: 60)
-                    .background(Color.black.opacity(0.85))
-
-                // ── Node graph canvas ──────────────────────────────────
-                SurfaceView(mesh: audioGraph, audioUnitComponents: audioUnitComponents)
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-
-                // ── AU preview panel (for auditioning individual effects) ──
-                Divider()
-                EffectsMenuSplitView(audioUnitComponents: audioUnitComponents)
-                    .frame(height: 280)
+            // ── Transport bar ──────────────────────────────────────
+            SiKPlayerView(audioGraph: audioGraph) { url in
+                audioUnitComponents.setPreviewAudioFile(url: url)
             }
-            .onAppear {
-                if let url = audioGraph.audioFileURL {
-                    audioUnitComponents.setPreviewAudioFile(url: url)
+                .frame(height: 60)
+                .background(Color.black.opacity(0.85))
+
+            // ── Node graph canvas ──────────────────────────────────
+            canvas
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .overlay(alignment: .top) {
+                    if let connectionError {
+                        Label(connectionError, systemImage: "exclamationmark.triangle.fill")
+                            .font(.caption)
+                            .padding(.horizontal, 10)
+                            .padding(.vertical, 5)
+                            .background(.regularMaterial, in: Capsule())
+                            .padding(8)
+                    }
                 }
+
+            // ── AU preview panel (for auditioning individual effects) ──
+            Divider()
+            EffectsMenuSplitView(audioUnitComponents: audioUnitComponents)
+                .frame(height: 280)
+        }
+        .onAppear {
+            if let url = audioGraph.audioFileURL {
+                audioUnitComponents.setPreviewAudioFile(url: url)
+            }
+        }
+        .sheet(isPresented: $isChoosingEffect, onDismiss: insertChosenEffect) {
+            ComponentTableView(selectedIndex: $chosenEffectIndex,
+                               audioUnitComponents: audioUnitComponents)
+                .frame(minWidth: 800, minHeight: 400)
+        }
+    }
+
+    private var canvas: some View {
+        MeshCanvas(mesh: audioGraph.mesh, layout: audioGraph.layout, state: canvasState) { node in
+            Text(node.payload.title)
+        }
+        .nodeTint { node in tint(for: audioGraph.role(of: node)) }
+        .nodeContextMenu { node in
+            if let unit = audioGraph.managedAudioUnit(for: node) {
+                Button("Open Plugin UI") {
+                    PluginWindowController.open(nodeID: node.id, title: node.title, unit: unit)
+                }
+                Divider()
+                Button("Add Input Port") { audioGraph.addPort(to: node.id, direction: .input) }
+                Button("Add Output Port") { audioGraph.addPort(to: node.id, direction: .output) }
+                Divider()
+            }
+            Button("Delete Node", role: .destructive) { delete(nodeIDs: [node.id], edgeID: nil) }
+        }
+        .edgeContextMenu { edge in
+            if let signal = audioGraph.signal(for: edge.id) {
+                SignalInstrumentMenuItems(payload: signal)
+                Divider()
+            }
+            Button("Delete Wire", role: .destructive) { delete(nodeIDs: [], edgeID: edge.id) }
+        }
+        .edgeAccessory { edge -> SignalInstrumentPanel? in
+            guard let signal = audioGraph.signal(for: edge.id), !signal.instruments.isEmpty else { return nil }
+            return SignalInstrumentPanel(payload: signal)
+        }
+        .canvasContextMenu { location in
+            Button {
+                effectInsertPoint = location.meshPoint
+                isChoosingEffect = true
+            } label: {
+                Label("Add Audio Effect Node", systemImage: "waveform.circle")
+            }
+            Button {
+                audioGraph.addGenericNode(at: location.meshPoint)
+            } label: {
+                Label("Add Generic Payload Node", systemImage: "shippingbox")
+            }
+        }
+        .onConnect { source, target in
+            do {
+                try audioGraph.connect(source: source, target: target)
+                connectionError = nil
+            } catch {
+                connectionError = "Can't connect those ports: \(error)"
+            }
+        }
+        .onDeleteSelection { nodeIDs, edgeID in
+            delete(nodeIDs: nodeIDs, edgeID: edgeID)
+        }
+    }
+
+    private func tint(for role: AudioNodeRole) -> Color {
+        switch role {
+        case .source: return Color(red: 0.18, green: 0.46, blue: 0.90)
+        case .effect: return Color(red: 0.55, green: 0.22, blue: 0.80)
+        case .output: return Color(red: 0.15, green: 0.65, blue: 0.40)
+        case .generic: return Color(red: 0.35, green: 0.35, blue: 0.40)
+        }
+    }
+
+    private func delete(nodeIDs: Set<UUID>, edgeID: UUID?) {
+        var removedEdges = Set(audioGraph.mesh.edges
+            .filter { nodeIDs.contains($0.sourceNodeID) || nodeIDs.contains($0.targetNodeID) }
+            .map(\.id))
+        if let edgeID {
+            audioGraph.removeEdge(id: edgeID)
+            removedEdges.insert(edgeID)
+        }
+        if !nodeIDs.isEmpty {
+            audioGraph.removeNodes(nodeIDs)
+        }
+        canvasState.forget(nodeIDs: nodeIDs, edgeIDs: removedEdges)
+    }
+
+    private func insertChosenEffect() {
+        let components = audioUnitComponents.audioUnitComponents
+        guard components.indices.contains(chosenEffectIndex) else { return }
+        let component = components[chosenEffectIndex]
+        let point = effectInsertPoint
+        chosenEffectIndex = -1
+        component.instantiateComponent { result in
+            switch result {
+            case .success(let unit?):
+                audioGraph.addEffect(unit, at: point)
+            case .success(nil):
+                logger.log("Audio unit component has no instantiable unit")
+            case .failure(let error):
+                logger.log("Unable to select audio unit: \(String(describing: error))")
             }
         }
     }

@@ -61,7 +61,7 @@ struct ComponentTableView: View {
     ]
 
     var audioUnitComponents: AudioUnitComponents
-    var selectionHandler: SelectionHandler
+    @Environment(\.dismiss) private var dismiss
 
     var selectedUnit: String {
         guard let selection = selection else {
@@ -86,11 +86,12 @@ struct ComponentTableView: View {
             HStack {
                 Text("SELECTION: ").foregroundColor(.red) + Text(selectedUnit)
                 Button("Choose") {
-                    self.selectionHandler.showShapes = false
                     selectedIndex = audioUnitComponents.audioUnitComponents.firstIndex(of: selectedComponent)!
+                    dismiss()
                 }
+                .disabled(selection == nil)
                 Button("Cancel") {
-                    self.selectionHandler.showShapes = false
+                    dismiss()
                 }
             }
 
@@ -153,6 +154,6 @@ struct ComponentTableView: View {
 //    @State static var audioUnitComponents = AudioUnitComponents()
 //
 //    static var previews: some View {
-//        ComponentTableView(audioUnitComponents: audioUnitComponents, selectionHandler: SelectionHandler())
+//        ComponentTableView(selectedIndex: $selectedIndex, audioUnitComponents: audioUnitComponents)
 //    }
 // }

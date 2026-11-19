@@ -18,12 +18,10 @@ final class PluginWindowController: NSWindowController, NSWindowDelegate {
 
     // ── Public factory ───────────────────────────────────────────────────
 
-    /// Call this from NodeView to open (or bring forward) the plugin window.
-    static func open(for node: NodeBase, in mesh: Mesh) {
-        guard let payload = mesh.runtime(for: node, as: AUManagedUnit.self) else { return }
-
+    /// Opens (or brings forward) the plugin window for a graph node.
+    static func open(nodeID: UUID, title: String, unit payload: AUManagedUnit) {
         // If a window for this node is already open, just bring it forward.
-        if let existing = openWindows.first(where: { $0.nodeID == node.id }) {
+        if let existing = openWindows.first(where: { $0.nodeID == nodeID }) {
             existing.showWindow(nil)
             return
         }
@@ -31,7 +29,7 @@ final class PluginWindowController: NSWindowController, NSWindowDelegate {
         // Load the AU view controller, then show the window on the main thread.
         payload.loadAudioUnitViewController { vc in
             payload.setController(controller: vc)
-            let controller = PluginWindowController(node: node, payload: payload)
+            let controller = PluginWindowController(nodeID: nodeID, title: title, payload: payload)
             controller.showWindow(nil)
         }
     }
@@ -41,8 +39,8 @@ final class PluginWindowController: NSWindowController, NSWindowDelegate {
 
     // ── Init ─────────────────────────────────────────────────────────────
 
-    private init(node: NodeBase, payload: AUManagedUnit) {
-        self.nodeID = node.id
+    private init(nodeID: UUID, title: String, payload: AUManagedUnit) {
+        self.nodeID = nodeID
 
         // Build the SwiftUI content and wrap it in an NSHostingView.
         let hostingView = NSHostingView(
@@ -57,7 +55,7 @@ final class PluginWindowController: NSWindowController, NSWindowDelegate {
             backing: .buffered,
             defer: false
         )
-        window.title = node.text
+        window.title = title
         window.contentView = hostingView
         window.center()
         window.isReleasedWhenClosed = false   // we manage lifetime ourselves

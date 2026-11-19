@@ -1,4 +1,9 @@
 import SwiftUI
+import VisualMesh
+import VisualMeshUI
+
+/// Edge payload for the read-only execution-order projection.
+struct ExecutionOrder: Hashable, Sendable {}
 
 @Observable
 final class AtlasPayloadWorkbenchModel {
@@ -7,7 +12,9 @@ final class AtlasPayloadWorkbenchModel {
         didSet { rebuildGraph() }
     }
 
-    let mesh = Mesh()
+    /// Rebuilt from `rows` on every edit; the table is the authoring form.
+    private(set) var mesh = Mesh<Payload, ExecutionOrder>()
+    private(set) var layout = MeshLayout2D()
 
     init(rows: [AtlasStatementRow] = AtlasPayloadWorkbenchModel.exampleRows) {
         self.rows = rows
@@ -64,30 +71,32 @@ final class AtlasPayloadWorkbenchModel {
     }
 
     private func rebuildGraph() {
-        mesh.edges.removeAll()
-        mesh.nodes.removeAll()
+        let mesh = Mesh<Payload, ExecutionOrder>()
+        let layout = MeshLayout2D()
 
         let sorted = rows.sorted { $0.statementNumber < $1.statementNumber }
-        var previous: NodeBase?
+        var previous: GraphNode<Payload>?
 
         for (index, row) in sorted.enumerated() {
-            let node = NodeBase(
-                text: row.payload.title,
-                position: CGPoint(x: 0, y: CGFloat(index) * 150 - CGFloat(max(sorted.count - 1, 0)) * 75),
-                payload: row.payload,
-                role: .generic
-            )
-            node.addPort(port: PortBase(node: node, name: "In", portType: .input))
-            node.addPort(port: PortBase(node: node, name: "Next", portType: .output))
+            let input = GraphPort(name: "In", direction: .input)
+            let next = GraphPort(name: "Next", direction: .output)
+            let node = GraphNode(title: row.payload.title, payload: row.payload, ports: [input, next])
             mesh.addNode(node)
+            layout.setPosition(
+                CGPoint(x: 0, y: CGFloat(index) * 150 - CGFloat(max(sorted.count - 1, 0)) * 75),
+                for: node.id
+            )
 
-            if let previous,
-               let output = previous.outputPorts.first,
-               let input = node.inputPorts.first {
-                mesh.connect(output, to: input)
+            if let previous {
+                _ = try? mesh.connect(sourceNodeID: previous.id, sourcePortID: previous.ports[1].id,
+                                      targetNodeID: node.id, targetPortID: input.id,
+                                      payload: ExecutionOrder())
             }
             previous = node
         }
+
+        self.mesh = mesh
+        self.layout = layout
     }
 
     static let exampleRows = [
@@ -104,6 +113,7 @@ final class AtlasPayloadWorkbenchModel {
 
 struct PayloadWorkbenchView: View {
     @State private var model = AtlasPayloadWorkbenchModel()
+    @State private var canvasState = MeshCanvasState()
 
     var body: some View {
         VStack(spacing: 0) {
@@ -128,10 +138,16 @@ struct PayloadWorkbenchView: View {
                         .padding(.horizontal, 12)
                         .padding(.vertical, 8)
                     Divider()
-                    SurfaceView(mesh: model.mesh,
-                                audioUnitComponents: nil,
-                                showsDiagnostics: false,
-                                isReadOnly: true)
+                    MeshCanvas(mesh: model.mesh, layout: model.layout, state: canvasState) { node in
+                        VStack(spacing: 2) {
+                            Text(node.payload.title)
+                            Text("\(node.payload[field: "resource"] ?? "?") → \(node.payload[field: "target"] ?? "?")")
+                                .font(.system(size: 9))
+                                .opacity(0.75)
+                        }
+                    }
+                    .nodeTint { _ in Color(red: 0.08, green: 0.55, blue: 0.62) }
+                    .readOnly()
                 }
                 .frame(minWidth: 420)
             }

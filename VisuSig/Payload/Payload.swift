@@ -15,7 +15,8 @@ struct PayloadKind: RawRepresentable, Codable, Hashable, Sendable {
     static let generic = PayloadKind(rawValue: "visusig.generic")
     static let atlasStatement = PayloadKind(rawValue: "atlas.apply-statement")
     static let appleAudioUnit = PayloadKind(rawValue: "apple.audio-unit")
-    static let appleAudioEndpoint = PayloadKind(rawValue: "apple.audio-endpoint")
+    static let audioFilePlayer = PayloadKind(rawValue: "apple.audio-file-player")
+    static let audioOutput = PayloadKind(rawValue: "apple.audio-output")
 }
 
 /// One inspectable value in a payload. Fields are intentionally textual in

@@ -5,14 +5,39 @@
 //  Created by Sinan Karasu on 7/11/22.
 //
 
-import Foundation
-import AVFoundation
 import AudioToolbox
+import AVFoundation
+import CoreGraphics
+import Foundation
+import VisualMesh
+import VisualMeshUI
 
-/// AudioGraph extends Mesh so the visual node graph IS the audio routing graph.
-/// When the user connects ports visually, AVAudioEngine connections are rebuilt automatically.
+/// Durable description of an audio wire. Live telemetry for a wire is kept by
+/// `AudioGraph`, keyed by the edge's ID, and never stored in the edge.
+struct AudioConnection: Codable, Hashable, Sendable {}
+
+/// How the audio adapter treats a node, derived from its payload kind.
+enum AudioNodeRole {
+    case source   // audio file player that feeds the chain
+    case effect   // Audio Unit effect
+    case output   // hardware output
+    case generic  // carries a payload but no audio
+}
+
+/// Audio-routing adapter over a VisualMesh graph.
+///
+/// `mesh` and `layout` are the model. The engine, player, Audio Units, and
+/// per-edge telemetry are runtime objects, rebuilt from the model after
+/// every edit made through this type.
 @Observable
-class AudioGraph: Mesh {
+final class AudioGraph {
+    typealias GraphMesh = Mesh<Payload, AudioConnection>
+
+    let mesh = GraphMesh()
+    let layout = MeshLayout2D()
+    @ObservationIgnored let runtimes = PayloadRuntimeStore()
+    /// Live telemetry per edge ID.
+    private(set) var signals: [UUID: SignalEdgePayload] = [:]
 
     // MARK: - Audio engine
 
@@ -26,13 +51,116 @@ class AudioGraph: Mesh {
     var hasLoadedAudioFile: Bool { audioFile != nil }
     private(set) var hasPlayableRoute = false
     var canTogglePlayback: Bool { isPlaying || (hasLoadedAudioFile && hasPlayableRoute) }
-    private var telemetryTapNodes: [AVAudioNode] = []
+    @ObservationIgnored private var telemetryTapNodes: [AVAudioNode] = []
 
-    // MARK: - Init
-
-    override init() {
-        super.init()
+    init() {
         engine.attach(player)
+    }
+
+    /// A source and an output, ready to be wired directly or through effects.
+    static func makeDefault() -> AudioGraph {
+        let graph = AudioGraph()
+        graph.addNode(
+            payload: Payload(kind: .audioFilePlayer, title: "Audio Source"),
+            ports: [GraphPort(name: "Out", direction: .output)],
+            at: CGPoint(x: 0, y: -220)
+        )
+        graph.addNode(
+            payload: Payload(kind: .audioOutput, title: "Output"),
+            ports: [GraphPort(name: "In", direction: .input)],
+            at: CGPoint(x: 0, y: 220)
+        )
+        return graph
+    }
+
+    // MARK: - Roles and runtimes
+
+    func role(of node: GraphNode<Payload>) -> AudioNodeRole {
+        switch node.payload.kind {
+        case .audioFilePlayer: return .source
+        case .audioOutput: return .output
+        case .appleAudioUnit: return .effect
+        default: return .generic
+        }
+    }
+
+    func managedAudioUnit(for node: GraphNode<Payload>) -> AUManagedUnit? {
+        runtimes.runtime(for: node.payload.id, as: AUManagedUnit.self)
+    }
+
+    func signal(for edgeID: UUID) -> SignalEdgePayload? {
+        signals[edgeID]
+    }
+
+    // MARK: - Graph editing
+
+    @discardableResult
+    func addNode(payload: Payload, ports: [GraphPort], at position: CGPoint) -> GraphNode<Payload> {
+        let node = GraphNode(title: payload.title, payload: payload, ports: ports)
+        mesh.addNode(node)
+        layout.setPosition(position, for: node.id)
+        return node
+    }
+
+    func addEffect(_ unit: AUManagedUnit, at position: CGPoint) {
+        let payload = Payload(
+            kind: .appleAudioUnit,
+            title: unit.name,
+            fields: [
+                PayloadField("manufacturer", value: unit.protoType?.mfg ?? "Unknown"),
+                PayloadField("audioUnitType", value: String(describing: unit.audioUnitType.rawValue)),
+            ]
+        )
+        runtimes.register(unit, for: payload.id)
+        addNode(payload: payload,
+                ports: [GraphPort(name: "In", direction: .input),
+                        GraphPort(name: "Out", direction: .output)],
+                at: position)
+    }
+
+    func addGenericNode(at position: CGPoint) {
+        addNode(payload: Payload(title: "Payload"),
+                ports: [GraphPort(name: "Port", direction: .output)],
+                at: position)
+    }
+
+    func addPort(to nodeID: UUID, direction: PortDirection) {
+        guard let node = mesh.node(id: nodeID) else { return }
+        let number = node.ports.filter { $0.direction == direction }.count + 1
+        node.ports.append(GraphPort(name: direction == .input ? "In \(number)" : "Out \(number)",
+                                    direction: direction))
+    }
+
+    func connect(source: GraphEndpoint, target: GraphEndpoint) throws {
+        let edge = try mesh.connect(
+            sourceNodeID: source.nodeID, sourcePortID: source.portID,
+            targetNodeID: target.nodeID, targetPortID: target.portID,
+            payload: AudioConnection()
+        )
+        signals[edge.id] = SignalEdgePayload()
+        rebuildConnections()
+    }
+
+    func removeEdge(id: UUID) {
+        mesh.removeEdge(id: id)
+        signals[id] = nil
+        rebuildConnections()
+    }
+
+    func removeNodes(_ nodeIDs: Set<UUID>) {
+        for id in nodeIDs {
+            guard let node = mesh.node(id: id) else { continue }
+            if let avUnit = managedAudioUnit(for: node)?.avAudioUnit, avUnit.engine != nil {
+                engine.detach(avUnit)
+            }
+            for edge in mesh.edges where edge.sourceNodeID == id || edge.targetNodeID == id {
+                signals[edge.id] = nil
+            }
+            runtimes.removeRuntime(for: node.payload.id)
+            mesh.removeNode(id: id)
+            layout.removePosition(for: id)
+        }
+        rebuildConnections()
     }
 
     // MARK: - File loading
@@ -55,29 +183,6 @@ class AudioGraph: Mesh {
         }
     }
 
-    // MARK: - Mesh overrides (trigger audio rebuild on graph changes)
-
-    override func connect(_ parent: PortBase, to child: PortBase) {
-        super.connect(parent, to: child)
-        rebuildConnections()
-    }
-
-    override func removeEdge(edge: EdgeBase) {
-        super.removeEdge(edge: edge)
-        rebuildConnections()
-    }
-
-    override func deleteNodes(_ nodesToDelete: [NodeBase]) {
-        // Detach AV units before removing their nodes
-        for node in nodesToDelete {
-            if let avUnit = managedAudioUnit(for: node)?.avAudioUnit, avUnit.engine != nil {
-                engine.detach(avUnit)
-            }
-        }
-        super.deleteNodes(nodesToDelete)
-        rebuildConnections()
-    }
-
     // MARK: - Playback
 
     func togglePlay() -> Bool {
@@ -88,7 +193,6 @@ class AudioGraph: Mesh {
     func startPlayingInternal() {
         guard !isPlaying, let audioFile, hasPlayableRoute else { return }
 
-        // Connect mainMixer → hardware output
         let hwFormat = engine.outputNode.outputFormat(forBus: 0)
         engine.connect(engine.mainMixerNode, to: engine.outputNode, format: hwFormat)
 
@@ -110,8 +214,6 @@ class AudioGraph: Mesh {
         isPlaying = false
     }
 
-    // MARK: - File loop scheduling
-
     private func scheduleFileLoop(file: AVAudioFile) {
         player.scheduleFile(file, at: nil) { [weak self] in
             guard let self, self.isPlaying else { return }
@@ -121,78 +223,66 @@ class AudioGraph: Mesh {
 
     // MARK: - Connection rebuilding
 
-    /// Tears down all AU connections and rebuilds them from the visual edge graph.
+    /// Tears down all Audio Unit connections and rebuilds them from the graph.
     func rebuildConnections() {
         let wasPlaying = isPlaying
         if wasPlaying { stopPlayingInternal() }
 
-        // Step 1: Remove telemetry taps and disconnect the player's output so we can re-route it.
         removeTelemetryTaps()
         engine.disconnectNodeOutput(player)
 
-        // Step 2: Detach all currently-attached effect units.
-        for node in nodes {
+        for node in mesh.nodes {
             if let avUnit = managedAudioUnit(for: node)?.avAudioUnit, avUnit.engine != nil {
-                engine.detach(avUnit)   // also severs that node's connections
+                engine.detach(avUnit)
             }
         }
-
-        // Step 3: Re-attach every effect node that is in the current mesh.
-        for node in nodes where node.nodeRole == .effect {
+        for node in mesh.nodes where role(of: node) == .effect {
             if let avUnit = managedAudioUnit(for: node)?.avAudioUnit {
                 engine.attach(avUnit)
             }
         }
 
-        // Step 4: Determine audio format from the loaded file (or use a safe default).
-        let format: AVAudioFormat
-        if let file = audioFile {
-            format = file.processingFormat
-        } else {
-            format = AVAudioFormat(standardFormatWithSampleRate: 44100, channels: 2)!
-        }
+        let format = audioFile?.processingFormat
+            ?? AVAudioFormat(standardFormatWithSampleRate: 44100, channels: 2)!
 
-        // Step 5: Walk the visual graph and build AVAudioEngine connections.
         let chain = buildAudioChain()
-        let hasValidChain = chain.count >= 2
-        hasPlayableRoute = hasValidChain
-        if hasValidChain {
+        hasPlayableRoute = chain.count >= 2
+        if hasPlayableRoute {
             for i in 0 ..< chain.count - 1 {
-                guard let fromAV = avAudioNodeFor(chain[i]),
-                      let toAV   = avAudioNodeFor(chain[i + 1]) else { continue }
+                guard let fromAV = avAudioNode(for: chain[i]),
+                      let toAV = avAudioNode(for: chain[i + 1]) else { continue }
                 engine.connect(fromAV, to: toAV, format: format)
             }
         }
-        // If no complete source→output chain exists, leave the player disconnected.
-        // This means audio stops (correctly) when a wire is removed.
+        // Without a complete source → output chain the player stays
+        // disconnected, so audio stops when a wire is removed.
 
-        // Step 6: Always connect mainMixer → hardware output.
         let hwFormat = engine.outputNode.outputFormat(forBus: 0)
         engine.connect(engine.mainMixerNode, to: engine.outputNode, format: hwFormat)
 
         installTelemetryTaps(format: format)
         engine.prepare()
-        // Only restart playback if a complete chain was established.
-        if wasPlaying && hasValidChain { startPlayingInternal() }
+        if wasPlaying && hasPlayableRoute { startPlayingInternal() }
     }
 
     // MARK: - Edge telemetry
 
     private func installTelemetryTaps(format: AVAudioFormat) {
-        var edgesByNode: [ObjectIdentifier: (node: AVAudioNode, edges: [EdgeBase])] = [:]
+        var signalsByNode: [ObjectIdentifier: (node: AVAudioNode, signals: [SignalEdgePayload])] = [:]
 
-        for edge in edges {
-            guard let connection = normalizedConnection(for: edge),
-                  let audioNode = avAudioNodeFor(connection.from.node) else { continue }
+        for edge in mesh.edges {
+            guard let source = mesh.node(id: edge.sourceNodeID),
+                  let audioNode = avAudioNode(for: source),
+                  let signal = signals[edge.id] else { continue }
             let key = ObjectIdentifier(audioNode)
-            if edgesByNode[key] == nil {
-                edgesByNode[key] = (audioNode, [])
+            if signalsByNode[key] == nil {
+                signalsByNode[key] = (audioNode, [])
             }
-            edgesByNode[key]?.edges.append(edge)
+            signalsByNode[key]?.signals.append(signal)
         }
 
-        for entry in edgesByNode.values {
-            let observedEdges = entry.edges
+        for entry in signalsByNode.values {
+            let observed = entry.signals
             entry.node.installTap(onBus: 0, bufferSize: 1_024, format: format) { buffer, _ in
                 guard let channel = buffer.floatChannelData?.pointee else { return }
                 let frameCount = Int(buffer.frameLength)
@@ -215,8 +305,8 @@ class AudioGraph: Mesh {
                     / (2 * Double(frameCount))
 
                 DispatchQueue.main.async {
-                    for edge in observedEdges {
-                        edge.publishTelemetry(voltage: rms, frequency: frequency)
+                    for signal in observed {
+                        signal.publish(voltage: rms, frequency: frequency)
                     }
                 }
             }
@@ -233,67 +323,37 @@ class AudioGraph: Mesh {
 
     // MARK: - Chain building
 
-    /// Walks the visual edges starting from the source node to build an ordered list:
-    ///   [sourceNode, effect1, effect2, ..., outputNode]
-    private func buildAudioChain() -> [NodeBase] {
-        guard let sourceNode = nodes.first(where: { $0.nodeRole == .source }) else { return [] }
+    /// Follows edges from the source node: [source, effect…, output].
+    /// Edges are already oriented source → target by the graph model.
+    private func buildAudioChain() -> [GraphNode<Payload>] {
+        guard let sourceNode = mesh.nodes.first(where: { role(of: $0) == .source }) else { return [] }
 
-        var chain: [NodeBase] = [sourceNode]
+        var chain = [sourceNode]
+        var visited: Set<UUID> = [sourceNode.id]
         var current = sourceNode
-        var visited = Set<UUID>()
-        visited.insert(current.id)
 
-        while true {
-            guard let next = nextNode(after: current) else { break }
-            guard !visited.contains(next.id) else { break }
-
+        while let next = mesh.edges
+            .first(where: { $0.sourceNodeID == current.id })
+            .flatMap({ mesh.node(id: $0.targetNodeID) }),
+            !visited.contains(next.id) {
             visited.insert(next.id)
             chain.append(next)
-            if next.nodeRole == .output { break }
+            if role(of: next) == .output { break }
             current = next
         }
 
-        // Valid only if it starts at source AND ends at output
-        guard chain.first?.nodeRole == .source,
-              chain.last?.nodeRole == .output,
-              chain.count >= 2 else { return [] }
-
+        guard role(of: chain.last!) == .output, chain.count >= 2 else { return [] }
         return chain
     }
 
-    private func nextNode(after current: NodeBase) -> NodeBase? {
-        for edge in edges {
-            guard let connection = normalizedConnection(for: edge) else { continue }
-            if connection.from.node.id == current.id {
-                return connection.to.node
-            }
-        }
-        return nil
-    }
+    // MARK: - Node → AVAudioNode
 
-    private func normalizedConnection(for edge: EdgeBase) -> (from: PortBase, to: PortBase)? {
-        switch (edge.startPort.portType, edge.endPort.portType) {
-        case (.output, .input):
-            return (edge.startPort, edge.endPort)
-        case (.input, .output):
-            return (edge.endPort, edge.startPort)
-        default:
-            return nil
-        }
-    }
-
-    // MARK: - Node → AVAudioNode mapping
-
-    private func avAudioNodeFor(_ node: NodeBase) -> AVAudioNode? {
-        switch node.nodeRole {
-        case .source:  return player
-        case .output:  return engine.mainMixerNode
-        case .effect:  return managedAudioUnit(for: node)?.avAudioUnit
+    private func avAudioNode(for node: GraphNode<Payload>) -> AVAudioNode? {
+        switch role(of: node) {
+        case .source: return player
+        case .output: return engine.mainMixerNode
+        case .effect: return managedAudioUnit(for: node)?.avAudioUnit
         case .generic: return nil
         }
-    }
-
-    private func managedAudioUnit(for node: NodeBase) -> AUManagedUnit? {
-        runtime(for: node, as: AUManagedUnit.self)
     }
 }
