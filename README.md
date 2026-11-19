@@ -20,9 +20,12 @@ now uses the same payload boundary instead of defining the graph model.
 
 ## Hierarchical VisualMesh
 
-The authoritative VisualMesh package lives at
-`/Volumes/GitHubDeveloper/Packages/VisualMesh`. VisuSig and AtlasConcept both
-consume that package; VisuSig no longer carries a private package copy.
+The authoritative VisualMesh package is <https://github.com/SinanKarasu/VisualMesh>, consumed from its `main`
+branch by VisuSig and AtlasConcept. VisuSig has no graph model of its own: the
+Payload, Hierarchy, and Audio Units panels all use the package, and the 2D
+editor is the package's `VisualMeshUI.MeshCanvas`. To edit the package
+alongside VisuSig, drag a local clone into the Xcode workspace; Xcode then
+uses it in place of the GitHub copy.
 
 The Hierarchy workspace adds reusable subgraph definitions without putting a
 second `Mesh` inside a node payload. A definition owns its internal graph,
@@ -122,7 +125,7 @@ xcrun swiftc \
   -o /tmp/VisuSigPayloadChecks
 /tmp/VisuSigPayloadChecks
 
-swift test --package-path ../../Packages/VisualMesh
+swift test --package-path /Volumes/GitHubDeveloper/Packages/VisualMesh
 ```
 
 ## Next seam to build

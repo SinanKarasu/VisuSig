@@ -417,7 +417,7 @@
 			packageReferences = (
 				A30000000000000000000007 /* swift-midi-io */,
 				A30000000000000000000008 /* swift-midi-core */,
-				F70D8E2B303771030031CC3C /* XCLocalSwiftPackageReference "../../../../Packages/VisualMesh/.claude-worktrees/ui" */,
+				F70D8E2B303771030031CC3C /* XCRemoteSwiftPackageReference "VisualMesh" */,
 			);
 			productRefGroup = F7C809C3279B299200982843 /* Products */;
 			projectDirPath = "";
@@ -691,14 +691,15 @@
 		};
 /* End XCConfigurationList section */
 
-/* Begin XCLocalSwiftPackageReference section */
-		F70D8E2B303771030031CC3C /* XCLocalSwiftPackageReference "../../../../Packages/VisualMesh/.claude-worktrees/ui" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = ../../../../Packages/VisualMesh/.claude-worktrees/ui;
-		};
-/* End XCLocalSwiftPackageReference section */
-
 /* Begin XCRemoteSwiftPackageReference section */
+		F70D8E2B303771030031CC3C /* XCRemoteSwiftPackageReference "VisualMesh" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SinanKarasu/VisualMesh";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
 		A30000000000000000000007 /* swift-midi-io */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/orchetect/swift-midi-io";
@@ -714,14 +715,17 @@
 /* Begin XCSwiftPackageProductDependency section */
 		F70D8E2C303771030031CC3C /* VisualMesh */ = {
 			isa = XCSwiftPackageProductDependency;
+			package = F70D8E2B303771030031CC3C /* XCRemoteSwiftPackageReference "VisualMesh" */;
 			productName = VisualMesh;
 		};
 		B10000000000000000000002 /* VisualMeshUI */ = {
 			isa = XCSwiftPackageProductDependency;
+			package = F70D8E2B303771030031CC3C /* XCRemoteSwiftPackageReference "VisualMesh" */;
 			productName = VisualMeshUI;
 		};
 		F70D8E2E303771030031CC3C /* VisualMeshExamples */ = {
 			isa = XCSwiftPackageProductDependency;
+			package = F70D8E2B303771030031CC3C /* XCRemoteSwiftPackageReference "VisualMesh" */;
 			productName = VisualMeshExamples;
 		};
 		A30000000000000000000004 /* SwiftMIDIIO */ = {

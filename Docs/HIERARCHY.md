@@ -1,6 +1,6 @@
 # Hierarchical VisualMesh
 
-The authoritative package is `/Volumes/GitHubDeveloper/Packages/VisualMesh`.
+The authoritative package is <https://github.com/SinanKarasu/VisualMesh> (local clone: `/Volumes/GitHubDeveloper/Packages/VisualMesh`).
 VisuSig is a consumer of that package, as is AtlasConcept's TPS WorkShop.
 
 VisualMesh hierarchy is a definition/instance system with declared boundaries.

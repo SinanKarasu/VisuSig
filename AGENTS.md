@@ -9,7 +9,12 @@ Read README.md and Docs/HIERARCHY.md for the existing payload and hierarchy
 boundaries. Read Docs/DAW.md before changing audio/MIDI routing or DAW behavior.
 
 - Keep durable, serializable graph content separate from live audio runtime objects.
-- Reuse the shared VisualMesh package at ../../Packages/VisualMesh.
+- Reuse the shared VisualMesh package (https://github.com/SinanKarasu/VisualMesh, tracked on `main`).
+  Do not add graph models or graph editors to this app; extend the package.
+  Its products: `VisualMesh` (UI-free core), `VisualMeshUI` (SwiftUI 2D
+  editor), `VisualMeshExamples`. The local clone is
+  /Volumes/GitHubDeveloper/Packages/VisualMesh; drag it into the Xcode
+  workspace to edit the package in place.
 - Keep AVFoundation and Audio Unit runtime dependencies in the audio adapter.
 - Preserve reusable definitions, instance identities, typed ports, and boundary mappings.
 - The intended DAW supports multiple audio and MIDI sources feeding a mixer.
@@ -31,7 +36,7 @@ boundaries. Read Docs/DAW.md before changing audio/MIDI routing or DAW behavior.
 
 ## Build and verification
 
-Run from the repository root. Xcode and the shared VisualMesh package are required.
+Run from the repository root. Xcode is required; it fetches VisualMesh from GitHub.
 
 Build the macOS Debug app:
 
@@ -55,7 +60,7 @@ xcrun swiftc VisuSig/Payload/Payload.swift \
 Run shared package tests when changing VisualMesh:
 
 ```sh
-swift test --package-path ../../Packages/VisualMesh
+swift test --package-path /Volumes/GitHubDeveloper/Packages/VisualMesh
 ```
 
 - Run checks appropriate to the change and report their results.
