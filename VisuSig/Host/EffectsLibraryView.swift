@@ -102,6 +102,8 @@ struct EffectsLibraryView: View {
 struct EffectAuditionView: View {
     var audioUnitComponents: AudioUnitComponents
     var componentID: Component.ID?
+    /// Reports the loaded plug-in's preferred interface size.
+    var onPluginSize: (CGSize) -> Void = { _ in }
 
     private var unit: AUManagedUnit? {
         guard let componentID else { return nil }
@@ -128,13 +130,12 @@ struct EffectAuditionView: View {
 
             Divider()
 
-            if let unit {
-                AUComponentView(auManagedUnit: unit, audioUnitComponents: audioUnitComponents)
+            if let unit, let audioUnit = unit.audioUnit {
+                PluginInterfaceView(audioUnit: audioUnit, onSizeResolved: onPluginSize)
                     .id(unit.id)
                     .task(id: unit.id) {
-                        unit.loadAudioUnitViewController { controller in
-                            unit.setController(controller: controller)
-                        }
+                        // Route the preview player through this effect.
+                        audioUnitComponents.connectComponent(auManagedUnit: unit) { _ in }
                     }
             } else if componentID != nil {
                 ProgressView("Preparing preview…")
@@ -147,5 +148,35 @@ struct EffectAuditionView: View {
                 )
             }
         }
+    }
+}
+
+/// A horizontal divider that resizes the view below it by dragging.
+struct ResizeHandle: View {
+    @Binding var height: CGFloat
+    var range: ClosedRange<CGFloat>
+
+    @State private var dragStart: CGFloat?
+
+    var body: some View {
+        Rectangle()
+            .fill(Color(nsColor: .separatorColor))
+            .frame(height: 1)
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, 3)
+            .contentShape(Rectangle())
+            .onHover { inside in
+                if inside { NSCursor.resizeUpDown.push() } else { NSCursor.pop() }
+            }
+            .gesture(
+                DragGesture(minimumDistance: 1, coordinateSpace: .global)
+                    .onChanged { value in
+                        let start = dragStart ?? height
+                        dragStart = start
+                        height = min(max(start - value.translation.height, range.lowerBound), range.upperBound)
+                    }
+                    .onEnded { _ in dragStart = nil }
+            )
+            .accessibilityLabel("Resize audition area")
     }
 }

@@ -21,9 +21,7 @@ class AUManagedUnit: Identifiable, Hashable {
 
     private var currentViewConfigurationIndex = 1
 
-    let componentViewController = ComponentViewController()
     var iconOld: NSImage?
-    var nsViewController: NSViewController?
 
     let audioUnitType: AudioUnitType
 
@@ -56,13 +54,6 @@ class AUManagedUnit: Identifiable, Hashable {
         audioUnit.requestViewController { viewController in
             DispatchQueue.main.async { completion(viewController) }
         }
-    }
-
-    func setController(controller: NSViewController?) {
-        if nsViewController == nil {
-            nsViewController = controller
-        }
-        componentViewController.presentUserInterface(nsViewController?.view)
     }
 
     // MARK: - Audio Unit

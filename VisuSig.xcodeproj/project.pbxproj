@@ -16,7 +16,6 @@
 		F70D8E2D303771030031CC3C /* VisualMesh in Frameworks */ = {isa = PBXBuildFile; productRef = F70D8E2C303771030031CC3C /* VisualMesh */; };
 		B10000000000000000000001 /* VisualMeshUI in Frameworks */ = {isa = PBXBuildFile; productRef = B10000000000000000000002 /* VisualMeshUI */; };
 		F70D8E2F303771030031CC3C /* VisualMeshExamples in Frameworks */ = {isa = PBXBuildFile; productRef = F70D8E2E303771030031CC3C /* VisualMeshExamples */; };
-		F7300E842825B9DF00E41206 /* AUComponentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7300E832825B9DF00E41206 /* AUComponentView.swift */; };
 		F73DDC0C2835770300DABC2F /* Utilities+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F73DDC0B2835770300DABC2F /* Utilities+Extensions.swift */; };
 		F748568028184D6D0038D7B7 /* QGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = F748567B28184D6D0038D7B7 /* QGrid.swift */; };
 		F75C5276282855D2008DBD23 /* MasterMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F75C5275282855D2008DBD23 /* MasterMenuView.swift */; };
@@ -26,9 +25,8 @@
 		F75CC4B6281DA74E00692CE5 /* Component.swift in Sources */ = {isa = PBXBuildFile; fileRef = F75CC4B5281DA74E00692CE5 /* Component.swift */; };
 		F75CC4BB281EED8B00692CE5 /* AudioUnitComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = F75CC4BA281EED8B00692CE5 /* AudioUnitComponents.swift */; };
 		F75CC4BD281EEDD100692CE5 /* SiKPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F75CC4BC281EEDD100692CE5 /* SiKPlayerView.swift */; };
-		F75CC4C1281EEE0500692CE5 /* ComponentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F75CC4C0281EEE0500692CE5 /* ComponentViewController.swift */; };
 		F75CC4C4281EEE4D00692CE5 /* ViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F75CC4C3281EEE4D00692CE5 /* ViewExtensions.swift */; };
-		F75CC4C6281EEE7200692CE5 /* AUComponentControllerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F75CC4C5281EEE7200692CE5 /* AUComponentControllerView.swift */; };
+		F75CC4C6281EEE7200692CE5 /* PluginInterfaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F75CC4C5281EEE7200692CE5 /* PluginInterfaceView.swift */; };
 		F75CC4CE281F542D00692CE5 /* AUManagedUnit.swift in Sources */ = {isa = PBXBuildFile; fileRef = F75CC4CD281F542D00692CE5 /* AUManagedUnit.swift */; };
 		F75FF89528394EE500BC5AC1 /* Items.swift in Sources */ = {isa = PBXBuildFile; fileRef = F75FF89328394EE500BC5AC1 /* Items.swift */; };
 		F75FF89828395F4B00BC5AC1 /* ToolMenu2View.swift in Sources */ = {isa = PBXBuildFile; fileRef = F75FF89728395F4B00BC5AC1 /* ToolMenu2View.swift */; };
@@ -59,7 +57,6 @@
 		A10000020000000000000003 /* PayloadWorkbenchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayloadWorkbenchView.swift; sourceTree = "<group>"; };
 		A10000020000000000000004 /* PluginWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PluginWindowController.swift; sourceTree = "<group>"; };
 		F702D98928DB667F0094BA12 /* Extension+Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+Color.swift"; sourceTree = "<group>"; };
-		F7300E832825B9DF00E41206 /* AUComponentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AUComponentView.swift; sourceTree = "<group>"; };
 		F73DDC0B2835770300DABC2F /* Utilities+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Utilities+Extensions.swift"; sourceTree = "<group>"; };
 		F748567B28184D6D0038D7B7 /* QGrid.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QGrid.swift; sourceTree = "<group>"; };
 		F75C5275282855D2008DBD23 /* MasterMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterMenuView.swift; sourceTree = "<group>"; };
@@ -69,9 +66,8 @@
 		F75CC4B5281DA74E00692CE5 /* Component.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Component.swift; sourceTree = "<group>"; };
 		F75CC4BA281EED8B00692CE5 /* AudioUnitComponents.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioUnitComponents.swift; sourceTree = "<group>"; };
 		F75CC4BC281EEDD100692CE5 /* SiKPlayerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiKPlayerView.swift; sourceTree = "<group>"; };
-		F75CC4C0281EEE0500692CE5 /* ComponentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComponentViewController.swift; sourceTree = "<group>"; };
 		F75CC4C3281EEE4D00692CE5 /* ViewExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewExtensions.swift; sourceTree = "<group>"; };
-		F75CC4C5281EEE7200692CE5 /* AUComponentControllerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AUComponentControllerView.swift; sourceTree = "<group>"; };
+		F75CC4C5281EEE7200692CE5 /* PluginInterfaceView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PluginInterfaceView.swift; sourceTree = "<group>"; };
 		F75CC4CD281F542D00692CE5 /* AUManagedUnit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AUManagedUnit.swift; sourceTree = "<group>"; };
 		F75FF89328394EE500BC5AC1 /* Items.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Items.swift; sourceTree = "<group>"; };
 		F75FF89728395F4B00BC5AC1 /* ToolMenu2View.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToolMenu2View.swift; sourceTree = "<group>"; };
@@ -150,10 +146,8 @@
 		F75CC4B7281EED4E00692CE5 /* Host */ = {
 			isa = PBXGroup;
 			children = (
-				F7300E832825B9DF00E41206 /* AUComponentView.swift */,
-				F75CC4C5281EEE7200692CE5 /* AUComponentControllerView.swift */,
+				F75CC4C5281EEE7200692CE5 /* PluginInterfaceView.swift */,
 				F75CC4BA281EED8B00692CE5 /* AudioUnitComponents.swift */,
-				F75CC4C0281EEE0500692CE5 /* ComponentViewController.swift */,
 				F7DD1AFB289DF33A00E48D97 /* EffectsLibraryView.swift */,
 				A30000000000000000000002 /* MIDIWorkspace.swift */,
 				A40000000000000000000002 /* DAWWorkspace.swift */,
@@ -453,7 +447,6 @@
 				F7DD1AF2289CB02200E48D97 /* AudioUnitType.swift in Sources */,
 				F7C809C8279B299200982843 /* ContentView.swift in Sources */,
 				F75CC4BB281EED8B00692CE5 /* AudioUnitComponents.swift in Sources */,
-				F7300E842825B9DF00E41206 /* AUComponentView.swift in Sources */,
 				F75FF89828395F4B00BC5AC1 /* ToolMenu2View.swift in Sources */,
 				F798E981283D2B1600444FE3 /* DropdownSelector.swift in Sources */,
 				F75CC4B1281D8AEB00692CE5 /* InstrumentPlayer.swift in Sources */,
@@ -465,14 +458,13 @@
 				F779564C287CBE58007E569B /* AudioGraph.swift in Sources */,
 				F748568028184D6D0038D7B7 /* QGrid.swift in Sources */,
 				F75CC4B6281DA74E00692CE5 /* Component.swift in Sources */,
-				F75CC4C1281EEE0500692CE5 /* ComponentViewController.swift in Sources */,
 				F75CC4CE281F542D00692CE5 /* AUManagedUnit.swift in Sources */,
 				F7EE4446283D2D3B00ACE932 /* DropDownMenu.swift in Sources */,
 				F75CC4AF281D8ABA00692CE5 /* SimplePlayEngine.swift in Sources */,
 				F75FF89528394EE500BC5AC1 /* Items.swift in Sources */,
 				F7CE746527BD658800BBF6A2 /* View+Extensions.swift in Sources */,
 				F79E3EE0281B594B00CD0520 /* MyHelpCommands.swift in Sources */,
-				F75CC4C6281EEE7200692CE5 /* AUComponentControllerView.swift in Sources */,
+				F75CC4C6281EEE7200692CE5 /* PluginInterfaceView.swift in Sources */,
 				F78DFA6B288644A9003AC7BD /* ComponentTableView.swift in Sources */,
 				F79E3EDE281B586600CD0520 /* PreferencesView.swift in Sources */,
 				F75CC4AD281D8A8400692CE5 /* AudioUnitManager.swift in Sources */,

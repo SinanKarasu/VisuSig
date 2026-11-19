@@ -467,6 +467,8 @@ struct AudioUnitWorkspaceView: View {
     @State private var showsAudition = true
     @State private var librarySelection: Component.ID?
     @State private var canvasSize: CGSize = .zero
+    @State private var auditionHeight: CGFloat = 280
+    @State private var editorAreaHeight: CGFloat = 0
 
     var body: some View {
         VStack(spacing: 0) {
@@ -492,11 +494,10 @@ struct AudioUnitWorkspaceView: View {
                     .frame(minWidth: 200, idealWidth: 260, maxWidth: 420)
                 }
 
-                VSplitView {
+                VStack(spacing: 0) {
                     // ── Node graph canvas ──────────────────────────
                     canvas
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
-                        .frame(minHeight: 240)
                         .overlay(alignment: .top) {
                             if let connectionError {
                                 Label(connectionError, systemImage: "exclamationmark.triangle.fill")
@@ -510,11 +511,16 @@ struct AudioUnitWorkspaceView: View {
 
                     // ── Audition the library selection ─────────────
                     if showsAudition {
+                        ResizeHandle(height: $auditionHeight, range: auditionHeightRange)
                         EffectAuditionView(audioUnitComponents: audioUnitComponents,
-                                           componentID: librarySelection)
-                            .frame(minHeight: 160, idealHeight: 280)
+                                           componentID: librarySelection) { pluginSize in
+                            // Open at the plug-in's own height (plus the header).
+                            auditionHeight = clampedAuditionHeight(pluginSize.height + 40)
+                        }
+                        .frame(height: clampedAuditionHeight(auditionHeight))
                     }
                 }
+                .onGeometryChange(for: CGFloat.self) { $0.size.height } action: { editorAreaHeight = $0 }
                 .frame(minWidth: 480)
             }
         }
@@ -551,6 +557,15 @@ struct AudioUnitWorkspaceView: View {
     private func meshPoint(forCanvasLocation location: CGPoint) -> CGPoint {
         CGPoint(x: (location.x - canvasSize.width / 2 - canvasState.pan.width) / canvasState.zoom,
                 y: (location.y - canvasSize.height / 2 - canvasState.pan.height) / canvasState.zoom)
+    }
+
+    /// The audition area may grow until the canvas is down to 240 pt.
+    private var auditionHeightRange: ClosedRange<CGFloat> {
+        120 ... max(120, editorAreaHeight - 240)
+    }
+
+    private func clampedAuditionHeight(_ height: CGFloat) -> CGFloat {
+        min(max(height, auditionHeightRange.lowerBound), auditionHeightRange.upperBound)
     }
 
     private var visibleCenter: CGPoint {
