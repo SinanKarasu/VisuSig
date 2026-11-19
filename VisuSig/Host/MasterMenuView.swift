@@ -463,34 +463,60 @@ struct AudioUnitWorkspaceView: View {
     @State private var effectInsertPoint: CGPoint = .zero
     @State private var connectionError: String?
 
+    @State private var showsLibrary = true
+    @State private var showsAudition = true
+    @State private var librarySelection: Component.ID?
+    @State private var canvasSize: CGSize = .zero
+
     var body: some View {
         VStack(spacing: 0) {
 
             // ── Transport bar ──────────────────────────────────────
-            SiKPlayerView(audioGraph: audioGraph) { url in
-                audioUnitComponents.setPreviewAudioFile(url: url)
+            HStack(spacing: 0) {
+                panelToggle("Effects Library", systemImage: "sidebar.left", isOn: $showsLibrary)
+                SiKPlayerView(audioGraph: audioGraph) { url in
+                    audioUnitComponents.setPreviewAudioFile(url: url)
+                }
+                panelToggle("Audition", systemImage: "rectangle.bottomthird.inset.filled", isOn: $showsAudition)
             }
-                .frame(height: 60)
-                .background(Color.black.opacity(0.85))
+            .frame(height: 60)
+            .background(Color.black.opacity(0.85))
 
-            // ── Node graph canvas ──────────────────────────────────
-            canvas
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .overlay(alignment: .top) {
-                    if let connectionError {
-                        Label(connectionError, systemImage: "exclamationmark.triangle.fill")
-                            .font(.caption)
-                            .padding(.horizontal, 10)
-                            .padding(.vertical, 5)
-                            .background(.regularMaterial, in: Capsule())
-                            .padding(8)
+            HSplitView {
+                // ── Library (left, like Logic's browser) ───────────
+                if showsLibrary {
+                    EffectsLibraryView(audioUnitComponents: audioUnitComponents,
+                                       selection: $librarySelection) { component in
+                        addEffect(component, at: visibleCenter)
                     }
+                    .frame(minWidth: 200, idealWidth: 260, maxWidth: 420)
                 }
 
-            // ── AU preview panel (for auditioning individual effects) ──
-            Divider()
-            EffectsMenuSplitView(audioUnitComponents: audioUnitComponents)
-                .frame(height: 280)
+                VSplitView {
+                    // ── Node graph canvas ──────────────────────────
+                    canvas
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        .frame(minHeight: 240)
+                        .overlay(alignment: .top) {
+                            if let connectionError {
+                                Label(connectionError, systemImage: "exclamationmark.triangle.fill")
+                                    .font(.caption)
+                                    .padding(.horizontal, 10)
+                                    .padding(.vertical, 5)
+                                    .background(.regularMaterial, in: Capsule())
+                                    .padding(8)
+                            }
+                        }
+
+                    // ── Audition the library selection ─────────────
+                    if showsAudition {
+                        EffectAuditionView(audioUnitComponents: audioUnitComponents,
+                                           componentID: librarySelection)
+                            .frame(minHeight: 160, idealHeight: 280)
+                    }
+                }
+                .frame(minWidth: 480)
+            }
         }
         .onAppear {
             if let url = audioGraph.audioFileURL {
@@ -502,6 +528,33 @@ struct AudioUnitWorkspaceView: View {
                                audioUnitComponents: audioUnitComponents)
                 .frame(minWidth: 800, minHeight: 400)
         }
+    }
+
+    private func panelToggle(_ title: String, systemImage: String, isOn: Binding<Bool>) -> some View {
+        Button {
+            withAnimation(.snappy) { isOn.wrappedValue.toggle() }
+        } label: {
+            Image(systemName: systemImage)
+                .font(.title3)
+                .foregroundStyle(isOn.wrappedValue ? Color.accentColor : Color.secondary)
+                .frame(width: 44, height: 44)
+                .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .help(isOn.wrappedValue ? "Hide \(title)" : "Show \(title)")
+        .accessibilityLabel(title)
+        .accessibilityValue(isOn.wrappedValue ? "Shown" : "Hidden")
+    }
+
+    /// Canvas coordinates → mesh coordinates, matching MeshCanvas's transform
+    /// (origin at the canvas centre, offset by pan, scaled by zoom).
+    private func meshPoint(forCanvasLocation location: CGPoint) -> CGPoint {
+        CGPoint(x: (location.x - canvasSize.width / 2 - canvasState.pan.width) / canvasState.zoom,
+                y: (location.y - canvasSize.height / 2 - canvasState.pan.height) / canvasState.zoom)
+    }
+
+    private var visibleCenter: CGPoint {
+        meshPoint(forCanvasLocation: CGPoint(x: canvasSize.width / 2, y: canvasSize.height / 2))
     }
 
     private var canvas: some View {
@@ -556,6 +609,19 @@ struct AudioUnitWorkspaceView: View {
         .onDeleteSelection { nodeIDs, edgeID in
             delete(nodeIDs: nodeIDs, edgeID: edgeID)
         }
+        .onGeometryChange(for: CGSize.self) { $0.size } action: { canvasSize = $0 }
+        .dropDestination(for: String.self) { payloads, location in
+            let components = payloads
+                .compactMap(EffectDrag.componentID(from:))
+                .compactMap { id in audioUnitComponents.audioUnitComponents.first { $0.id == id } }
+            guard !components.isEmpty else { return false }
+            let point = meshPoint(forCanvasLocation: location)
+            for (index, component) in components.enumerated() {
+                addEffect(component, at: CGPoint(x: point.x + CGFloat(index) * 40,
+                                                 y: point.y + CGFloat(index) * 40))
+            }
+            return true
+        }
     }
 
     private func tint(for role: AudioNodeRole) -> Color {
@@ -585,16 +651,22 @@ struct AudioUnitWorkspaceView: View {
         let components = audioUnitComponents.audioUnitComponents
         guard components.indices.contains(chosenEffectIndex) else { return }
         let component = components[chosenEffectIndex]
-        let point = effectInsertPoint
         chosenEffectIndex = -1
+        addEffect(component, at: effectInsertPoint)
+    }
+
+    /// Instantiates a fresh Audio Unit for the graph. The library's audition
+    /// units stay on the preview player.
+    private func addEffect(_ component: Component, at point: CGPoint) {
         component.instantiateComponent { result in
             switch result {
             case .success(let unit?):
                 audioGraph.addEffect(unit, at: point)
+                connectionError = nil
             case .success(nil):
-                logger.log("Audio unit component has no instantiable unit")
+                connectionError = "\(component.name) has no instantiable Audio Unit"
             case .failure(let error):
-                logger.log("Unable to select audio unit: \(String(describing: error))")
+                connectionError = "Couldn't load \(component.name): \(error.localizedDescription)"
             }
         }
     }

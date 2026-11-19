@@ -45,7 +45,7 @@
 		F7C809CD279B299400982843 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F7C809CC279B299400982843 /* Preview Assets.xcassets */; };
 		F7CE746527BD658800BBF6A2 /* View+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7CE746427BD658800BBF6A2 /* View+Extensions.swift */; };
 		F7DD1AF2289CB02200E48D97 /* AudioUnitType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7DD1AF1289CB02200E48D97 /* AudioUnitType.swift */; };
-		F7DD1AFC289DF33A00E48D97 /* EffectsMenuSplitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7DD1AFB289DF33A00E48D97 /* EffectsMenuSplitView.swift */; };
+		F7DD1AFC289DF33A00E48D97 /* EffectsLibraryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7DD1AFB289DF33A00E48D97 /* EffectsLibraryView.swift */; };
 		F7EE4446283D2D3B00ACE932 /* DropDownMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7EE4445283D2D3B00ACE932 /* DropDownMenu.swift */; };
 		A30000000000000000000001 /* MIDIWorkspace.swift in Sources */ = {isa = PBXBuildFile; fileRef = A30000000000000000000002 /* MIDIWorkspace.swift */; };
 		A30000000000000000000003 /* SwiftMIDIIO in Frameworks */ = {isa = PBXBuildFile; productRef = A30000000000000000000004 /* SwiftMIDIIO */; };
@@ -90,7 +90,7 @@
 		F7C809CE279B299400982843 /* VisuSig.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = VisuSig.entitlements; sourceTree = "<group>"; };
 		F7CE746427BD658800BBF6A2 /* View+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "View+Extensions.swift"; sourceTree = "<group>"; };
 		F7DD1AF1289CB02200E48D97 /* AudioUnitType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioUnitType.swift; sourceTree = "<group>"; };
-		F7DD1AFB289DF33A00E48D97 /* EffectsMenuSplitView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EffectsMenuSplitView.swift; sourceTree = "<group>"; };
+		F7DD1AFB289DF33A00E48D97 /* EffectsLibraryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EffectsLibraryView.swift; sourceTree = "<group>"; };
 		F7EE4445283D2D3B00ACE932 /* DropDownMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropDownMenu.swift; sourceTree = "<group>"; };
 		A30000000000000000000002 /* MIDIWorkspace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MIDIWorkspace.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -154,7 +154,7 @@
 				F75CC4C5281EEE7200692CE5 /* AUComponentControllerView.swift */,
 				F75CC4BA281EED8B00692CE5 /* AudioUnitComponents.swift */,
 				F75CC4C0281EEE0500692CE5 /* ComponentViewController.swift */,
-				F7DD1AFB289DF33A00E48D97 /* EffectsMenuSplitView.swift */,
+				F7DD1AFB289DF33A00E48D97 /* EffectsLibraryView.swift */,
 				A30000000000000000000002 /* MIDIWorkspace.swift */,
 				A40000000000000000000002 /* DAWWorkspace.swift */,
 				F75C5275282855D2008DBD23 /* MasterMenuView.swift */,
@@ -480,7 +480,7 @@
 				F702D98A28DB667F0094BA12 /* Extension+Color.swift in Sources */,
 				F75CC4BD281EEDD100692CE5 /* SiKPlayerView.swift in Sources */,
 				F798E8C5283B232900444FE3 /* EffectsToolsView.swift in Sources */,
-				F7DD1AFC289DF33A00E48D97 /* EffectsMenuSplitView.swift in Sources */,
+				F7DD1AFC289DF33A00E48D97 /* EffectsLibraryView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
