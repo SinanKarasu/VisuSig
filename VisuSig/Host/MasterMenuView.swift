@@ -14,11 +14,14 @@ struct MasterMenuView: View {
         case payload = "Payload"
         case hierarchy = "Hierarchy"
         case audioUnits = "Audio Units"
+        case midi = "MIDI"
+        case daw = "DAW"
 
         var id: Self { self }
     }
 
     @State private var workspace: Workspace = .hierarchy
+    @State private var visitedWorkspaces: Set<Workspace> = [.hierarchy]
 
     var body: some View {
         VStack(spacing: 0) {
@@ -31,7 +34,7 @@ struct MasterMenuView: View {
                     }
                 }
                 .pickerStyle(.segmented)
-                .frame(width: 280)
+                .frame(width: 420)
                 Spacer()
                 Text(workspace.explanation)
                     .font(.caption)
@@ -41,17 +44,39 @@ struct MasterMenuView: View {
             .frame(height: 44)
             .background(.bar)
 
-            switch workspace {
-            case .payload:
-                PayloadWorkbenchView()
-            case .hierarchy:
-                HierarchyWorkbenchView()
-            case .audioUnits:
-                AudioUnitWorkspaceView()
+            ZStack {
+                ForEach(Workspace.allCases) { item in
+                    if visitedWorkspaces.contains(item) || item == workspace {
+                        workspaceView(item)
+                            .opacity(item == workspace ? 1 : 0)
+                            .allowsHitTesting(item == workspace)
+                            .accessibilityHidden(item != workspace)
+                    }
+                }
+            }
+            .onChange(of: workspace) { _, selected in
+                visitedWorkspaces.insert(selected)
             }
         }
         .frame(minWidth: 1100, minHeight: 720)
     }
+
+    @ViewBuilder
+    private func workspaceView(_ workspace: Workspace) -> some View {
+        switch workspace {
+        case .payload:
+            PayloadWorkbenchView()
+        case .hierarchy:
+            HierarchyWorkbenchView()
+        case .audioUnits:
+            AudioUnitWorkspaceView()
+        case .midi:
+            MIDIWorkspace()
+        case .daw:
+            DAWWorkspace()
+        }
+    }
+
 }
 
 private extension MasterMenuView.Workspace {
@@ -63,6 +88,10 @@ private extension MasterMenuView.Workspace {
             return "Definitions are reusable; instances carry identity and wiring context."
         case .audioUnits:
             return "Apple Audio Units through the Payload adapter."
+        case .midi:
+            return "Live MIDI and audio-file playback through one mixer."
+        case .daw:
+            return "Audio and MIDI sources routed into one mixer."
         }
     }
 }

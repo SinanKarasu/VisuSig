@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A40000000000000000000001 /* DAWWorkspace.swift in Sources */ = {isa = PBXBuildFile; fileRef = A40000000000000000000002 /* DAWWorkspace.swift */; };
 		A10000010000000000000001 /* Payload.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000020000000000000001 /* Payload.swift */; };
 		A10000010000000000000002 /* AtlasStatementPayload.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000020000000000000002 /* AtlasStatementPayload.swift */; };
 		A10000010000000000000003 /* PayloadWorkbenchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000020000000000000003 /* PayloadWorkbenchView.swift */; };
@@ -83,9 +84,13 @@
 		F7F4597E27B34E6400B64772 /* WireEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7F4597D27B34E6400B64772 /* WireEditView.swift */; };
 		F7F9433F27AF924300DD9A50 /* GridCompleteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7F9433E27AF924300DD9A50 /* GridCompleteView.swift */; };
 		F7FA953227B0635800140F5D /* PortView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7FA953127B0635800140F5D /* PortView.swift */; };
+		A30000000000000000000001 /* MIDIWorkspace.swift in Sources */ = {isa = PBXBuildFile; fileRef = A30000000000000000000002 /* MIDIWorkspace.swift */; };
+		A30000000000000000000003 /* SwiftMIDIIO in Frameworks */ = {isa = PBXBuildFile; productRef = A30000000000000000000004 /* SwiftMIDIIO */; };
+		A30000000000000000000005 /* SwiftMIDICore in Frameworks */ = {isa = PBXBuildFile; productRef = A30000000000000000000006 /* SwiftMIDICore */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		A40000000000000000000002 /* DAWWorkspace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DAWWorkspace.swift; sourceTree = "<group>"; };
 		A10000020000000000000001 /* Payload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Payload.swift; sourceTree = "<group>"; };
 		A10000020000000000000002 /* AtlasStatementPayload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtlasStatementPayload.swift; sourceTree = "<group>"; };
 		A10000020000000000000003 /* PayloadWorkbenchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayloadWorkbenchView.swift; sourceTree = "<group>"; };
@@ -162,6 +167,7 @@
 		F7F4597D27B34E6400B64772 /* WireEditView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WireEditView.swift; sourceTree = "<group>"; };
 		F7F9433E27AF924300DD9A50 /* GridCompleteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridCompleteView.swift; sourceTree = "<group>"; };
 		F7FA953127B0635800140F5D /* PortView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PortView.swift; sourceTree = "<group>"; };
+		A30000000000000000000002 /* MIDIWorkspace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MIDIWorkspace.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -169,6 +175,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A30000000000000000000003 /* SwiftMIDIIO in Frameworks */,
+				A30000000000000000000005 /* SwiftMIDICore in Frameworks */,
 				F70D8E2F303771030031CC3C /* VisualMeshExamples in Frameworks */,
 				F70D8E2D303771030031CC3C /* VisualMesh in Frameworks */,
 			);
@@ -221,6 +229,8 @@
 				F75CC4BA281EED8B00692CE5 /* AudioUnitComponents.swift */,
 				F75CC4C0281EEE0500692CE5 /* ComponentViewController.swift */,
 				F7DD1AFB289DF33A00E48D97 /* EffectsMenuSplitView.swift */,
+				A30000000000000000000002 /* MIDIWorkspace.swift */,
+				A40000000000000000000002 /* DAWWorkspace.swift */,
 				F75C5275282855D2008DBD23 /* MasterMenuView.swift */,
 				A10000030000000000000002 /* PluginWindow */,
 				F75CC4BC281EEDD100692CE5 /* SiKPlayerView.swift */,
@@ -528,6 +538,8 @@
 			);
 			mainGroup = F7C809B9279B299200982843;
 			packageReferences = (
+				A30000000000000000000007 /* swift-midi-io */,
+				A30000000000000000000008 /* swift-midi-core */,
 				F70D8E2B303771030031CC3C /* XCLocalSwiftPackageReference "../../Packages/VisualMesh" */,
 			);
 			productRefGroup = F7C809C3279B299200982843 /* Products */;
@@ -584,6 +596,8 @@
 				F73DDC0C2835770300DABC2F /* Utilities+Extensions.swift in Sources */,
 				F7C809C6279B299200982843 /* VisuSigApp.swift in Sources */,
 				F7FA953227B0635800140F5D /* PortView.swift in Sources */,
+				A30000000000000000000001 /* MIDIWorkspace.swift in Sources */,
+				A40000000000000000000001 /* DAWWorkspace.swift in Sources */,
 				F75C5276282855D2008DBD23 /* MasterMenuView.swift in Sources */,
 				F7C80A1F279BBFA800982843 /* CubicBezierData.swift in Sources */,
 				F7C809E9279B4F2500982843 /* SelectionHandler.swift in Sources */,
@@ -845,6 +859,19 @@
 		};
 /* End XCLocalSwiftPackageReference section */
 
+/* Begin XCRemoteSwiftPackageReference section */
+		A30000000000000000000007 /* swift-midi-io */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/orchetect/swift-midi-io";
+			requirement = { kind = exactVersion; version = 1.1.0; };
+		};
+		A30000000000000000000008 /* swift-midi-core */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/orchetect/swift-midi-core";
+			requirement = { kind = exactVersion; version = 1.0.2; };
+		};
+/* End XCRemoteSwiftPackageReference section */
+
 /* Begin XCSwiftPackageProductDependency section */
 		F70D8E2C303771030031CC3C /* VisualMesh */ = {
 			isa = XCSwiftPackageProductDependency;
@@ -853,6 +880,16 @@
 		F70D8E2E303771030031CC3C /* VisualMeshExamples */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = VisualMeshExamples;
+		};
+		A30000000000000000000004 /* SwiftMIDIIO */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A30000000000000000000007 /* swift-midi-io */;
+			productName = SwiftMIDIIO;
+		};
+		A30000000000000000000006 /* SwiftMIDICore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A30000000000000000000008 /* swift-midi-core */;
+			productName = SwiftMIDICore;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
