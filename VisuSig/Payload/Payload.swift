@@ -18,6 +18,7 @@ struct PayloadKind: RawRepresentable, Codable, Hashable, Sendable {
     static let audioFilePlayer = PayloadKind(rawValue: "apple.audio-file-player")
     static let audioOutput = PayloadKind(rawValue: "apple.audio-output")
     static let midiInput = PayloadKind(rawValue: "apple.midi-input")
+    static let audioMixer = PayloadKind(rawValue: "apple.audio-mixer")
 }
 
 /// One inspectable value in a payload. Fields are intentionally textual in

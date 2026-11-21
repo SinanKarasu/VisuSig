@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C10000000000000000000002 /* MixerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10000000000000000000001 /* MixerView.swift */; };
 		A40000000000000000000001 /* DAWWorkspace.swift in Sources */ = {isa = PBXBuildFile; fileRef = A40000000000000000000002 /* DAWWorkspace.swift */; };
 		A10000010000000000000001 /* Payload.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000020000000000000001 /* Payload.swift */; };
 		A10000010000000000000002 /* AtlasStatementPayload.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000020000000000000002 /* AtlasStatementPayload.swift */; };
@@ -50,6 +51,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		C10000000000000000000001 /* MixerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MixerView.swift; sourceTree = "<group>"; };
 		A40000000000000000000002 /* DAWWorkspace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DAWWorkspace.swift; sourceTree = "<group>"; };
 		A10000020000000000000001 /* Payload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Payload.swift; sourceTree = "<group>"; };
 		A10000020000000000000002 /* AtlasStatementPayload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtlasStatementPayload.swift; sourceTree = "<group>"; };
@@ -144,6 +146,7 @@
 		F75CC4B7281EED4E00692CE5 /* Host */ = {
 			isa = PBXGroup;
 			children = (
+				C10000000000000000000001 /* MixerView.swift */,
 				F75CC4C5281EEE7200692CE5 /* PluginInterfaceView.swift */,
 				F75CC4BA281EED8B00692CE5 /* AudioUnitComponents.swift */,
 				F7DD1AFB289DF33A00E48D97 /* PluginLibraryView.swift */,
@@ -437,6 +440,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C10000000000000000000002 /* MixerView.swift in Sources */,
 				A10000010000000000000001 /* Payload.swift in Sources */,
 				A10000010000000000000002 /* AtlasStatementPayload.swift in Sources */,
 				A10000010000000000000003 /* PayloadWorkbenchView.swift in Sources */,

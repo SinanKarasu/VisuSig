@@ -14,9 +14,27 @@ import SwiftMIDIIO
 import VisualMesh
 import VisualMeshUI
 
-/// Durable description of a wire. Live telemetry for a wire is kept by
-/// `AudioGraph`, keyed by the edge's ID, and never stored in the edge.
-struct AudioConnection: Codable, Hashable, Sendable {}
+/// Durable description of a wire. A wire into a Mixer node is that mixer's
+/// channel, so the channel settings live here and are saved with the graph.
+/// Live telemetry for a wire is kept by `AudioGraph`, keyed by the edge's ID.
+struct AudioConnection: Codable, Hashable, Sendable {
+    /// Linear gain, 0 (silent) to 1 (unity).
+    var volume: Float = 1
+    /// -1 (left) to 1 (right).
+    var pan: Float = 0
+    var isMuted = false
+    var isSoloed = false
+
+    init() {}
+
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        volume = try c.decodeIfPresent(Float.self, forKey: .volume) ?? 1
+        pan = try c.decodeIfPresent(Float.self, forKey: .pan) ?? 0
+        isMuted = try c.decodeIfPresent(Bool.self, forKey: .isMuted) ?? false
+        isSoloed = try c.decodeIfPresent(Bool.self, forKey: .isSoloed) ?? false
+    }
+}
 
 extension PortSignal {
     static let audio = PortSignal("audio")
@@ -28,6 +46,7 @@ enum AudioNodeRole: Equatable {
     case source              // the audio file player
     case midiInput           // the virtual destination or an external MIDI source
     case plugin(AudioUnitType)
+    case mixer               // sums its input wires; each wire is a channel
     case output              // hardware output
     case generic             // carries a payload but no signal
 }
@@ -60,6 +79,10 @@ final class AudioGraph {
     let engine = AVAudioEngine()
     let player = AVAudioPlayerNode()
     @ObservationIgnored private var sumMixers: [UUID: AVAudioMixerNode] = [:]
+    /// Mixer node ID → its engine mixer.
+    @ObservationIgnored private var mixerNodes: [UUID: AVAudioMixerNode] = [:]
+    /// Edge ID → the channel strip for a wire into a Mixer node.
+    @ObservationIgnored private var channelNodes: [UUID: AVAudioMixerNode] = [:]
 
     private(set) var audioFile: AVAudioFile?
     private(set) var audioFileURL: URL?
@@ -88,15 +111,23 @@ final class AudioGraph {
         engine.attach(player)
     }
 
-    /// A source and an output, ready to be wired directly or through effects.
+    /// A source, a mixer already wired to the output, and the output.
     static func makeDefault() -> AudioGraph {
         let graph = AudioGraph()
-        graph.addAudioFileSource(at: CGPoint(x: 0, y: -220))
-        graph.addNode(
-            payload: Payload(kind: .audioOutput, title: "Output"),
+        graph.addAudioFileSource(at: CGPoint(x: 0, y: -240))
+        let mixer = graph.addMixer(at: CGPoint(x: 0, y: 80))
+        let output = graph.addNode(
+            payload: Payload(kind: .audioOutput, title: "Output", fields: [PayloadField("volume", value: "1")]),
             ports: [GraphPort(name: "In", direction: .input, signal: .audio)],
-            at: CGPoint(x: 0, y: 220)
+            at: CGPoint(x: 0, y: 260)
         )
+        // Wired in the model only: the engine starts on the first edit, so
+        // building a default graph stays cheap.
+        if let edge = try? graph.mesh.connect(sourceNodeID: mixer.id, sourcePortID: mixer.ports[1].id,
+                                              targetNodeID: output.id, targetPortID: output.ports[0].id,
+                                              payload: AudioConnection()) {
+            graph.signals[edge.id] = SignalEdgePayload()
+        }
         return graph
     }
 
@@ -107,6 +138,7 @@ final class AudioGraph {
         case .audioFilePlayer: return .source
         case .midiInput: return .midiInput
         case .audioOutput: return .output
+        case .audioMixer: return .mixer
         case .appleAudioUnit:
             let type = node.payload[field: "audioUnitType"].flatMap(Int.init).flatMap(AudioUnitType.init)
             return .plugin(type ?? .effect)
@@ -171,6 +203,60 @@ final class AudioGraph {
         if type.producesMIDI { ports.append(GraphPort(name: "MIDI Out", direction: .output, signal: .midi)) }
         runtimes.register(unit, for: payload.id)
         addNode(payload: payload, ports: ports, at: position)
+    }
+
+    /// A mixer: every wire into its input becomes a channel. Several mixers
+    /// can feed another one, like buses in a DAW.
+    @discardableResult
+    func addMixer(at position: CGPoint) -> GraphNode<Payload> {
+        let number = mesh.nodes.filter { role(of: $0) == .mixer }.count + 1
+        return addNode(payload: Payload(kind: .audioMixer, title: number == 1 ? "Mixer" : "Mixer \(number)"),
+                       ports: [GraphPort(name: "In", direction: .input, signal: .audio),
+                               GraphPort(name: "Out", direction: .output, signal: .audio)],
+                       at: position)
+    }
+
+    // MARK: - Mixer channels
+
+    /// The wires into a mixer, ordered left to right as their sources sit on
+    /// the canvas.
+    func channels(of mixerID: UUID) -> [GraphEdge<AudioConnection>] {
+        mesh.edges
+            .filter { $0.targetNodeID == mixerID && signalKind(of: $0) == .audio }
+            .sorted { layout.position(of: $0.sourceNodeID).x < layout.position(of: $1.sourceNodeID).x }
+    }
+
+    /// Changes a channel's settings and applies them to the running engine
+    /// at once, without rebuilding.
+    func updateChannel(_ edgeID: UUID, _ change: (inout AudioConnection) -> Void) {
+        guard let edge = mesh.edge(id: edgeID) else { return }
+        var settings = edge.payload
+        change(&settings)
+        edge.payload = settings
+        applyChannelSettings(mixerID: edge.targetNodeID)
+    }
+
+    var masterVolume: Float {
+        get {
+            mesh.nodes.first { role(of: $0) == .output }?.payload[field: "volume"].flatMap(Float.init) ?? 1
+        }
+        set {
+            mesh.nodes.first { role(of: $0) == .output }?.payload[field: "volume"] = String(newValue)
+            engine.mainMixerNode.outputVolume = newValue
+        }
+    }
+
+    /// Solo wins: when any channel of a mixer is soloed, the others are silent.
+    private func applyChannelSettings(mixerID: UUID) {
+        let edges = channels(of: mixerID)
+        let anySolo = edges.contains { $0.payload.isSoloed }
+        for edge in edges {
+            guard let channel = channelNodes[edge.id] else { continue }
+            let settings = edge.payload
+            let audible = !settings.isMuted && (!anySolo || settings.isSoloed)
+            channel.outputVolume = audible ? settings.volume : 0
+            channel.pan = settings.pan
+        }
     }
 
     func addGenericNode(at position: CGPoint) {
@@ -433,12 +519,22 @@ final class AudioGraph {
         }
         for mixer in sumMixers.values { engine.detach(mixer) }
         sumMixers = [:]
+        for node in Array(mixerNodes.values) + Array(channelNodes.values) { engine.detach(node) }
+        mixerNodes = [:]
+        channelNodes = [:]
         engine.disconnectNodeOutput(player)
         engine.disconnectNodeInput(engine.mainMixerNode)
 
         for node in mesh.nodes {
-            if case .plugin = role(of: node), let avUnit = managedAudioUnit(for: node)?.avAudioUnit {
-                engine.attach(avUnit)
+            switch role(of: node) {
+            case .plugin:
+                if let avUnit = managedAudioUnit(for: node)?.avAudioUnit { engine.attach(avUnit) }
+            case .mixer:
+                let mixer = AVAudioMixerNode()
+                engine.attach(mixer)
+                mixerNodes[node.id] = mixer
+            default:
+                break
             }
         }
 
@@ -449,7 +545,7 @@ final class AudioGraph {
         let incoming = Dictionary(grouping: audioEdges, by: \.targetNodeID)
         var nextBus: [ObjectIdentifier: AVAudioNodeBus] = [:]
         for (targetID, edges) in incoming where edges.count > 1 {
-            guard let target = mesh.node(id: targetID), role(of: target) != .output,
+            guard let target = mesh.node(id: targetID), role(of: target) != .output, role(of: target) != .mixer,
                   let targetAV = avAudioNode(for: target) else { continue }
             let mixer = AVAudioMixerNode()
             engine.attach(mixer)
@@ -459,6 +555,17 @@ final class AudioGraph {
 
         func destination(for edge: GraphEdge<AudioConnection>) -> AVAudioConnectionPoint? {
             guard let target = mesh.node(id: edge.targetNodeID) else { return nil }
+            if role(of: target) == .mixer, let mixer = mixerNodes[target.id] {
+                // Each wire into a Mixer node gets its own channel strip.
+                let key = ObjectIdentifier(mixer)
+                let bus = nextBus[key] ?? 0
+                nextBus[key] = bus + 1
+                let channel = AVAudioMixerNode()
+                engine.attach(channel)
+                engine.connect(channel, to: mixer, fromBus: 0, toBus: bus, format: nil)
+                channelNodes[edge.id] = channel
+                return AVAudioConnectionPoint(node: channel, bus: 0)
+            }
             let node: AVAudioNode
             if role(of: target) == .output {
                 node = engine.mainMixerNode
@@ -503,6 +610,8 @@ final class AudioGraph {
 
         let hwFormat = engine.outputNode.outputFormat(forBus: 0)
         engine.connect(engine.mainMixerNode, to: engine.outputNode, format: hwFormat)
+        engine.mainMixerNode.outputVolume = masterVolume
+        for mixerID in mixerNodes.keys { applyChannelSettings(mixerID: mixerID) }
         installTelemetryTaps(for: audioEdges)
 
         let outputs = Set(mesh.nodes.filter { role(of: $0) == .output }.map(\.id))
@@ -535,8 +644,9 @@ final class AudioGraph {
     private func installTelemetryTaps(for audioEdges: [GraphEdge<AudioConnection>]) {
         var signalsByNode: [ObjectIdentifier: (node: AVAudioNode, signals: [SignalEdgePayload])] = [:]
         for edge in audioEdges {
+            // Wires into a mixer are metered after their channel strip.
             guard let source = mesh.node(id: edge.sourceNodeID),
-                  let audioNode = avAudioNode(for: source),
+                  let audioNode = channelNodes[edge.id] ?? avAudioNode(for: source),
                   let signal = signals[edge.id] else { continue }
             let key = ObjectIdentifier(audioNode)
             if signalsByNode[key] == nil { signalsByNode[key] = (audioNode, []) }
@@ -585,6 +695,7 @@ final class AudioGraph {
         case .source: return player
         case .output: return engine.mainMixerNode
         case .plugin: return managedAudioUnit(for: node)?.avAudioUnit
+        case .mixer: return mixerNodes[node.id]
         case .midiInput, .generic: return nil
         }
     }

@@ -461,11 +461,12 @@ struct AudioUnitWorkspaceView: View {
     @State private var connectionError: String?
 
     @State private var showsLibrary = true
-    @State private var showsAudition = true
+    @State private var showsBottomArea = true
+    @State private var bottomPanel: BottomPanel = .mixer
+    @State private var shownMixerID: UUID?
     @State private var librarySelection: Component.ID?
     @State private var canvasSize: CGSize = .zero
     @State private var auditionHeight: CGFloat = 280
-    @State private var editorAreaHeight: CGFloat = 0
 
     var body: some View {
         VStack(spacing: 0) {
@@ -476,7 +477,7 @@ struct AudioUnitWorkspaceView: View {
                 SiKPlayerView(audioGraph: audioGraph) { url in
                     audioUnitComponents.setPreviewAudioFile(url: url)
                 }
-                panelToggle("Audition", systemImage: "rectangle.bottomthird.inset.filled", isOn: $showsAudition)
+                panelToggle("Mixer and Audition", systemImage: "rectangle.bottomthird.inset.filled", isOn: $showsBottomArea)
             }
             .frame(height: 60)
             .background(Color.black.opacity(0.85))
@@ -495,6 +496,7 @@ struct AudioUnitWorkspaceView: View {
                     // ── Node graph canvas ──────────────────────────
                     canvas
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        .frame(minHeight: 200)
                         .overlay(alignment: .top) {
                             if let message = connectionError ?? audioGraph.lastError {
                                 Label(message, systemImage: "exclamationmark.triangle.fill")
@@ -507,18 +509,31 @@ struct AudioUnitWorkspaceView: View {
                             }
                         }
 
-                    // ── Audition the library selection ─────────────
-                    if showsAudition {
+                    // ── Mixer, or audition of the library selection ──
+                    if showsBottomArea {
                         ResizeHandle(height: $auditionHeight, range: auditionHeightRange)
-                        EffectAuditionView(audioUnitComponents: audioUnitComponents,
-                                           componentID: librarySelection) { pluginSize in
-                            // Open at the plug-in's own height (plus the header).
-                            auditionHeight = clampedAuditionHeight(pluginSize.height + 40)
+                        VStack(spacing: 0) {
+                            Picker("Bottom area", selection: $bottomPanel) {
+                                ForEach(BottomPanel.allCases) { Label($0.rawValue, systemImage: $0.systemImage).tag($0) }
+                            }
+                            .pickerStyle(.segmented)
+                            .labelsHidden()
+                            .fixedSize()
+                            .padding(.vertical, 4)
+                            switch bottomPanel {
+                            case .mixer:
+                                MixerView(audioGraph: audioGraph, mixerID: mixerToShow)
+                            case .audition:
+                                EffectAuditionView(audioUnitComponents: audioUnitComponents,
+                                                   componentID: librarySelection) { pluginSize in
+                                    // Open at the plug-in's own height (plus headers).
+                                    auditionHeight = clampedAuditionHeight(pluginSize.height + 72)
+                                }
+                            }
                         }
                         .frame(height: clampedAuditionHeight(auditionHeight))
                     }
                 }
-                .onGeometryChange(for: CGFloat.self) { $0.size.height } action: { editorAreaHeight = $0 }
                 .frame(minWidth: 480)
             }
         }
@@ -527,6 +542,41 @@ struct AudioUnitWorkspaceView: View {
                 audioUnitComponents.setPreviewAudioFile(url: url)
             }
         }
+        .onChange(of: librarySelection) { _, selection in
+            // Picking an audio effect in the library auditions it.
+            if let selection, audioUnitComponents.component(id: selection)?.audioUnitType == .effect {
+                showBottom(.audition)
+            }
+        }
+        .onChange(of: canvasState.selectedNodeIDs) { _, selected in
+            // Selecting a Mixer node shows its channels.
+            if let mixer = selected.first(where: { id in
+                audioGraph.mesh.node(id: id).map { audioGraph.role(of: $0) == .mixer } ?? false
+            }) {
+                shownMixerID = mixer
+                showBottom(.mixer)
+            }
+        }
+    }
+
+    enum BottomPanel: String, CaseIterable, Identifiable {
+        case mixer = "Mixer"
+        case audition = "Audition"
+
+        var id: Self { self }
+        var systemImage: String { self == .mixer ? "slider.vertical.3" : "headphones" }
+    }
+
+    /// The selected mixer, or else the first one in the graph.
+    private var mixerToShow: UUID? {
+        if let shownMixerID, audioGraph.mesh.node(id: shownMixerID) != nil { return shownMixerID }
+        return audioGraph.mesh.nodes.first { audioGraph.role(of: $0) == .mixer }?.id
+    }
+
+    private func showBottom(_ panel: BottomPanel) {
+        bottomPanel = panel
+        showsBottomArea = true
+        if panel == .mixer { auditionHeight = max(auditionHeight, 300) }
     }
 
     private func panelToggle(_ title: String, systemImage: String, isOn: Binding<Bool>) -> some View {
@@ -552,9 +602,11 @@ struct AudioUnitWorkspaceView: View {
                 y: (location.y - canvasSize.height / 2 - canvasState.pan.height) / canvasState.zoom)
     }
 
-    /// The audition area may grow until the canvas is down to 240 pt.
+    /// The bottom area's height range. The canvas keeps its own minimum
+    /// height, so the split view never squeezes it out. (A range measured
+    /// from the editor's height came back too small inside the split view.)
     private var auditionHeightRange: ClosedRange<CGFloat> {
-        120 ... max(120, editorAreaHeight - 240)
+        120 ... 640
     }
 
     private func clampedAuditionHeight(_ height: CGFloat) -> CGFloat {
@@ -624,6 +676,10 @@ struct AudioUnitWorkspaceView: View {
         pluginMenu("Add Instrument", types: [.instrument], location: location)
         pluginMenu("Add MIDI Effect", types: [.midiEffect], location: location)
         pluginMenu("Add Audio Effect", types: [.effect, .musicEffect], location: location)
+        Button("Add Mixer", systemImage: "slider.vertical.3") {
+            let mixer = audioGraph.addMixer(at: location.meshPoint)
+            shownMixerID = mixer.id
+        }
         Divider()
         Button("Add MIDI Input", systemImage: "pianokeys") {
             audioGraph.addMIDIInput(at: location.meshPoint)
@@ -696,6 +752,12 @@ struct AudioUnitWorkspaceView: View {
                 Button("Refresh Sources") { audioGraph.refreshMIDISources() }
             }
             Divider()
+        case .mixer:
+            Button("Show Mixer", systemImage: "slider.vertical.3") {
+                shownMixerID = node.id
+                showBottom(.mixer)
+            }
+            Divider()
         default:
             EmptyView()
         }
@@ -707,6 +769,7 @@ struct AudioUnitWorkspaceView: View {
         case .source: return "waveform"
         case .midiInput: return "pianokeys"
         case .plugin(let type): return type.systemImage
+        case .mixer: return "slider.vertical.3"
         case .output: return "speaker.wave.2"
         case .generic: return "shippingbox"
         }
@@ -719,6 +782,7 @@ struct AudioUnitWorkspaceView: View {
         case .plugin(.instrument): return Color(red: 0.75, green: 0.30, blue: 0.20)
         case .plugin(.midiEffect): return Color(red: 0.70, green: 0.50, blue: 0.10)
         case .plugin: return Color(red: 0.55, green: 0.22, blue: 0.80)
+        case .mixer: return Color(red: 0.25, green: 0.45, blue: 0.55)
         case .output: return Color(red: 0.15, green: 0.65, blue: 0.40)
         case .generic: return Color(red: 0.35, green: 0.35, blue: 0.40)
         }
