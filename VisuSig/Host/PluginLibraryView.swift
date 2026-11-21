@@ -7,9 +7,9 @@
 
 import SwiftUI
 
-/// Drag payload for an effect dragged from the library onto the graph.
-enum EffectDrag {
-    private static let prefix = "visusig.effect:"
+/// Drag payload for a plug-in dragged from the library onto the graph.
+enum PluginDrag {
+    private static let prefix = "visusig.plugin:"
 
     static func payload(for component: Component) -> String {
         prefix + component.id.uuidString
@@ -21,20 +21,41 @@ enum EffectDrag {
     }
 }
 
-/// Logic-style library of installed effect Audio Units, grouped by
-/// manufacturer. Select an entry to audition it; drag it onto the graph, or
-/// use its context menu, to add it.
-struct EffectsLibraryView: View {
+/// Logic's library categories.
+enum PluginCategory: String, CaseIterable, Identifiable {
+    case instruments = "Instruments"
+    case midiEffects = "MIDI FX"
+    case audioEffects = "Audio FX"
+
+    var id: Self { self }
+
+    /// Audio FX includes effects that can also be played from MIDI.
+    var types: [AudioUnitType] {
+        switch self {
+        case .instruments: return [.instrument]
+        case .midiEffects: return [.midiEffect]
+        case .audioEffects: return [.effect, .musicEffect]
+        }
+    }
+}
+
+/// Logic-style library of installed Audio Units by category and
+/// manufacturer. Select an audio effect to audition it; drag any entry onto
+/// the graph, or use its context menu, to add it.
+struct PluginLibraryView: View {
     var audioUnitComponents: AudioUnitComponents
     @Binding var selection: Component.ID?
     var onAdd: (Component) -> Void
 
+    @State private var category: PluginCategory = .audioEffects
     @State private var filter = ""
 
+    private var all: [Component] {
+        category.types.flatMap { audioUnitComponents.components(of: $0) }
+    }
+
     private var groups: [(manufacturer: String, components: [Component])] {
-        let matching = audioUnitComponents.audioUnitComponents.filter {
-            filter.isEmpty || $0.nameAndMFG.localizedCaseInsensitiveContains(filter)
-        }
+        let matching = all.filter { filter.isEmpty || $0.nameAndMFG.localizedCaseInsensitiveContains(filter) }
         let grouped = Dictionary(grouping: matching, by: \.mfg)
         return grouped.keys
             .sorted { $0.localizedStandardCompare($1) == .orderedAscending }
@@ -47,53 +68,77 @@ struct EffectsLibraryView: View {
 
     var body: some View {
         VStack(spacing: 0) {
+            Picker("Category", selection: $category) {
+                ForEach(PluginCategory.allCases) { Text($0.rawValue).tag($0) }
+            }
+            .pickerStyle(.segmented)
+            .labelsHidden()
+            .padding(.horizontal, 10)
+            .padding(.top, 8)
+
             HStack {
-                Label("Effects", systemImage: "waveform.circle")
-                    .font(.headline)
-                Spacer()
-                Text("\(audioUnitComponents.audioUnitComponents.count)")
+                TextField("Filter", text: $filter)
+                    .textFieldStyle(.roundedBorder)
+                Text("\(all.count)")
                     .font(.caption.monospacedDigit())
                     .foregroundStyle(.secondary)
             }
             .padding(.horizontal, 10)
-            .padding(.vertical, 8)
-
-            TextField("Filter", text: $filter)
-                .textFieldStyle(.roundedBorder)
-                .padding(.horizontal, 10)
-                .padding(.bottom, 6)
+            .padding(.vertical, 6)
 
             List(selection: $selection) {
                 ForEach(groups, id: \.manufacturer) { group in
                     Section(group.manufacturer) {
                         ForEach(group.components) { component in
-                            Label(component.name, systemImage: "waveform.circle")
-                                .lineLimit(1)
-                                .help(component.nameAndMFG)
-                                .tag(component.id)
-                                .draggable(EffectDrag.payload(for: component)) {
-                                    Label(component.name, systemImage: "waveform.circle")
-                                        .padding(6)
-                                        .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 6))
-                                }
-                                .contextMenu {
-                                    Button("Add to Graph", systemImage: "plus") { onAdd(component) }
-                                }
+                            row(component)
                         }
                     }
                 }
             }
             .listStyle(.sidebar)
+            // Double-click or Return adds the plug-in, as in Logic's library.
+            .contextMenu(forSelectionType: Component.ID.self) { ids in
+                Button("Add to Graph", systemImage: "plus") { add(ids) }
+            } primaryAction: { ids in
+                add(ids)
+            }
             .overlay {
-                if audioUnitComponents.audioUnitComponents.isEmpty {
-                    ProgressView("Finding effects…")
+                if all.isEmpty {
+                    ProgressView("Finding plug-ins…")
                 } else if groups.isEmpty {
                     ContentUnavailableView.search(text: filter)
                 }
             }
         }
         .accessibilityElement(children: .contain)
-        .accessibilityLabel("Effects library")
+        .accessibilityLabel("Plug-in library")
+    }
+
+    private func add(_ ids: Set<Component.ID>) {
+        for id in ids {
+            if let component = audioUnitComponents.component(id: id) { onAdd(component) }
+        }
+    }
+
+    private func row(_ component: Component) -> some View {
+        HStack(spacing: 6) {
+            Label(component.name, systemImage: component.audioUnitType.systemImage)
+                .lineLimit(1)
+            if component.audioUnitType == .musicEffect {
+                Text("MIDI")
+                    .font(.caption2.weight(.semibold))
+                    .padding(.horizontal, 4)
+                    .background(Color.orange.opacity(0.25), in: Capsule())
+                    .help("Can also be played from MIDI")
+            }
+        }
+        .help(component.nameAndMFG)
+        .tag(component.id)
+        .draggable(PluginDrag.payload(for: component)) {
+            Label(component.name, systemImage: component.audioUnitType.systemImage)
+                .padding(6)
+                .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 6))
+        }
     }
 }
 
@@ -137,6 +182,13 @@ struct EffectAuditionView: View {
                         // Route the preview player through this effect.
                         audioUnitComponents.connectComponent(auManagedUnit: unit) { _ in }
                     }
+            } else if let componentID, let component = audioUnitComponents.component(id: componentID),
+                      component.audioUnitType != .effect {
+                ContentUnavailableView(
+                    "Try it on the graph",
+                    systemImage: component.audioUnitType.systemImage,
+                    description: Text("\(component.audioUnitType.singularName)s are auditioned on the graph: add one, wire it to Output, and play a test note or MIDI.")
+                )
             } else if componentID != nil {
                 ProgressView("Preparing preview…")
                     .frame(maxWidth: .infinity, maxHeight: .infinity)

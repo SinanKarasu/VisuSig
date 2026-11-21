@@ -46,7 +46,11 @@ public struct Preset {
 public struct Component: Identifiable {
     public var id = UUID()
 
-    let options = AudioComponentInstantiationOptions.loadOutOfProcess
+    /// Effects load out of process as before. Instruments and MIDI plug-ins
+    /// load in process, which the MIDI panel verified with Roland AUv2s.
+    var options: AudioComponentInstantiationOptions {
+        audioUnitType == .effect ? .loadOutOfProcess : []
+    }
     let audioUnitType: AudioUnitType
     let avAudioUnitComponent: AVAudioUnitComponent?
 
@@ -57,7 +61,7 @@ public struct Component: Identifiable {
 
     public var name: String {
         guard let component = avAudioUnitComponent else {
-            return audioUnitType == .effect ? "(No Effect)" : "(No Instrument)"
+            return "(No \(audioUnitType.singularName))"
         }
         return component.name
     }

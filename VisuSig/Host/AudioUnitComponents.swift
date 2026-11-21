@@ -14,7 +14,27 @@ let logger = Logger()
 
 @Observable
 class AudioUnitComponents {
+    /// Audio effects (`aufx`). Each also gets a preview unit for auditioning.
     var audioUnitComponents = [Component]()
+    /// Discovered but not instantiated until they are added to the graph.
+    private(set) var instrumentComponents = [Component]()
+    private(set) var midiEffectComponents = [Component]()
+    private(set) var musicEffectComponents = [Component]()
+
+    func components(of type: AudioUnitType) -> [Component] {
+        switch type {
+        case .effect: return audioUnitComponents
+        case .instrument: return instrumentComponents
+        case .midiEffect: return midiEffectComponents
+        case .musicEffect: return musicEffectComponents
+        }
+    }
+
+    func component(id: Component.ID) -> Component? {
+        AudioUnitType.allCases.lazy.compactMap { type in
+            self.components(of: type).first { $0.id == id }
+        }.first
+    }
 
     var audioUnitManager = AudioUnitManager()
     var auManagedEffectUnits = [AUManagedUnit?]()
@@ -64,6 +84,22 @@ class AudioUnitComponents {
 
     private func startRunning() {
         initializeEffects()
+        discoverGraphPlugins()
+    }
+
+    /// Finds instruments and MIDI plug-ins without instantiating them:
+    /// instantiating every installed instrument would be slow and heavy.
+    private func discoverGraphPlugins() {
+        DispatchQueue.global(qos: .userInitiated).async {
+            let instruments = AudioUnitManager.discover(.instrument)
+            let midiEffects = AudioUnitManager.discover(.midiEffect)
+            let musicEffects = AudioUnitManager.discover(.musicEffect)
+            DispatchQueue.main.async {
+                self.instrumentComponents = instruments
+                self.midiEffectComponents = midiEffects
+                self.musicEffectComponents = musicEffects
+            }
+        }
     }
 
     func setPreviewAudioFile(url: URL) {

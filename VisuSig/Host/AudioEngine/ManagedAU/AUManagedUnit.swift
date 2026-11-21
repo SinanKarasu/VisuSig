@@ -29,7 +29,7 @@ class AUManagedUnit: Identifiable, Hashable {
 
     public var name: String {
         guard let component = protoType else {
-            return audioUnitType == .effect ? "(No Effect)" : "(No Instrument)"
+            return "(No \(audioUnitType.singularName))"
         }
         return "\(component.name) (\(component.avAudioUnitComponent?.manufacturerName ?? "Unknown"))"
     }

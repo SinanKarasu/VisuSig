@@ -88,7 +88,7 @@ private extension MasterMenuView.Workspace {
         case .hierarchy:
             return "Definitions are reusable; instances carry identity and wiring context."
         case .audioUnits:
-            return "Apple Audio Units through the Payload adapter."
+            return "Audio and MIDI on one graph: instruments, MIDI and audio effects."
         case .midi:
             return "Live MIDI and audio-file playback through one mixer."
         case .daw:
@@ -458,9 +458,6 @@ struct AudioUnitWorkspaceView: View {
     @State private var audioGraph = AudioGraph.makeDefault()
     @State private var canvasState = MeshCanvasState()
 
-    @State private var isChoosingEffect = false
-    @State private var chosenEffectIndex = -1
-    @State private var effectInsertPoint: CGPoint = .zero
     @State private var connectionError: String?
 
     @State private var showsLibrary = true
@@ -475,7 +472,7 @@ struct AudioUnitWorkspaceView: View {
 
             // ── Transport bar ──────────────────────────────────────
             HStack(spacing: 0) {
-                panelToggle("Effects Library", systemImage: "sidebar.left", isOn: $showsLibrary)
+                panelToggle("Plug-in Library", systemImage: "sidebar.left", isOn: $showsLibrary)
                 SiKPlayerView(audioGraph: audioGraph) { url in
                     audioUnitComponents.setPreviewAudioFile(url: url)
                 }
@@ -487,11 +484,11 @@ struct AudioUnitWorkspaceView: View {
             HSplitView {
                 // ── Library (left, like Logic's browser) ───────────
                 if showsLibrary {
-                    EffectsLibraryView(audioUnitComponents: audioUnitComponents,
-                                       selection: $librarySelection) { component in
-                        addEffect(component, at: visibleCenter)
+                    PluginLibraryView(audioUnitComponents: audioUnitComponents,
+                                      selection: $librarySelection) { component in
+                        addPlugin(component, at: visibleCenter)
                     }
-                    .frame(minWidth: 200, idealWidth: 260, maxWidth: 420)
+                    .frame(minWidth: 220, idealWidth: 270, maxWidth: 420)
                 }
 
                 VStack(spacing: 0) {
@@ -499,13 +496,14 @@ struct AudioUnitWorkspaceView: View {
                     canvas
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                         .overlay(alignment: .top) {
-                            if let connectionError {
-                                Label(connectionError, systemImage: "exclamationmark.triangle.fill")
+                            if let message = connectionError ?? audioGraph.lastError {
+                                Label(message, systemImage: "exclamationmark.triangle.fill")
                                     .font(.caption)
                                     .padding(.horizontal, 10)
                                     .padding(.vertical, 5)
                                     .background(.regularMaterial, in: Capsule())
                                     .padding(8)
+                                    .onTapGesture { connectionError = nil }
                             }
                         }
 
@@ -528,11 +526,6 @@ struct AudioUnitWorkspaceView: View {
             if let url = audioGraph.audioFileURL {
                 audioUnitComponents.setPreviewAudioFile(url: url)
             }
-        }
-        .sheet(isPresented: $isChoosingEffect, onDismiss: insertChosenEffect) {
-            ComponentTableView(selectedIndex: $chosenEffectIndex,
-                               audioUnitComponents: audioUnitComponents)
-                .frame(minWidth: 800, minHeight: 400)
         }
     }
 
@@ -572,23 +565,19 @@ struct AudioUnitWorkspaceView: View {
         meshPoint(forCanvasLocation: CGPoint(x: canvasSize.width / 2, y: canvasSize.height / 2))
     }
 
+    // MARK: - Canvas
+
     private var canvas: some View {
         MeshCanvas(mesh: audioGraph.mesh, layout: audioGraph.layout, state: canvasState) { node in
-            Text(node.payload.title)
+            Label(node.title, systemImage: icon(for: audioGraph.role(of: node)))
         }
         .nodeTint { node in tint(for: audioGraph.role(of: node)) }
-        .nodeContextMenu { node in
-            if let unit = audioGraph.managedAudioUnit(for: node) {
-                Button("Open Plugin UI") {
-                    PluginWindowController.open(nodeID: node.id, title: node.title, unit: unit)
-                }
-                Divider()
-                Button("Add Input Port") { audioGraph.addPort(to: node.id, direction: .input) }
-                Button("Add Output Port") { audioGraph.addPort(to: node.id, direction: .output) }
-                Divider()
-            }
-            Button("Delete Node", role: .destructive) { delete(nodeIDs: [node.id], edgeID: nil) }
+        .portTint { port in port.signal == .midi ? .orange : .cyan }
+        .edgeTint { edge in
+            audioGraph.mesh.port(at: GraphEndpoint(nodeID: edge.sourceNodeID, portID: edge.sourcePortID))?
+                .signal == .midi ? .orange : .cyan
         }
+        .nodeContextMenu { node in nodeMenu(node) }
         .edgeContextMenu { edge in
             if let signal = audioGraph.signal(for: edge.id) {
                 SignalInstrumentMenuItems(payload: signal)
@@ -600,25 +589,15 @@ struct AudioUnitWorkspaceView: View {
             guard let signal = audioGraph.signal(for: edge.id), !signal.instruments.isEmpty else { return nil }
             return SignalInstrumentPanel(payload: signal)
         }
-        .canvasContextMenu { location in
-            Button {
-                effectInsertPoint = location.meshPoint
-                isChoosingEffect = true
-            } label: {
-                Label("Add Audio Effect Node", systemImage: "waveform.circle")
-            }
-            Button {
-                audioGraph.addGenericNode(at: location.meshPoint)
-            } label: {
-                Label("Add Generic Payload Node", systemImage: "shippingbox")
-            }
-        }
+        .canvasContextMenu { location in addMenu(location) }
         .onConnect { source, target in
             do {
                 try audioGraph.connect(source: source, target: target)
                 connectionError = nil
+            } catch MeshConnectionError.incompatibleSignals {
+                connectionError = "Audio and MIDI ports can't be connected to each other."
             } catch {
-                connectionError = "Can't connect those ports: \(error)"
+                connectionError = "Can't connect those ports: \(error.localizedDescription)"
             }
         }
         .onDeleteSelection { nodeIDs, edgeID in
@@ -627,22 +606,119 @@ struct AudioUnitWorkspaceView: View {
         .onGeometryChange(for: CGSize.self) { $0.size } action: { canvasSize = $0 }
         .dropDestination(for: String.self) { payloads, location in
             let components = payloads
-                .compactMap(EffectDrag.componentID(from:))
-                .compactMap { id in audioUnitComponents.audioUnitComponents.first { $0.id == id } }
+                .compactMap(PluginDrag.componentID(from:))
+                .compactMap(audioUnitComponents.component(id:))
             guard !components.isEmpty else { return false }
             let point = meshPoint(forCanvasLocation: location)
             for (index, component) in components.enumerated() {
-                addEffect(component, at: CGPoint(x: point.x + CGFloat(index) * 40,
+                addPlugin(component, at: CGPoint(x: point.x + CGFloat(index) * 40,
                                                  y: point.y + CGFloat(index) * 40))
             }
             return true
         }
     }
 
+    /// Right-click on empty canvas: add any plug-in kind or a source.
+    @ViewBuilder
+    private func addMenu(_ location: MeshCanvasLocation) -> some View {
+        pluginMenu("Add Instrument", types: [.instrument], location: location)
+        pluginMenu("Add MIDI Effect", types: [.midiEffect], location: location)
+        pluginMenu("Add Audio Effect", types: [.effect, .musicEffect], location: location)
+        Divider()
+        Button("Add MIDI Input", systemImage: "pianokeys") {
+            audioGraph.addMIDIInput(at: location.meshPoint)
+        }
+        Button("Add Audio File Source", systemImage: "waveform") {
+            audioGraph.addAudioFileSource(at: location.meshPoint)
+        }
+        .disabled(audioGraph.hasAudioFileSource)
+        Divider()
+        Button("Add Generic Payload Node", systemImage: "shippingbox") {
+            audioGraph.addGenericNode(at: location.meshPoint)
+        }
+    }
+
+    /// One submenu per manufacturer, as in Logic's plug-in menus.
+    private func pluginMenu(_ title: String, types: [AudioUnitType], location: MeshCanvasLocation) -> some View {
+        let components = types.flatMap { audioUnitComponents.components(of: $0) }
+        let byMaker = Dictionary(grouping: components, by: \.mfg)
+        let makers = byMaker.keys.sorted { $0.localizedStandardCompare($1) == .orderedAscending }
+        return Menu {
+            ForEach(makers, id: \.self) { maker in
+                Menu(maker) {
+                    ForEach(byMaker[maker, default: []].sorted {
+                        $0.name.localizedStandardCompare($1.name) == .orderedAscending
+                    }) { component in
+                        Button(component.name) { addPlugin(component, at: location.meshPoint) }
+                    }
+                }
+            }
+        } label: {
+            Label(title, systemImage: types[0].systemImage)
+        }
+        .disabled(components.isEmpty)
+    }
+
+    @ViewBuilder
+    private func nodeMenu(_ node: GraphNode<Payload>) -> some View {
+        switch audioGraph.role(of: node) {
+        case .plugin(let type):
+            if let unit = audioGraph.managedAudioUnit(for: node) {
+                Button("Open Plug-in Window", systemImage: "macwindow") {
+                    PluginWindowController.open(nodeID: node.id, title: node.title, unit: unit)
+                }
+            }
+            if type.takesMIDI {
+                Button("Play Test Note", systemImage: "music.note") { audioGraph.playTestNote(on: node.id) }
+            }
+            Divider()
+            if type.takesAudio {
+                Button("Add Audio Input") { audioGraph.addPort(to: node.id, direction: .input, signal: .audio) }
+            }
+            if type.producesAudio {
+                Button("Add Audio Output") { audioGraph.addPort(to: node.id, direction: .output, signal: .audio) }
+            }
+            Divider()
+        case .midiInput:
+            Menu("Source") {
+                Toggle(AudioGraph.virtualInputName, isOn: Binding(
+                    get: { audioGraph.isMIDISource(nil, selectedFor: node) },
+                    set: { if $0 { audioGraph.setMIDISource(nil, for: node.id) } }
+                ))
+                if !audioGraph.midiSources.isEmpty { Divider() }
+                ForEach(audioGraph.midiSources, id: \.uniqueID) { source in
+                    Toggle(source.displayName, isOn: Binding(
+                        get: { audioGraph.isMIDISource(source, selectedFor: node) },
+                        set: { if $0 { audioGraph.setMIDISource(source, for: node.id) } }
+                    ))
+                }
+                Divider()
+                Button("Refresh Sources") { audioGraph.refreshMIDISources() }
+            }
+            Divider()
+        default:
+            EmptyView()
+        }
+        Button("Delete Node", role: .destructive) { delete(nodeIDs: [node.id], edgeID: nil) }
+    }
+
+    private func icon(for role: AudioNodeRole) -> String {
+        switch role {
+        case .source: return "waveform"
+        case .midiInput: return "pianokeys"
+        case .plugin(let type): return type.systemImage
+        case .output: return "speaker.wave.2"
+        case .generic: return "shippingbox"
+        }
+    }
+
     private func tint(for role: AudioNodeRole) -> Color {
         switch role {
         case .source: return Color(red: 0.18, green: 0.46, blue: 0.90)
-        case .effect: return Color(red: 0.55, green: 0.22, blue: 0.80)
+        case .midiInput: return Color(red: 0.85, green: 0.47, blue: 0.10)
+        case .plugin(.instrument): return Color(red: 0.75, green: 0.30, blue: 0.20)
+        case .plugin(.midiEffect): return Color(red: 0.70, green: 0.50, blue: 0.10)
+        case .plugin: return Color(red: 0.55, green: 0.22, blue: 0.80)
         case .output: return Color(red: 0.15, green: 0.65, blue: 0.40)
         case .generic: return Color(red: 0.35, green: 0.35, blue: 0.40)
         }
@@ -662,21 +738,13 @@ struct AudioUnitWorkspaceView: View {
         canvasState.forget(nodeIDs: nodeIDs, edgeIDs: removedEdges)
     }
 
-    private func insertChosenEffect() {
-        let components = audioUnitComponents.audioUnitComponents
-        guard components.indices.contains(chosenEffectIndex) else { return }
-        let component = components[chosenEffectIndex]
-        chosenEffectIndex = -1
-        addEffect(component, at: effectInsertPoint)
-    }
-
     /// Instantiates a fresh Audio Unit for the graph. The library's audition
     /// units stay on the preview player.
-    private func addEffect(_ component: Component, at point: CGPoint) {
+    private func addPlugin(_ component: Component, at point: CGPoint) {
         component.instantiateComponent { result in
             switch result {
             case .success(let unit?):
-                audioGraph.addEffect(unit, at: point)
+                audioGraph.addPlugin(unit, at: point)
                 connectionError = nil
             case .success(nil):
                 connectionError = "\(component.name) has no instantiable Audio Unit"

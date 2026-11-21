@@ -44,7 +44,7 @@ extension AudioUnitManager {
 
         // Locating components is a blocking operation. Perform this work on a separate queue.
         DispatchQueue.global(qos: .default).async {
-            let componentType = type == .effect ? kAudioUnitType_Effect : kAudioUnitType_MusicDevice
+            let componentType = type.componentType
 
             // Make a component description matching any Audio Unit of the selected component type.
             let description = AudioComponentDescription(componentType: componentType,
@@ -73,6 +73,24 @@ extension AudioUnitManager {
     }
 }
 
+
+extension AudioUnitManager {
+    // MARK: Discover without instantiating
+
+    /// All installed components of one kind, sorted by name. Blocking: call
+    /// off the main thread. Unlike `loadAudioUnits`, this leaves the preview
+    /// player alone and instantiates nothing.
+    static func discover(_ type: AudioUnitType) -> [Component] {
+        let description = AudioComponentDescription(componentType: type.componentType,
+                                                    componentSubType: 0,
+                                                    componentManufacturer: 0,
+                                                    componentFlags: 0,
+                                                    componentFlagsMask: 0)
+        return AVAudioUnitComponentManager.shared().components(matching: description)
+            .map { Component($0, type: type) }
+            .sorted { $0.name.localizedStandardCompare($1.name) == .orderedAscending }
+    }
+}
 
 extension AudioUnitManager {
     // MARK: Audio Transport
