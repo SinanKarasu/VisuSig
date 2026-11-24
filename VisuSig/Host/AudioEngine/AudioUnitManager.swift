@@ -9,7 +9,9 @@ import Foundation
 import CoreAudioKit
 import AVFoundation
 
+#if os(macOS)
 import AppKit
+#endif
 // public typealias NSViewController = NSViewController
 
 
@@ -20,9 +22,11 @@ class AudioUnitManager {
     var filterClosure: (AVAudioUnitComponent) -> Bool = {
         let blacklist = [String]() // ["AUNewPitch", "AURoundTripAAC", "AUNetSend"]
         var allowed = !blacklist.contains($0.name)
+        #if os(macOS)
         if allowed && $0.typeName == AVAudioUnitTypeEffect {
             allowed = $0.hasCustomView
         }
+        #endif
         return allowed
     }
 

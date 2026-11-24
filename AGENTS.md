@@ -31,14 +31,20 @@ boundaries. Read Docs/DAW.md before changing audio/MIDI routing or DAW behavior.
   have no audio/MIDI engine implementation.
 - App Sandbox is currently disabled for the macOS target because sandboxed
   instantiation of tested Roland Cloud AUv2 instruments returned OSStatus -3000.
-- visionOS is a future port. Confirm platform and plug-in compatibility before
-  treating a macOS capability as available there.
+- iPadOS 18+ is the current portability check platform. visionOS is the next
+  platform to address. Keep settings/session data shared and isolate AppKit,
+  UIKit, file presentation, and audio-session behavior in platform adapters.
+- VisuSig.xcodeproj and VisuSig.xcworkspace both reference the local shared
+  package at ../../Packages/VisualMesh, so cross-platform package changes can
+  be built and tested together. Keep both entry points working. Confirm
+  plug-in compatibility per platform.
 
 ## Build and verification
 
-Run from the repository root. Xcode is required; it fetches VisualMesh from GitHub.
+Run from the repository root. Xcode and the shared local VisualMesh package
+at ../../Packages/VisualMesh are required.
 
-Build the macOS Debug app:
+Build the macOS Debug app (or use -workspace VisuSig.xcworkspace for local package development):
 
 ```sh
 xcodebuild -project VisuSig.xcodeproj -scheme VisuSig \
@@ -83,3 +89,17 @@ swift test --package-path /Volumes/GitHubDeveloper/Packages/VisualMesh
   behavior clearly identified. Keep transient task progress in the handoff.
 - Make focused changes and keep generated Xcode user preferences out of
   feature commits unless explicitly requested.
+
+
+## iPadOS check build
+
+Build the shared app and local VisualMesh source for iPad Simulator:
+
+```sh
+xcodebuild -workspace VisuSig.xcworkspace -scheme VisuSig \
+  -configuration Debug -destination 'generic/platform=iOS Simulator' \
+  build CODE_SIGNING_ALLOWED=NO
+```
+
+The same scheme supports an iPad device destination. Signing is required to run
+on physical hardware. See Docs/IPADOS.md for platform boundaries and checks.

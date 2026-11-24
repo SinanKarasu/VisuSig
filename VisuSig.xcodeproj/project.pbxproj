@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+        A60000000000000000000001 /* PlatformUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = A60000000000000000000002 /* PlatformUI.swift */; };
+        A50000000000000000000001 /* SessionPackage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A50000000000000000000002 /* SessionPackage.swift */; };
 		C10000000000000000000002 /* MixerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10000000000000000000001 /* MixerView.swift */; };
 		A40000000000000000000001 /* DAWWorkspace.swift in Sources */ = {isa = PBXBuildFile; fileRef = A40000000000000000000002 /* DAWWorkspace.swift */; };
 		A10000010000000000000001 /* Payload.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000020000000000000001 /* Payload.swift */; };
@@ -51,6 +53,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+        A60000000000000000000002 /* PlatformUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlatformUI.swift; sourceTree = "<group>"; };
+        A50000000000000000000002 /* SessionPackage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionPackage.swift; sourceTree = "<group>"; };
 		C10000000000000000000001 /* MixerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MixerView.swift; sourceTree = "<group>"; };
 		A40000000000000000000002 /* DAWWorkspace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DAWWorkspace.swift; sourceTree = "<group>"; };
 		A10000020000000000000001 /* Payload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Payload.swift; sourceTree = "<group>"; };
@@ -151,6 +155,8 @@
 				F75CC4BA281EED8B00692CE5 /* AudioUnitComponents.swift */,
 				F7DD1AFB289DF33A00E48D97 /* PluginLibraryView.swift */,
 				A30000000000000000000002 /* MIDIWorkspace.swift */,
+                A50000000000000000000002 /* SessionPackage.swift */,
+                A60000000000000000000002 /* PlatformUI.swift */,
 				A40000000000000000000002 /* DAWWorkspace.swift */,
 				F75C5275282855D2008DBD23 /* MasterMenuView.swift */,
 				A10000030000000000000002 /* PluginWindow */,
@@ -380,6 +386,13 @@
 			dependencies = (
 			);
 			name = VisuSig;
+            packageProductDependencies = (
+                F70D8E2C303771030031CC3C /* VisualMesh */,
+                B10000000000000000000002 /* VisualMeshUI */,
+                F70D8E2E303771030031CC3C /* VisualMeshExamples */,
+                A30000000000000000000004 /* SwiftMIDIIO */,
+                A30000000000000000000006 /* SwiftMIDICore */,
+            );
 			productName = VisuSig;
 			productReference = F7C809C2279B299200982843 /* VisuSig.app */;
 			productType = "com.apple.product-type.application";
@@ -411,7 +424,7 @@
 			packageReferences = (
 				A30000000000000000000007 /* swift-midi-io */,
 				A30000000000000000000008 /* swift-midi-core */,
-				F70D8E2B303771030031CC3C /* XCRemoteSwiftPackageReference "VisualMesh" */,
+				F70D8E2B303771030031CC3C /* XCLocalSwiftPackageReference "VisualMesh" */,
 			);
 			productRefGroup = F7C809C3279B299200982843 /* Products */;
 			projectDirPath = "";
@@ -454,6 +467,8 @@
 				F73DDC0C2835770300DABC2F /* Utilities+Extensions.swift in Sources */,
 				F7C809C6279B299200982843 /* VisuSigApp.swift in Sources */,
 				A30000000000000000000001 /* MIDIWorkspace.swift in Sources */,
+                A50000000000000000000001 /* SessionPackage.swift in Sources */,
+                A60000000000000000000001 /* PlatformUI.swift in Sources */,
 				A40000000000000000000001 /* DAWWorkspace.swift in Sources */,
 				F75C5276282855D2008DBD23 /* MasterMenuView.swift in Sources */,
 				F779564C287CBE58007E569B /* AudioGraph.swift in Sources */,
@@ -613,6 +628,17 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+                INFOPLIST_FILE = VisuSig/Info.plist;
+                SDKROOT = auto;
+                SUPPORTED_PLATFORMS = "macosx iphoneos iphonesimulator";
+                TARGETED_DEVICE_FAMILY = 2;
+                IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+                SUPPORTS_MACCATALYST = NO;
+                "CODE_SIGN_ENTITLEMENTS[sdk=iphone*]" = "";
+                INFOPLIST_KEY_NSMicrophoneUsageDescription = "VisuSig uses audio input for music sessions.";
+                INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+                INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+                "LD_RUNPATH_SEARCH_PATHS[sdk=iphone*]" = "$(inherited) @executable_path/Frameworks";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -645,6 +671,17 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+                INFOPLIST_FILE = VisuSig/Info.plist;
+                SDKROOT = auto;
+                SUPPORTED_PLATFORMS = "macosx iphoneos iphonesimulator";
+                TARGETED_DEVICE_FAMILY = 2;
+                IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+                SUPPORTS_MACCATALYST = NO;
+                "CODE_SIGN_ENTITLEMENTS[sdk=iphone*]" = "";
+                INFOPLIST_KEY_NSMicrophoneUsageDescription = "VisuSig uses audio input for music sessions.";
+                INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+                INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+                "LD_RUNPATH_SEARCH_PATHS[sdk=iphone*]" = "$(inherited) @executable_path/Frameworks";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -683,15 +720,14 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCLocalSwiftPackageReference section */
+        F70D8E2B303771030031CC3C /* XCLocalSwiftPackageReference "VisualMesh" */ = {
+            isa = XCLocalSwiftPackageReference;
+            relativePath = "../../Packages/VisualMesh";
+        };
+/* End XCLocalSwiftPackageReference section */
+
 /* Begin XCRemoteSwiftPackageReference section */
-		F70D8E2B303771030031CC3C /* XCRemoteSwiftPackageReference "VisualMesh" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/SinanKarasu/VisualMesh";
-			requirement = {
-				branch = main;
-				kind = branch;
-			};
-		};
 		A30000000000000000000007 /* swift-midi-io */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/orchetect/swift-midi-io";
@@ -707,17 +743,17 @@
 /* Begin XCSwiftPackageProductDependency section */
 		F70D8E2C303771030031CC3C /* VisualMesh */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = F70D8E2B303771030031CC3C /* XCRemoteSwiftPackageReference "VisualMesh" */;
+			package = F70D8E2B303771030031CC3C /* XCLocalSwiftPackageReference "VisualMesh" */;
 			productName = VisualMesh;
 		};
 		B10000000000000000000002 /* VisualMeshUI */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = F70D8E2B303771030031CC3C /* XCRemoteSwiftPackageReference "VisualMesh" */;
+			package = F70D8E2B303771030031CC3C /* XCLocalSwiftPackageReference "VisualMesh" */;
 			productName = VisualMeshUI;
 		};
 		F70D8E2E303771030031CC3C /* VisualMeshExamples */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = F70D8E2B303771030031CC3C /* XCRemoteSwiftPackageReference "VisualMesh" */;
+			package = F70D8E2B303771030031CC3C /* XCLocalSwiftPackageReference "VisualMesh" */;
 			productName = VisualMeshExamples;
 		};
 		A30000000000000000000004 /* SwiftMIDIIO */ = {

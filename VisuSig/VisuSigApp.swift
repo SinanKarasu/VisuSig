@@ -14,8 +14,11 @@ struct VisuSigApp: App {
             ContentView()
         }
         .commands {
+            MusicProjectCommands()
+            #if os(macOS)
             // Add customize toolbar menu items
             ToolbarCommands()
+            #endif
 
             // Add text editing menu items
             TextEditingCommands()
@@ -30,8 +33,10 @@ struct VisuSigApp: App {
             MyBuildCommands()
         }
 
+        #if os(macOS)
         Settings {
             PreferencesView()
         }
+        #endif
     }
 }

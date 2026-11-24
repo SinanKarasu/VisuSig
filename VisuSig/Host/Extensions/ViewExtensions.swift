@@ -1,3 +1,4 @@
+#if os(macOS)
 /*
 See LICENSE folder for this sample’s licensing information.
 
@@ -21,3 +22,5 @@ public extension NSView {
         return self
     }
 }
+
+#endif

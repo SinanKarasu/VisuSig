@@ -120,7 +120,7 @@ struct PayloadWorkbenchView: View {
             header
             Divider()
 
-            HSplitView {
+            WorkspaceSplitView {
                 VStack(spacing: 0) {
                     spreadsheet
                         .frame(minHeight: 210)
@@ -130,7 +130,7 @@ struct PayloadWorkbenchView: View {
                     programPreview
                         .frame(minHeight: 180)
                 }
-                .frame(minWidth: 650, idealWidth: 760)
+                .frame(minWidth: PlatformUI.desktopMinimum(650), idealWidth: 760)
 
                 VStack(alignment: .leading, spacing: 0) {
                     Label("Execution order as payload graph", systemImage: "point.3.connected.trianglepath.dotted")
@@ -149,7 +149,7 @@ struct PayloadWorkbenchView: View {
                     .nodeTint { _ in Color(red: 0.08, green: 0.55, blue: 0.62) }
                     .readOnly()
                 }
-                .frame(minWidth: 420)
+                .frame(minWidth: PlatformUI.desktopMinimum(420))
             }
         }
     }
@@ -226,7 +226,7 @@ struct PayloadWorkbenchView: View {
 
             Spacer(minLength: 0)
         }
-        .background(Color(nsColor: .controlBackgroundColor))
+        .background(PlatformUI.controlBackground)
     }
 
     private var programPreview: some View {
@@ -254,9 +254,9 @@ struct PayloadWorkbenchView: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(10)
             }
-            .background(Color(nsColor: .textBackgroundColor))
+            .background(PlatformUI.textBackground)
             .clipShape(RoundedRectangle(cornerRadius: 6))
-            .overlay(RoundedRectangle(cornerRadius: 6).stroke(Color(nsColor: .separatorColor)))
+            .overlay(RoundedRectangle(cornerRadius: 6).stroke(PlatformUI.separator))
         }
         .padding(12)
     }

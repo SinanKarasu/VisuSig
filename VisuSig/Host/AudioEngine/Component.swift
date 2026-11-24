@@ -71,15 +71,22 @@ public struct Component: Identifiable {
     }
 
     public var hasCustomView: Bool {
+        #if os(macOS)
         avAudioUnitComponent?.hasCustomView ?? false
+        #else
+        // iPadOS resolves custom interfaces asynchronously when opened.
+        false
+        #endif
     }
 }
 
 extension Component {
     var icon: Image {
+        #if os(macOS)
         if let x = avAudioUnitComponent?.icon {
             return Image(nsImage: x)
         }
+        #endif
         return Image(systemName: "waveform.and.mic")
     }
 
@@ -113,7 +120,11 @@ extension Component {
                 return
             }
             DispatchQueue.main.async {
+                #if os(macOS)
                 let nsImage = AudioComponentCopyIcon(avAudioUnitComponent.audioComponent)
+                #else
+                let nsImage: PlatformImage? = nil
+                #endif
                 let unit = AUManagedUnit(protoType: self, audioUnit: avAudioUnit,
                                         audioUnitType: self.audioUnitType, icon: nsImage)
                 completion(.success(unit))

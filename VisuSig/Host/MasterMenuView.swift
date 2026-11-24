@@ -22,6 +22,9 @@ struct MasterMenuView: View {
     }
 
     @State private var workspace: Workspace = .hierarchy
+    @State private var showsSettings = false
+    @State private var projectToOpen: URL?
+    @State private var projectAction: MusicProjectAction?
     @State private var visitedWorkspaces: Set<Workspace> = [.hierarchy]
 
     var body: some View {
@@ -37,9 +40,14 @@ struct MasterMenuView: View {
                 .pickerStyle(.segmented)
                 .frame(width: 420)
                 Spacer()
+                #if os(macOS)
                 Text(workspace.explanation)
                     .font(.caption)
                     .foregroundStyle(.secondary)
+                #else
+                Button("Settings", systemImage: "gearshape") { showsSettings = true }
+                    .labelStyle(.iconOnly)
+                #endif
             }
             .padding(.horizontal, 12)
             .frame(height: 44)
@@ -59,7 +67,48 @@ struct MasterMenuView: View {
                 visitedWorkspaces.insert(selected)
             }
         }
-        .frame(minWidth: 1100, minHeight: 720)
+        .frame(minWidth: PlatformUI.minimumWindowWidth, minHeight: 600)
+        #if !os(macOS)
+        .sheet(isPresented: $showsSettings) {
+            NavigationStack {
+                PreferencesView()
+                    .navigationTitle("Settings")
+                    .toolbar {
+                        Button("Done") { showsSettings = false }
+                    }
+            }
+        }
+        .sheet(item: Binding(
+            get: { PluginWindowController.shared.presentation },
+            set: { PluginWindowController.shared.presentation = $0 }
+        )) { plugin in
+            NavigationStack {
+                PluginInterfaceView(audioUnit: plugin.unit)
+                    .navigationTitle(plugin.title)
+                    .toolbar {
+                        Button("Done") { PluginWindowController.shared.presentation = nil }
+                    }
+            }
+        }
+        #endif
+        .focusedSceneValue(\.musicProjectActions, MusicProjectActions(
+            open: {
+                workspace = .audioUnits
+                projectAction = .open
+            },
+            save: {
+                workspace = .audioUnits
+                projectAction = .save
+            },
+            saveAs: {
+                workspace = .audioUnits
+                projectAction = .saveAs
+            }
+        ))
+        .onOpenURL { url in
+            workspace = .audioUnits
+            projectToOpen = url
+        }
     }
 
     @ViewBuilder
@@ -70,7 +119,7 @@ struct MasterMenuView: View {
         case .hierarchy:
             HierarchyWorkbenchView()
         case .audioUnits:
-            AudioUnitWorkspaceView()
+            AudioUnitWorkspaceView(projectToOpen: $projectToOpen, projectAction: $projectAction)
         case .midi:
             MIDIWorkspace()
         case .daw:
@@ -181,7 +230,7 @@ private struct HierarchyWorkbenchView: View {
     @State private var model = HierarchyWorkbenchModel()
 
     var body: some View {
-        HSplitView {
+        WorkspaceSplitView {
             libraryPane
                 .frame(minWidth: 240, idealWidth: 270, maxWidth: 320)
 
@@ -193,7 +242,7 @@ private struct HierarchyWorkbenchView: View {
                 netList
                     .frame(height: 130)
             }
-            .frame(minWidth: 760)
+            .frame(minWidth: PlatformUI.desktopMinimum(760))
         }
     }
 
@@ -239,7 +288,7 @@ private struct HierarchyWorkbenchView: View {
                 .foregroundStyle(.secondary)
         }
         .padding(14)
-        .background(Color(nsColor: .controlBackgroundColor))
+        .background(PlatformUI.controlBackground)
     }
 
     private func correspondence(_ name: String, _ value: String) -> some View {
@@ -447,11 +496,28 @@ private struct HierarchyWorkbenchView: View {
         }
         .padding(12)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-        .background(Color(nsColor: .controlBackgroundColor))
+        .background(PlatformUI.controlBackground)
     }
 }
 
 struct AudioUnitWorkspaceView: View {
+    @Binding var projectToOpen: URL?
+    @Binding var projectAction: MusicProjectAction?
+    @State private var isOpeningProject = false
+    #if !os(macOS)
+    @State private var isImportingProject = false
+    @State private var isExportingProject = false
+    @State private var exportDocument: MusicProjectExport?
+    @State private var pendingProjectURL: URL?
+    @State private var openAfterExport: URL?
+    @State private var confirmsProjectReplacement = false
+    #endif
+
+    init(projectToOpen: Binding<URL?> = .constant(nil),
+         projectAction: Binding<MusicProjectAction?> = .constant(nil)) {
+        _projectToOpen = projectToOpen
+        _projectAction = projectAction
+    }
     @State private var audioUnitComponents = AudioUnitComponents()
 
     /// AudioGraph is an adapter over the domain-neutral VisualMesh graph.
@@ -464,12 +530,24 @@ struct AudioUnitWorkspaceView: View {
     @State private var showsBottomArea = true
     @State private var bottomPanel: BottomPanel = .mixer
     @State private var shownMixerID: UUID?
+    @State private var auditionNodeID: UUID?
     @State private var librarySelection: Component.ID?
     @State private var canvasSize: CGSize = .zero
     @State private var auditionHeight: CGFloat = 280
 
     var body: some View {
         VStack(spacing: 0) {
+
+            HStack {
+                Text(audioGraph.projectURL?.deletingPathExtension().lastPathComponent ?? "Untitled Music Session")
+                    .font(.headline)
+                Spacer()
+                Button("Open Project…") { chooseProject() }
+                Button("Save Project") { _ = saveProject() }
+                Button("Save As…") { _ = saveProject(saveAs: true) }
+            }
+            .padding(.horizontal, 12)
+            .padding(.vertical, 6)
 
             // ── Transport bar ──────────────────────────────────────
             HStack(spacing: 0) {
@@ -482,11 +560,17 @@ struct AudioUnitWorkspaceView: View {
             .frame(height: 60)
             .background(Color.black.opacity(0.85))
 
-            HSplitView {
+            WorkspaceSplitView {
                 // ── Library (left, like Logic's browser) ───────────
                 if showsLibrary {
                     PluginLibraryView(audioUnitComponents: audioUnitComponents,
-                                      selection: $librarySelection) { component in
+                                      selection: Binding(
+                                        get: { librarySelection },
+                                        set: {
+                                            auditionNodeID = nil
+                                            librarySelection = $0
+                                        }
+                                      )) { component in
                         addPlugin(component, at: visibleCenter)
                     }
                     .frame(minWidth: 220, idealWidth: 270, maxWidth: 420)
@@ -509,7 +593,15 @@ struct AudioUnitWorkspaceView: View {
                             }
                         }
 
-                    // ── Mixer, or audition of the library selection ──
+                    if !audioGraph.projectWarnings.isEmpty {
+                        Text("Unavailable plug-ins (saved state retained): " + audioGraph.projectWarnings.joined(separator: "; "))
+                            .font(.caption)
+                            .foregroundStyle(.orange)
+                            .textSelection(.enabled)
+                            .padding(8)
+                    }
+
+                    // ── Mixer, library preview, or selected graph plug-in ──
                     if showsBottomArea {
                         ResizeHandle(height: $auditionHeight, range: auditionHeightRange)
                         VStack(spacing: 0) {
@@ -525,7 +617,12 @@ struct AudioUnitWorkspaceView: View {
                                 MixerView(audioGraph: audioGraph, mixerID: mixerToShow)
                             case .audition:
                                 EffectAuditionView(audioUnitComponents: audioUnitComponents,
-                                                   componentID: librarySelection) { pluginSize in
+                                                   componentID: librarySelection,
+                                                   graphUnit: auditionNodeID.flatMap { id in
+                                                       audioGraph.mesh.node(id: id).flatMap {
+                                                           audioGraph.managedAudioUnit(for: $0)
+                                                       }
+                                                   }) { pluginSize in
                                     // Open at the plug-in's own height (plus headers).
                                     auditionHeight = clampedAuditionHeight(pluginSize.height + 72)
                                 }
@@ -537,6 +634,69 @@ struct AudioUnitWorkspaceView: View {
                 .frame(minWidth: 480)
             }
         }
+        #if !os(macOS)
+        .fileImporter(isPresented: $isImportingProject, allowedContentTypes: [.visuSigProject]) { result in
+            switch result {
+            case .success(let url): openProject(url)
+            case .failure(let error): connectionError = error.localizedDescription
+            }
+        }
+        .fileExporter(isPresented: $isExportingProject, document: exportDocument,
+                      contentTypes: [.visuSigProject], defaultFilename: "Music Session") { result in
+            exportDocument = nil
+            switch result {
+            case .success:
+                if let pending = openAfterExport {
+                    openAfterExport = nil
+                    loadProject(pending)
+                }
+            case .failure(let error):
+                openAfterExport = nil
+                connectionError = error.localizedDescription
+            }
+        }
+        onCancellation: {
+            exportDocument = nil
+            openAfterExport = nil
+        }
+        .confirmationDialog("Save the current session before opening another?",
+                            isPresented: $confirmsProjectReplacement, titleVisibility: .visible) {
+            Button("Save and Open") {
+                openAfterExport = pendingProjectURL
+                _ = saveProject()
+            }
+            Button("Open Without Saving", role: .destructive) {
+                if let pendingProjectURL { loadProject(pendingProjectURL) }
+            }
+            Button("Cancel", role: .cancel) { pendingProjectURL = nil }
+        }
+        #endif
+        .disabled(isOpeningProject)
+        .overlay {
+            if isOpeningProject {
+                ProgressView("Opening project…")
+                    .padding()
+                    .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 12))
+            }
+        }
+        .task(id: projectAction) {
+            if let action = projectAction {
+                projectAction = nil
+                switch action {
+                case .open: chooseProject()
+                case .save: _ = saveProject()
+                case .saveAs: _ = saveProject(saveAs: true)
+                }
+            }
+        }
+        .task(id: projectToOpen) {
+            if let url = projectToOpen {
+                projectToOpen = nil
+                // Use an unstructured task so clearing the request does not cancel loading.
+                openProject(url)
+            }
+        }
+        .onDisappear { audioGraph.stopSession() }
         .onAppear {
             if let url = audioGraph.audioFileURL {
                 audioUnitComponents.setPreviewAudioFile(url: url)
@@ -549,12 +709,111 @@ struct AudioUnitWorkspaceView: View {
             }
         }
         .onChange(of: canvasState.selectedNodeIDs) { _, selected in
+            auditionNodeID = nil
             // Selecting a Mixer node shows its channels.
             if let mixer = selected.first(where: { id in
                 audioGraph.mesh.node(id: id).map { audioGraph.role(of: $0) == .mixer } ?? false
             }) {
                 shownMixerID = mixer
                 showBottom(.mixer)
+            } else if selected.count == 1, let id = selected.first,
+                      let node = audioGraph.mesh.node(id: id),
+                      audioGraph.managedAudioUnit(for: node) != nil {
+                auditionNodeID = id
+                showBottom(.audition)
+            }
+        }
+    }
+
+    private func saveProject(saveAs: Bool = false) -> Bool {
+        guard !isOpeningProject else { return false }
+        #if os(macOS)
+        var destination = saveAs ? nil : audioGraph.projectURL
+        if destination == nil {
+            let panel = NSSavePanel()
+            panel.allowedContentTypes = [.visuSigProject]
+            panel.nameFieldStringValue = audioGraph.projectURL?.lastPathComponent ?? "Untitled.visusig"
+            panel.canCreateDirectories = true
+            guard panel.runModal() == .OK else { return false }
+            destination = panel.url
+        }
+        guard let destination else { return false }
+        do {
+            try audioGraph.saveProject(to: destination)
+            connectionError = nil
+            return true
+        } catch {
+            connectionError = "Couldn't save project: " + error.localizedDescription
+            return false
+        }
+        #else
+        do {
+            exportDocument = try audioGraph.exportProject()
+            isExportingProject = true
+        } catch {
+            openAfterExport = nil
+            connectionError = error.localizedDescription
+        }
+        return false
+        #endif
+    }
+
+    private func chooseProject() {
+        #if os(macOS)
+        let panel = NSOpenPanel()
+        panel.allowedContentTypes = [.visuSigProject]
+        panel.allowsMultipleSelection = false
+        panel.canChooseDirectories = false
+        if panel.runModal() == .OK, let url = panel.url { openProject(url) }
+        #else
+        isImportingProject = true
+        #endif
+    }
+
+    private func openProject(_ url: URL) {
+        guard !isOpeningProject else { return }
+        if audioGraph.hasLoadedAudioFile || audioGraph.mesh.nodes.count > 3 || audioGraph.projectURL != nil {
+            #if os(macOS)
+            let alert = NSAlert()
+            alert.messageText = "Save the current music session before opening another?"
+            alert.addButton(withTitle: "Save")
+            alert.addButton(withTitle: "Cancel")
+            alert.addButton(withTitle: "Open Without Saving")
+            let response = alert.runModal()
+            if response == .alertSecondButtonReturn { return }
+            if response == .alertFirstButtonReturn, !saveProject() { return }
+            #else
+            pendingProjectURL = url
+            confirmsProjectReplacement = true
+            return
+            #endif
+        }
+        loadProject(url)
+    }
+
+    private func loadProject(_ url: URL) {
+        guard !isOpeningProject else { return }
+        isOpeningProject = true
+        Task { @MainActor in
+            defer { isOpeningProject = false }
+            do {
+                let scoped = url.startAccessingSecurityScopedResource()
+                defer { if scoped { url.stopAccessingSecurityScopedResource() } }
+                let loaded = try await AudioGraph.openProject(at: url)
+                PluginWindowController.close(nodeIDs: Set(audioGraph.mesh.nodes.map(\.id)))
+                audioGraph.stopSession()
+                audioUnitComponents.clearPreviewAudioFile()
+                audioGraph = loaded
+                canvasState = MeshCanvasState()
+                auditionNodeID = nil
+                shownMixerID = nil
+                loaded.activateProject()
+                if let url = loaded.audioFileURL {
+                    audioUnitComponents.setPreviewAudioFile(url: url)
+                }
+                connectionError = nil
+            } catch {
+                connectionError = "Couldn't open project: " + error.localizedDescription
             }
         }
     }
@@ -621,7 +880,22 @@ struct AudioUnitWorkspaceView: View {
 
     private var canvas: some View {
         MeshCanvas(mesh: audioGraph.mesh, layout: audioGraph.layout, state: canvasState) { node in
-            Label(node.title, systemImage: icon(for: audioGraph.role(of: node)))
+            HStack(spacing: 6) {
+                if case .plugin = audioGraph.role(of: node) {
+                    Button {
+                        audioGraph.togglePluginPower(node.id)
+                    } label: {
+                        Image(systemName: "power")
+                            .foregroundStyle(audioGraph.isPluginEnabled(node) ? Color.green : Color.secondary)
+                    }
+                    .buttonStyle(.borderless)
+                    .help(audioGraph.isPluginEnabled(node) ? "Bypass plug-in" : "Enable plug-in")
+                    .accessibilityLabel("Power for " + node.title)
+                    .accessibilityValue(audioGraph.isPluginEnabled(node) ? "On" : "Bypassed")
+                }
+                Label(node.title, systemImage: icon(for: audioGraph.role(of: node)))
+                    .opacity(audioGraph.isPluginEnabled(node) ? 1 : 0.5)
+            }
         }
         .nodeTint { node in tint(for: audioGraph.role(of: node)) }
         .portTint { port in port.signal == .midi ? .orange : .cyan }
@@ -651,6 +925,9 @@ struct AudioUnitWorkspaceView: View {
             } catch {
                 connectionError = "Can't connect those ports: \(error.localizedDescription)"
             }
+        }
+        .onConnectionRefused { first, second in
+            connectionError = refusalReason(first, second)
         }
         .onDeleteSelection { nodeIDs, edgeID in
             delete(nodeIDs: nodeIDs, edgeID: edgeID)
@@ -720,7 +997,7 @@ struct AudioUnitWorkspaceView: View {
         switch audioGraph.role(of: node) {
         case .plugin(let type):
             if let unit = audioGraph.managedAudioUnit(for: node) {
-                Button("Open Plug-in Window", systemImage: "macwindow") {
+                Button("Open Plug-in", systemImage: "macwindow") {
                     PluginWindowController.open(nodeID: node.id, title: node.title, unit: unit)
                 }
             }
@@ -762,6 +1039,22 @@ struct AudioUnitWorkspaceView: View {
             EmptyView()
         }
         Button("Delete Node", role: .destructive) { delete(nodeIDs: [node.id], edgeID: nil) }
+    }
+
+    /// Why two ports the user tried to join can't be connected.
+    private func refusalReason(_ first: GraphEndpoint, _ second: GraphEndpoint) -> String {
+        guard let a = audioGraph.mesh.port(at: first), let b = audioGraph.mesh.port(at: second) else {
+            return "Those ports can't be connected."
+        }
+        if !a.carriesSameSignal(as: b) {
+            return "Audio and MIDI ports can't be connected to each other."
+        }
+        if a.direction == b.direction {
+            return a.direction == .input
+                ? "Both are inputs: connect an output to an input."
+                : "Both are outputs: connect an output to an input."
+        }
+        return "Those ports can't be connected."
     }
 
     private func icon(for role: AudioNodeRole) -> String {

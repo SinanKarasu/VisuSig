@@ -64,6 +64,8 @@ enum AudioGraphError: LocalizedError {
 /// `mesh` and `layout` are the model. The engine, player, Audio Units, MIDI
 /// connections, and per-edge telemetry are runtime objects, rebuilt from the
 /// model after every edit made through this type.
+/// Graph edits and callback-driven state updates are isolated to the main actor.
+@MainActor
 @Observable
 final class AudioGraph {
     typealias GraphMesh = Mesh<Payload, AudioConnection>
@@ -73,6 +75,12 @@ final class AudioGraph {
     @ObservationIgnored let runtimes = PayloadRuntimeStore()
     /// Live telemetry per audio edge ID.
     private(set) var signals: [UUID: SignalEdgePayload] = [:]
+    @ObservationIgnored private var package: SessionPackage?
+    @ObservationIgnored private var audioAssetID: UUID?
+    @ObservationIgnored private var savedPlugins: [UUID: MusicSessionDocument.Plugin] = [:]
+    @ObservationIgnored private var savedConnectionIDs: [UUID: UUID] = [:]
+    private(set) var projectURL: URL?
+    private(set) var projectWarnings: [String] = []
 
     // MARK: - Audio engine
 
@@ -214,6 +222,21 @@ final class AudioGraph {
                        ports: [GraphPort(name: "In", direction: .input, signal: .audio),
                                GraphPort(name: "Out", direction: .output, signal: .audio)],
                        at: position)
+    }
+
+    func isPluginEnabled(_ node: GraphNode<Payload>) -> Bool {
+        node.payload[field: "bypassed"] != "true"
+    }
+
+    /// Bypass processing in place so changing power preserves the route and settings.
+    func togglePluginPower(_ nodeID: UUID) {
+        guard let node = mesh.node(id: nodeID),
+              case .plugin = role(of: node),
+              let audioUnit = managedAudioUnit(for: node)?.audioUnit else { return }
+        let wasEnabled = isPluginEnabled(node)
+        if wasEnabled { silence(node) }
+        audioUnit.shouldBypassEffect = wasEnabled
+        node.payload[field: "bypassed"] = wasEnabled ? "true" : "false"
     }
 
     // MARK: - Mixer channels
@@ -400,6 +423,7 @@ final class AudioGraph {
         guard let status = message.first, (0x80 ... 0xEF).contains(status) else { return }
         for targetID in midiRoutes[inputNodeID] ?? [] {
             guard let node = mesh.node(id: targetID) else { continue }
+            guard isPluginEnabled(node) else { continue }
             send(message, to: node)
         }
     }
@@ -425,7 +449,7 @@ final class AudioGraph {
 
     /// Plays middle C for a moment on an instrument or MIDI-driven node.
     func playTestNote(on nodeID: UUID) {
-        guard let node = mesh.node(id: nodeID) else { return }
+        guard let node = mesh.node(id: nodeID), isPluginEnabled(node) else { return }
         send([0x90, 60, 96], to: node)
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) { [weak self] in
             self?.send([0x80, 60, 0], to: node)
@@ -439,14 +463,21 @@ final class AudioGraph {
         let wasPlaying = isPlaying
         if wasPlaying { stopPlayingInternal() }
         do {
-            audioFile = try AVAudioFile(forReading: url)
-            audioFileURL = url
-            audioFileName = url.lastPathComponent
+            if package == nil { package = try SessionPackage() }
+            guard let package else { return false }
+            let asset = try package.collect(url)
+            let ownedURL = try package.url(for: asset.id)
+            let loaded = try AVAudioFile(forReading: ownedURL)
+            audioFile = loaded
+            audioAssetID = asset.id
+            audioFileURL = ownedURL
+            audioFileName = asset.originalName
             rebuildConnections()
             if wasPlaying { startPlayingInternal() }
             return true
         } catch {
             lastError = "Couldn't open \(url.lastPathComponent): \(error.localizedDescription)"
+            if wasPlaying { startPlayingInternal() }
             return false
         }
     }
@@ -477,7 +508,7 @@ final class AudioGraph {
     private func scheduleFileLoop(file: AVAudioFile) {
         player.scheduleFile(file, at: nil) { [weak self] in
             DispatchQueue.main.async {
-                guard let self, self.isPlaying else { return }
+                guard let self, self.isPlaying, self.audioFile === file else { return }
                 self.scheduleFileLoop(file: file)
             }
         }
@@ -487,6 +518,7 @@ final class AudioGraph {
         guard !engine.isRunning else { isEngineRunning = true; return }
         engine.prepare()
         do {
+            try PlatformAudioSession.activate()
             try engine.start()
             isEngineRunning = true
         } catch {
@@ -698,5 +730,182 @@ final class AudioGraph {
         case .mixer: return mixerNodes[node.id]
         case .midiInput, .generic: return nil
         }
+    }
+}
+
+
+// MARK: - Music project persistence
+
+extension AudioGraph {
+    #if !os(macOS)
+    func exportProject() throws -> MusicProjectExport {
+        let previousURL = projectURL
+        let exportURL = FileManager.default.temporaryDirectory
+            .appendingPathComponent(UUID().uuidString + ".visusig")
+        defer {
+            projectURL = previousURL
+            try? FileManager.default.removeItem(at: exportURL)
+        }
+        try saveProject(to: exportURL)
+        return try MusicProjectExport(url: exportURL)
+    }
+    #endif
+
+    func saveProject(to url: URL) throws {
+        if package == nil { package = try SessionPackage() }
+        guard let package else { return }
+        var records: [MusicSessionDocument.Node] = []
+        for node in mesh.nodes {
+            var plugin = savedPlugins[node.id]
+            if let unit = managedAudioUnit(for: node), let audioUnit = unit.audioUnit {
+                let description = audioUnit.componentDescription
+                plugin = MusicSessionDocument.Plugin(
+                    type: description.componentType, subtype: description.componentSubType,
+                    manufacturer: description.componentManufacturer,
+                    version: audioUnit.componentVersion, statePath: plugin?.statePath
+                )
+                if let state = audioUnit.fullStateForDocument ?? audioUnit.fullState {
+                    let path = "PluginStates/" + node.id.uuidString + ".plist"
+                    let data = try PropertyListSerialization.data(
+                        fromPropertyList: state, format: .binary, options: 0
+                    )
+                    let stateURL = try SessionPackage.containedURL(path, in: package.root)
+                    try FileManager.default.createDirectory(
+                        at: stateURL.deletingLastPathComponent(), withIntermediateDirectories: true
+                    )
+                    try data.write(to: stateURL, options: .atomic)
+                    plugin?.statePath = path
+                }
+            }
+            let position = layout.position(of: node.id)
+            records.append(MusicSessionDocument.Node(
+                id: node.id, title: node.title, payload: node.payload, ports: node.ports,
+                subgraph: node.subgraph, x: position.x, y: position.y, plugin: plugin
+            ))
+        }
+        let connections = mesh.edges.map { edge in
+            MusicSessionDocument.Connection(
+                id: savedConnectionIDs[edge.id] ?? edge.id,
+                source: GraphEndpoint(nodeID: edge.sourceNodeID, portID: edge.sourcePortID),
+                target: GraphEndpoint(nodeID: edge.targetNodeID, portID: edge.targetPortID),
+                settings: edge.payload
+            )
+        }
+        try package.save(
+            MusicSessionDocument(nodes: records, connections: connections, audioAssetID: audioAssetID),
+            to: url
+        )
+        projectURL = url
+    }
+
+    /// Prepare a replacement completely before the UI releases its current session.
+    static func openProject(at url: URL) async throws -> AudioGraph {
+        let package = try SessionPackage(opening: url)
+        let document = try package.readSession()
+        guard Set(document.nodes.map(\.id)).count == document.nodes.count,
+              Set(document.nodes.map { $0.payload.id }).count == document.nodes.count,
+              Set(document.connections.map(\.id)).count == document.connections.count else {
+            throw SessionPackageError.invalid("The project contains duplicate graph identities.")
+        }
+        let graph = AudioGraph()
+        graph.package = package
+        for record in document.nodes {
+            guard record.x.isFinite, record.y.isFinite,
+                  Set(record.ports.map(\.id)).count == record.ports.count else {
+                throw SessionPackageError.invalid("The project contains invalid node geometry or ports.")
+            }
+            let node = GraphNode(id: record.id, title: record.title, payload: record.payload,
+                                 ports: record.ports, subgraph: record.subgraph)
+            graph.mesh.addNode(node)
+            graph.layout.setPosition(CGPoint(x: record.x, y: record.y), for: node.id)
+            if let plugin = record.plugin {
+                guard let rawType = record.payload[field: "audioUnitType"].flatMap(Int.init),
+                      let type = AudioUnitType(rawValue: rawType),
+                      type.componentType == plugin.type else {
+                    throw SessionPackageError.invalid("A plug-in node has an invalid component type.")
+                }
+                graph.savedPlugins[node.id] = plugin
+                if let path = plugin.statePath {
+                    let stateURL = try SessionPackage.containedURL(path, in: package.root)
+                    _ = try PropertyListSerialization.propertyList(
+                        from: Data(contentsOf: stateURL), options: [], format: nil
+                    )
+                }
+            } else if case .plugin = graph.role(of: node) {
+                throw SessionPackageError.invalid("A plug-in node is missing its component identity.")
+            }
+        }
+        for record in document.connections {
+            guard (0...1).contains(record.settings.volume),
+                  (-1...1).contains(record.settings.pan) else {
+                throw SessionPackageError.invalid("The project contains invalid mixer channel settings.")
+            }
+            guard !graph.reaches(from: record.target.nodeID, to: record.source.nodeID) else {
+                throw SessionPackageError.invalid("The project contains a feedback loop.")
+            }
+            let edge = try graph.mesh.connect(
+                sourceNodeID: record.source.nodeID, sourcePortID: record.source.portID,
+                targetNodeID: record.target.nodeID, targetPortID: record.target.portID,
+                payload: record.settings
+            )
+            graph.savedConnectionIDs[edge.id] = record.id
+            if graph.signalKind(of: edge) == .audio { graph.signals[edge.id] = SignalEdgePayload() }
+        }
+        if let assetID = document.audioAssetID {
+            let mediaURL = try package.url(for: assetID)
+            graph.audioFile = try AVAudioFile(forReading: mediaURL)
+            graph.audioFileURL = mediaURL
+            graph.audioFileName = package.assetName(assetID) ?? mediaURL.lastPathComponent
+            graph.audioAssetID = assetID
+        }
+        // Validate the document before asking any third-party plug-in to load.
+        for record in document.nodes {
+            guard let plugin = record.plugin,
+                  let type = AudioUnitType(rawValue: record.payload[field: "audioUnitType"].flatMap(Int.init) ?? -1)
+            else { continue }
+            let description = AudioComponentDescription(
+                componentType: plugin.type, componentSubType: plugin.subtype,
+                componentManufacturer: plugin.manufacturer, componentFlags: 0, componentFlagsMask: 0
+            )
+            do {
+                let avUnit = try await AVAudioUnit.instantiate(
+                    with: description, options: type == .effect ? .loadOutOfProcess : []
+                )
+                let component = AVAudioUnitComponentManager.shared().components(matching: description).first
+                let unit = AUManagedUnit(protoType: Component(component, type: type),
+                                         audioUnit: avUnit, audioUnitType: type, icon: nil)
+                if let path = plugin.statePath {
+                    let data = try Data(contentsOf: SessionPackage.containedURL(path, in: package.root))
+                    guard let state = try PropertyListSerialization.propertyList(
+                        from: data, options: [], format: nil
+                    ) as? [String: Any] else {
+                        throw SessionPackageError.invalid("Invalid saved plug-in state.")
+                    }
+                    avUnit.auAudioUnit.fullStateForDocument = state
+                }
+                avUnit.auAudioUnit.shouldBypassEffect = record.payload[field: "bypassed"] == "true"
+                graph.runtimes.register(unit, for: record.payload.id)
+            } catch {
+                graph.projectWarnings.append(record.title + ": " + error.localizedDescription)
+            }
+        }
+        graph.projectURL = url
+        return graph
+    }
+
+    func activateProject() {
+        rebuildConnections()
+        engine.mainMixerNode.outputVolume = masterVolume
+        refreshMIDISources()
+    }
+
+    func stopSession() {
+        for node in mesh.nodes { silence(node) }
+        midi.removeAll()
+        player.stop()
+        isPlaying = false
+        engine.stop()
+        isEngineRunning = false
+        removeTelemetryTaps()
     }
 }

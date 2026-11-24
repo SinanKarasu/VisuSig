@@ -102,3 +102,11 @@ The following need design decisions as implementation proceeds:
 - How timing, MIDI scheduling, and audio transport are coordinated.
 - How projects preserve routing, file references, plug-in identity, and state.
 - Which generators and transformations form the first playable experiment.
+
+
+## Native music projects
+
+The Audio Units music graph now saves and opens .visusig packages with automatic
+audio collection and plug-in state restoration. See [PROJECT_PACKAGE.md](PROJECT_PACKAGE.md)
+for the implemented schema, save/open behavior, checks, and remaining workspace
+integration. Logic import/export remains a future adapter.

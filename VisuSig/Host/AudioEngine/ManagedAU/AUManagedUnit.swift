@@ -21,7 +21,7 @@ class AUManagedUnit: Identifiable, Hashable {
 
     private var currentViewConfigurationIndex = 1
 
-    var iconOld: NSImage?
+    var iconOld: PlatformImage?
 
     let audioUnitType: AudioUnitType
 
@@ -40,7 +40,7 @@ class AUManagedUnit: Identifiable, Hashable {
 
     // MARK: - Init
 
-    init(protoType: Component?, audioUnit: AVAudioUnit?, audioUnitType: AudioUnitType, icon: NSImage?) {
+    init(protoType: Component?, audioUnit: AVAudioUnit?, audioUnitType: AudioUnitType, icon: PlatformImage?) {
         self.protoType = protoType
         self.avAudioUnit = audioUnit
         self.audioUnitType = audioUnitType
@@ -49,7 +49,7 @@ class AUManagedUnit: Identifiable, Hashable {
 
     // MARK: - AU View Controller
 
-    func loadAudioUnitViewController(completion: @escaping (NSViewController?) -> Void) {
+    func loadAudioUnitViewController(completion: @escaping (PluginViewController?) -> Void) {
         guard let audioUnit = audioUnit else { completion(nil); return }
         audioUnit.requestViewController { viewController in
             DispatchQueue.main.async { completion(viewController) }

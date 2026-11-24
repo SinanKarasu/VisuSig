@@ -13,7 +13,11 @@ extension View {
 //    }
     func endTextEditing() {
         // NSApplication.shared.sendAction(#selector(NSResponder.resignFirstResponder), to: nil, from: nil)
+        #if os(macOS)
         NSApp.keyWindow?.makeFirstResponder(nil)
+        #else
+        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+        #endif
     }
 }
 

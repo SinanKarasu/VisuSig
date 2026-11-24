@@ -76,8 +76,13 @@ private final class MIDIMixSession {
         )
         let components = AVAudioUnitComponentManager.shared().components(matching: description)
         instruments = components.sorted { $0.name.localizedStandardCompare($1.name) == .orderedAscending }
+        #if os(macOS)
+        let defaultInstrument = kAudioUnitSubType_DLSSynth
+        #else
+        let defaultInstrument = kAudioUnitSubType_Sampler
+        #endif
         instrumentIndex = instruments.firstIndex {
-            $0.audioComponentDescription.componentSubType == kAudioUnitSubType_DLSSynth
+            $0.audioComponentDescription.componentSubType == defaultInstrument
                 && $0.audioComponentDescription.componentManufacturer == kAudioUnitManufacturer_Apple
         } ?? 0
         refreshMIDI()
@@ -149,6 +154,7 @@ private final class MIDIMixSession {
             engine.connect(instrumentGain, to: engine.mainMixerNode, format: nil)
             if let file { connectAudioFile(file) }
             engine.prepare()
+            try PlatformAudioSession.activate()
             try engine.start()
 
             try midi.start()
@@ -365,7 +371,7 @@ struct MIDIWorkspace: View {
         .padding(20)
         .onAppear { session.discover() }
         .onDisappear { session.close() }
-        .fileImporter(isPresented: $isChoosingAudio, allowedContentTypes: [.audio]) { result in
+        .fileImporter(isPresented: $isChoosingAudio, allowedContentTypes: UTType.sampledAudioFileTypes) { result in
             switch result {
             case .success(let url): session.loadAudio(url)
             case .failure(let error): session.errorMessage = error.localizedDescription
@@ -376,7 +382,7 @@ struct MIDIWorkspace: View {
     private var instrumentBrowser: some View {
         VStack(alignment: .leading, spacing: 8) {
             Text("Instruments").font(.headline)
-            HSplitView {
+            WorkspaceSplitView {
                 if session.instruments.isEmpty {
                     Text("No software instruments found")
                         .foregroundStyle(.secondary)
@@ -436,33 +442,8 @@ struct MIDIWorkspace: View {
 
 private struct InstrumentEditor: View {
     let unit: AUAudioUnit
-    @State private var controller: NSViewController?
 
     var body: some View {
-        Group {
-            if let controller {
-                InstrumentControllerView(controller: controller)
-            } else {
-                ProgressView("Loading instrument controls…")
-            }
-        }
-        .task {
-            let custom = await unit.requestViewController()
-            guard !Task.isCancelled else { return }
-            if let custom {
-                controller = custom
-            } else {
-                let generic = AUGenericViewController()
-                generic.auAudioUnit = unit
-                controller = generic
-            }
-        }
+        PluginInterfaceView(audioUnit: unit)
     }
-}
-
-private struct InstrumentControllerView: NSViewControllerRepresentable {
-    let controller: NSViewController
-
-    func makeNSViewController(context: Context) -> NSViewController { controller }
-    func updateNSViewController(_ controller: NSViewController, context: Context) {}
 }

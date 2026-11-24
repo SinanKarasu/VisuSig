@@ -7,6 +7,7 @@ import SwiftUI
 import UniformTypeIdentifiers
 
 struct SiKPlayerView: View {
+    @State private var isImportingAudio = false
     var audioGraph: AudioGraph
     var onAudioFileLoaded: (URL) -> Void = { _ in }
 
@@ -41,7 +42,7 @@ struct SiKPlayerView: View {
 
             // ── Load audio file ───────────────────────────────────────
             Button {
-                openFilePicker()
+                isImportingAudio = true
             } label: {
                 Label("Load Audio…", systemImage: "folder.badge.plus")
                     .font(.system(size: 12))
@@ -51,6 +52,14 @@ struct SiKPlayerView: View {
         }
         .padding(.horizontal, 16)
         .frame(maxWidth: .infinity)
+        .fileImporter(isPresented: $isImportingAudio, allowedContentTypes: UTType.sampledAudioFileTypes) { result in
+            guard case .success(let url) = result else { return }
+            let scoped = url.startAccessingSecurityScopedResource()
+            defer { if scoped { url.stopAccessingSecurityScopedResource() } }
+            if audioGraph.loadAudioFile(url: url), let ownedURL = audioGraph.audioFileURL {
+                onAudioFileLoaded(ownedURL)
+            }
+        }
     }
 
     private var statusText: String {
@@ -83,27 +92,4 @@ struct SiKPlayerView: View {
         return "Play"
     }
 
-    // MARK: - File picker
-
-    private func openFilePicker() {
-        let panel = NSOpenPanel()
-        panel.title = "Choose an Audio File"
-        panel.allowedContentTypes = [
-            UTType.audio,
-            UTType(filenameExtension: "aif") ?? .audio,
-            UTType(filenameExtension: "aiff") ?? .audio,
-            UTType(filenameExtension: "wav") ?? .audio,
-            UTType(filenameExtension: "mp3") ?? .audio,
-            UTType(filenameExtension: "m4a") ?? .audio,
-            UTType(filenameExtension: "caf") ?? .audio,
-        ]
-        panel.allowsMultipleSelection = false
-        panel.canChooseDirectories = false
-
-        if panel.runModal() == .OK, let url = panel.url {
-            if audioGraph.loadAudioFile(url: url) {
-                onAudioFileLoaded(url)
-            }
-        }
-    }
 }

@@ -1,3 +1,4 @@
+#if os(macOS)
 //
 //  ContentView.swift
 //  RetroDock
@@ -118,3 +119,5 @@ struct ToolMenu2View_Previews: PreviewProvider {
         ToolMenu2View()
     }
 }
+
+#endif

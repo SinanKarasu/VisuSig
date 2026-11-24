@@ -102,6 +102,12 @@ class AudioUnitComponents {
         }
     }
 
+    func clearPreviewAudioFile() {
+        audioUnitManager.playEngine.stopPlaying()
+        audioUnitManager.playEngine = SimplePlayEngine()
+        previewAudioFileName = "No audio loaded"
+    }
+
     func setPreviewAudioFile(url: URL) {
         previewAudioFileName = url.lastPathComponent
         audioUnitManager.loadPlaybackFile(url: url)

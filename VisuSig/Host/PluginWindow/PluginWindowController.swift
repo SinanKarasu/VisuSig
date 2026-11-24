@@ -1,3 +1,4 @@
+#if os(macOS)
 //
 //  PluginWindowController.swift
 //  VisuSig
@@ -24,6 +25,12 @@ final class PluginWindowController: NSWindowController, NSWindowDelegate {
         guard let audioUnit = payload.audioUnit else { return }
         let controller = PluginWindowController(nodeID: nodeID, title: title, audioUnit: audioUnit)
         controller.showWindow(nil)
+    }
+
+    static func close(nodeIDs: Set<UUID>) {
+        for controller in Array(openWindows) where nodeIDs.contains(controller.nodeID) {
+            controller.close()
+        }
     }
 
     private let nodeID: UUID
@@ -61,3 +68,32 @@ final class PluginWindowController: NSWindowController, NSWindowDelegate {
         Self.openWindows.remove(self)
     }
 }
+
+#else
+import AVFoundation
+import SwiftUI
+
+@MainActor
+@Observable
+final class PluginWindowController {
+    struct Presentation: Identifiable {
+        var id: UUID
+        var title: String
+        var unit: AUAudioUnit
+    }
+
+    static let shared = PluginWindowController()
+    var presentation: Presentation?
+
+    static func open(nodeID: UUID, title: String, unit: AUManagedUnit) {
+        guard let audioUnit = unit.audioUnit else { return }
+        shared.presentation = Presentation(id: nodeID, title: title, unit: audioUnit)
+    }
+
+    static func close(nodeIDs: Set<UUID>) {
+        if let current = shared.presentation, nodeIDs.contains(current.id) {
+            shared.presentation = nil
+        }
+    }
+}
+#endif

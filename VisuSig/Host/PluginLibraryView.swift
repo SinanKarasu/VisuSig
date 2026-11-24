@@ -142,15 +142,17 @@ struct PluginLibraryView: View {
     }
 }
 
-/// Auditions the library selection on the preview player, using the
-/// effect's own interface.
+/// Shows a graph plug-in's live controls or auditions a library effect
+/// on the preview player.
 struct EffectAuditionView: View {
     var audioUnitComponents: AudioUnitComponents
     var componentID: Component.ID?
+    var graphUnit: AUManagedUnit? = nil
     /// Reports the loaded plug-in's preferred interface size.
     var onPluginSize: (CGSize) -> Void = { _ in }
 
     private var unit: AUManagedUnit? {
+        if let graphUnit { return graphUnit }
         guard let componentID else { return nil }
         return audioUnitComponents.auManagedEffectUnits
             .compactMap { $0 }
@@ -164,11 +166,13 @@ struct EffectAuditionView: View {
                     .font(.headline)
                     .lineLimit(1)
                 Spacer()
-                Text(audioUnitComponents.hasPreviewAudioFile
-                     ? "Preview source: \(audioUnitComponents.previewAudioFileName)"
-                     : "Load audio above to audition effects")
+                Text(graphUnit != nil
+                     ? "Live graph instance"
+                     : audioUnitComponents.hasPreviewAudioFile
+                         ? "Preview source: \(audioUnitComponents.previewAudioFileName)"
+                         : "Load audio above to audition effects")
                     .font(.caption)
-                    .foregroundStyle(audioUnitComponents.hasPreviewAudioFile ? Color.secondary : Color.orange)
+                    .foregroundStyle(graphUnit != nil || audioUnitComponents.hasPreviewAudioFile ? Color.secondary : Color.orange)
             }
             .padding(.horizontal, 10)
             .padding(.vertical, 6)
@@ -179,7 +183,8 @@ struct EffectAuditionView: View {
                 PluginInterfaceView(audioUnit: audioUnit, onSizeResolved: onPluginSize)
                     .id(unit.id)
                     .task(id: unit.id) {
-                        // Route the preview player through this effect.
+                        guard graphUnit == nil else { return }
+                        // Route the preview player through this library effect.
                         audioUnitComponents.connectComponent(auManagedUnit: unit) { _ in }
                     }
             } else if let componentID, let component = audioUnitComponents.component(id: componentID),
@@ -212,13 +217,15 @@ struct ResizeHandle: View {
 
     var body: some View {
         Rectangle()
-            .fill(Color(nsColor: .separatorColor))
+            .fill(PlatformUI.separator)
             .frame(height: 1)
             .frame(maxWidth: .infinity)
             .padding(.vertical, 3)
             .contentShape(Rectangle())
             .onHover { inside in
+                #if os(macOS)
                 if inside { NSCursor.resizeUpDown.push() } else { NSCursor.pop() }
+                #endif
             }
             .gesture(
                 DragGesture(minimumDistance: 1, coordinateSpace: .global)

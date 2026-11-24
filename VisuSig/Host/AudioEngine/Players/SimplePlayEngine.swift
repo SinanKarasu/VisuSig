@@ -109,6 +109,7 @@ public class SimplePlayEngine {
 
         // Start the engine.
         do {
+            try PlatformAudioSession.activate()
             try engine.start()
         } catch {
             isPlaying = false
